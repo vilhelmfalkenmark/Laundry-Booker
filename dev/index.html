@@ -34,9 +34,9 @@
       <!-- PILAR -->
       <div ng-controller="mainController">
         <div class="arrow-container">
-          <div class="left-arrow"><i class="flaticon-arrow487" ng-click="plusWeek"></i></div>
-          <div class="week-nr">Vecka 7</div>
-          <div class="right-arrow"><i class="flaticon-arrow487" ng-click="minusWeek"></i></div>
+          <div class="left-arrow"><i class="flaticon-arrow487" ng-click="minusWeek()"></i></div>
+          <div class="week-nr">Rubrik</div>
+          <div class="right-arrow"><i class="flaticon-arrow487" ng-click="plusWeek()"></i></div>
         </div>
         <div class="clear"> </div>
         </section>
@@ -45,8 +45,8 @@
         <div class="weekdays-container">
           <div class="weekday" ng-repeat="date in dates">
             <div class="weekday-left-col">
-              <div class="weekday-nr">{{date | date:'dd'}}</div>
-              <div class="weekday-day">{{date | date:'EEE'}}</div>
+              <div class="weekday-nr">{{date.dayName | date:'dd'}}</div>
+              <div class="weekday-day">{{date.dayName | date:'EEE'}}</div>
             </div>
             <div class="weekday-right-col">
             </div>
