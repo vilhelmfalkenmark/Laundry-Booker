@@ -1,24 +1,3 @@
-var app = angular.module('booker', []);
-
-app.controller('mainController', ['$scope', function($scope) {
-
-  $scope.date = new Date();
-    $scope.dates = [];
-    var d;
-    for(var i = 0; i < 7; i++){
-       d = $scope.date;
-       d = (d.setDate((d.getDate() + 1)));
-       $scope.dates.push(d);
-    }
-}]);
-
-/**
- * Created by Vilhelm on 15-11-30.
- */
-$( document ).ready(function() {
-// GO!
-});
-
 'use strict';
 angular.module("ngLocale", [], ["$provide", function($provide) {
 var PLURAL_CATEGORY = {ZERO: "zero", ONE: "one", TWO: "two", FEW: "few", MANY: "many", OTHER: "other"};

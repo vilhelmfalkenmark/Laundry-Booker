@@ -1,32 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tvättstugebokaren</title>
-    <!--build:css css/styles.min.css-->
-    <link rel="stylesheet" href="css/stylesheet.css">
-    <!--endbuild-->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tvättstugebokaren</title>
+  <link rel="stylesheet" href="css/icons/flaticon.css">
+  <!--build:css css/styles.min.css-->
+  <link rel="stylesheet" href="css/stylesheet.css">
+  <!--endbuild-->
 </head>
+
 <body>
 
-<div class="container">
-  <h1>Tvättstugebokaren!!!!</h1>
-  <div class="app-container" ng-app="booker">
+  <div class="container">
+    <h1>Tvättstugebokaren</h1>
+    <div class="app-container" ng-app="booker">
 
-    <div ng-controller="mainController">
-      <div class="weekday">{{date | date:'yyyy-MM-dd'}}</div>
+      <section>
+        <!-- MINA BOKNINGAR -->
+        <div class="my-bookings-container">
+          <div class="weekday">
+            <div class="weekday-left-col">
+              <div class="weekday-nr">8</div>
+              <div class="weekday-day">Mån</div>
+            </div>
+            <div class="weekday-right-col">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PILAR -->
+      <div ng-controller="mainController">
+        <div class="arrow-container">
+          <div class="left-arrow"><i class="flaticon-arrow487" ng-click="plusWeek"></i></div>
+          <div class="week-nr">Vecka 7</div>
+          <div class="right-arrow"><i class="flaticon-arrow487" ng-click="minusWeek"></i></div>
+        </div>
+        <div class="clear"> </div>
+        </section>
+
+        <!-- KALENDER -->
+        <div class="weekdays-container">
+          <div class="weekday" ng-repeat="date in dates">
+            <div class="weekday-left-col">
+              <div class="weekday-nr">{{date | date:'dd'}}</div>
+              <div class="weekday-day">{{date | date:'EEE'}}</div>
+            </div>
+            <div class="weekday-right-col">
+            </div>
+          </div>
+        </div>
+        <!-- SLUT KALENDER -->
+      </div>
+      <!-- SLUT mainController -->
+
+    </div>
   </div>
 
-
-  </div>
-</div>
-
-<script src="js/libs/angular.min.js"></script>
-<script src="js/libs/jquery-2.1.4.min.js"></script>
-<!--build:js js/main.min.js -->
-<script src="js/main.js"></script>
-<!-- endbuild -->
+  <script src="js/libs/angular.min.js"></script>
+  <script src="js/libs/jquery-2.1.4.min.js"></script>
+  <!--build:js js/main.min.js -->
+  <script src="js/main.js"></script>
+  <!-- endbuild -->
 
 </body>
+
 </html>

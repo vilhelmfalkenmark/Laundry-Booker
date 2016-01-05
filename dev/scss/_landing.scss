@@ -1,3 +1,101 @@
+.weekdays-container, .my-bookings-container, .arrow-container
+{
+  margin: 0 auto;
+  width: 60%;
+  min-width: 315px;
+  max-width: 780px;
+}
+
+.my-bookings-container
+{
+  background-color: $beige;
+  height: 80px;
+  margin-bottom: 30px;
+}
+
+
+/* ======================
+Pilar
+==================== */
+
+.week-nr
+{
+  text-align: center;
+//  background-color: red;
+font-size: 36px;
+  float: left;
+  width: 80%;
+  padding: 10px 0;
+
+}
+
+.left-arrow, .right-arrow
+{
+  width: 10%;
+  text-align: center;
+  i
+  {
+    display: block;
+    font-size: 46px;
+    padding: 10px 0;
+  }
+}
+.left-arrow
+{
+  float: left;
+  i
+  {
+    transform: rotate(180deg);
+  }
+}
+.right-arrow
+{
+  float: right;
+}
+
+/* ======================
+KALENDER
+==================== */
+.weekday-left-col
+{
+  float: left;
+  width: 80px;
+  border-right: 5px solid white;
+  height: 80px;
+}
+.weekday-right-col
+{
+  float: left;
+  width: 90%;
+}
+.weekday
+{
+  margin: 5px 0;
+  height: 80px;
+  width: 100%;
+  &:nth-of-type(odd)
+  {
+    background-color: $calenderOdd;
+    color: $darkGrey;
+  }
+  &:nth-of-type(even)
+  {
+    background-color: $calenderEven;
+    color: $darkGrey;
+  }
+}
+.weekday-nr
+{
+  margin-top: 14px;
+  text-align: center;
+  font-size: 36px;
+}
+.weekday-day
+{
+  text-align: center;
+}
+
+
 
 @include respond-to(mobile-small) {
 
