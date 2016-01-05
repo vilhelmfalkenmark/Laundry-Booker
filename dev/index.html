@@ -9,10 +9,24 @@
     <!--endbuild-->
 </head>
 <body>
-<h1>Tvättstugebokaren!</h1>
+
+<div class="container">
+  <h1>Tvättstugebokaren!!!!</h1>
+  <div class="app-container" ng-app="booker">
+
+    <div ng-controller="mainController">
+      <div class="weekday">{{date | date:'yyyy-MM-dd'}}</div>
+  </div>
+
+
+  </div>
+</div>
+
+<script src="js/libs/angular.min.js"></script>
+<script src="js/libs/jquery-2.1.4.min.js"></script>
 <!--build:js js/main.min.js -->
-<script src="js/jquery-2.1.4.min.js"></script>
-<script src="js/script.js"></script>
+<script src="js/main.js"></script>
 <!-- endbuild -->
+
 </body>
 </html>

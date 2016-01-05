@@ -12,10 +12,12 @@ var cache = require('gulp-cache');
 var del = require('del');
 var runSequence = require('run-sequence');
 var sassdoc = require('sassdoc');
+var concat = require("gulp-concat")
+
+
 
 // Development Tasks
 // -----------------
-
 // ... variables
 var autoprefixerOptions = {
     browsers: ['last 2 versions','ie >= 9', '> 5%', 'Firefox ESR']
@@ -43,11 +45,21 @@ gulp.task('sass', function() {
         }));
 })
 
+gulp.task('js', function() {
+	return gulp.src("dev/js/app/*.js")
+		.pipe(concat('main.js'))
+		.pipe(gulp.dest("dev/js"))
+});
+
+
+
+
 // Watchers
 gulp.task('watch', function() {
     gulp.watch('dev/scss/**/*.scss', ['sass']);
     gulp.watch('dev/*.html', browserSync.reload);
     gulp.watch('dev/js/**/*.js', browserSync.reload);
+   gulp.watch("dev/js/app/*.js", ["js"]);
 })
 
 // Optimization Tasks
