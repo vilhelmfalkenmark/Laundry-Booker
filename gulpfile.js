@@ -12,7 +12,7 @@ var cache = require('gulp-cache');
 var del = require('del');
 var runSequence = require('run-sequence');
 var sassdoc = require('sassdoc');
-var concat = require("gulp-concat")
+var concat = require("gulp-concat");
 
 
 
@@ -29,7 +29,7 @@ gulp.task('browserSync', function() {
         server: {
             baseDir: 'dev'
         }
-    })
+    });
 });
 
 gulp.task('sass', function() {
@@ -43,12 +43,12 @@ gulp.task('sass', function() {
         .pipe(browserSync.reload({
             stream: true
         }));
-})
+});
 
 gulp.task('js', function() {
-	return gulp.src("dev/js/app/*.js")
+	return gulp.src("dev/js/app/**/*")
 		.pipe(concat('main.js'))
-		.pipe(gulp.dest("dev/js"))
+		.pipe(gulp.dest("dev/js"));
 });
 
 
@@ -58,9 +58,10 @@ gulp.task('js', function() {
 gulp.task('watch', function() {
     gulp.watch('dev/scss/**/*.scss', ['sass']);
     gulp.watch('dev/*.html', browserSync.reload);
+    gulp.watch("dev/js/app/**/*", ["js"]);
     gulp.watch('dev/js/**/*.js', browserSync.reload);
-   gulp.watch("dev/js/app/*.js", ["js"]);
-})
+
+});
 
 // Optimization Tasks
 // ------------------
@@ -77,7 +78,7 @@ gulp.task('useref', function() {
         .pipe(gulpIf('*.js', uglify()))
         .pipe(assets.restore())
         .pipe(useref())
-        .pipe(gulp.dest('dist'))
+        .pipe(gulp.dest('dist'));
 });
 
 // Optimizing Images
@@ -87,13 +88,13 @@ gulp.task('images', function() {
         .pipe(cache(imagemin({
             interlaced: true,
         })))
-        .pipe(gulp.dest('dist/images'))
+        .pipe(gulp.dest('dist/images'));
 });
 
 // Copying fonts
 gulp.task('fonts', function() {
     return gulp.src('dev/fonts/**/*')
-        .pipe(gulp.dest('dist/fonts'))
+        .pipe(gulp.dest('dist/fonts'));
 });
 
 // Cleaning
@@ -103,7 +104,7 @@ gulp.task('clean', function(callback) {
 });
 
 gulp.task('clean:dist', function(callback) {
-    del(['dist/**/*', '!dist/images', '!dist/images/**/*'], callback)
+    del(['dist/**/*', '!dist/images', '!dist/images/**/*'], callback);
 });
 
 // Build Sequences
@@ -112,12 +113,12 @@ gulp.task('clean:dist', function(callback) {
 gulp.task('default', function(callback) {
     runSequence(['sass', 'browserSync', 'watch'],
         callback
-    )
+    );
 });
 
 gulp.task('build', function(callback) {
     runSequence(/*'clean:dist',*/
         ['sass', 'useref', 'images', 'fonts'],
         callback
-    )
+    );
 });
