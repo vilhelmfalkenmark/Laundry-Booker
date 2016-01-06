@@ -156,45 +156,70 @@
   'use strict';
 
   angular.module('booker')
-    .controller('calenderController', ['$scope', 'calenderController']);
+    .controller('CalenderController', ['$scope', 'CalenderService', CalenderController]);
 
-  function calenderController($scope) {
+  function CalenderController($scope, CalenderService) {
 
-    var milliSeconds = 24 * 60 * 60 * 1000;
-    $scope.daySwitch = 0;
-
-    function createCalender()
-    {
-      $scope.date = new Date(new Date().getTime() + $scope.daySwitch*milliSeconds);
-      $scope.dates = [];
-      var d;
-      for(var i = 0; i < 7; i++)
-      {
-        var day = {};
-        d = $scope.date;
-        d = (d.setDate((d.getDate() + 1)));
-        day.dayName = d;
-        $scope.dates.push(day);
-      }
-    }
-    createCalender();
-    $scope.plusWeek = function() {
-
-      if($scope.daySwitch < 14)
-      {
-        $scope.daySwitch += 7;
-        createCalender();
-      }
+    $scope.dates = CalenderService.createCalender();
+    $scope.plusWeek = function(){
+      CalenderService.plusWeek();
+      $scope.dates = CalenderService.createCalender();
+    };
+    $scope.minusWeek = function(){
+      CalenderService.minusWeek();
+      $scope.dates = CalenderService.createCalender();
     };
 
-    $scope.minusWeek = function() {
-      if($scope.daySwitch > 0)
-      {
-        $scope.daySwitch -= 7;
-        createCalender();
-      }
-    };
   }
+})();
+
+(function() {
+  'use strict';
+  angular.module('booker')
+    .service('CalenderService', [CalenderService]);
+
+    function CalenderService(){
+  var milliSeconds = 24 * 60 * 60 * 1000;
+  var daySwitch = 0;
+
+  return {
+    createCalender: createCalender,
+    plusWeek: plusWeek,
+    minusWeek: minusWeek
+  };
+
+  function createCalender()
+  {
+    var date = new Date(new Date().getTime() + daySwitch*milliSeconds);
+    var dates = [];
+    var d;
+    for(var i = 0; i < 7; i++)
+    {
+      var day = {};
+      d = date;
+      d = (d.setDate((d.getDate() + 1)));
+      day.dayName = d;
+      dates.push(day);
+    }
+    return dates;
+  }
+
+  function plusWeek() {
+    if(daySwitch < 14)
+    {
+      daySwitch += 7;
+      createCalender();
+    }
+  }
+
+  function minusWeek() {
+    if(daySwitch > 0)
+    {
+      daySwitch -= 7;
+      createCalender();
+    }
+  }
+}
 
 
 })();
