@@ -1,3 +1,5 @@
+$calenderDayHeight:  100px;
+
 .weekdays-container, .my-bookings-container, .arrow-container
 {
   margin: 0 auto;
@@ -9,7 +11,7 @@
 .my-bookings-container
 {
   background-color: $beige;
-  height: 80px;
+  height: $calenderDayHeight;
   margin-bottom: 30px;
 }
 
@@ -21,8 +23,7 @@ Pilar
 .week-nr
 {
   text-align: center;
-//  background-color: red;
-font-size: 36px;
+  font-size: 36px;
   float: left;
   width: 80%;
   padding: 10px 0;
@@ -54,24 +55,19 @@ font-size: 36px;
 }
 
 /* ======================
-KALENDER
+KALENDER - VÄNSTER DEL (veckodag och månadsnummer)
 ==================== */
 .weekday-left-col
 {
   float: left;
-  width: 80px;
-  border-right: 5px solid white;
-  height: 80px;
-}
-.weekday-right-col
-{
-  float: left;
-  width: 90%;
+  width: 14%;
+  border-right: 3px solid white;
+  height: $calenderDayHeight;
 }
 .weekday
 {
   margin: 5px 0;
-  height: 80px;
+  height: 100px;
   width: 100%;
   &:nth-of-type(odd)
   {
@@ -86,7 +82,7 @@ KALENDER
 }
 .weekday-nr
 {
-  margin-top: 14px;
+  margin-top: 20px;
   text-align: center;
   font-size: 36px;
 }
@@ -94,6 +90,37 @@ KALENDER
 {
   text-align: center;
 }
+
+/* ======================
+KALENDER - HÖGER DEL (bokningsdelen preview)
+==================== */
+.weekday-right-col
+{
+  float: left;
+  width: 85%;
+//  border-left: 1% solid red;
+  position: relative;
+}
+.preview-container
+{
+  position: absolute;
+  height: 100%;
+  right: 5px;
+
+  div
+  {
+    padding: 3.5px;
+  }
+
+
+
+//  @extend .flex-center;
+}
+
+
+
+
+
 
 
 
