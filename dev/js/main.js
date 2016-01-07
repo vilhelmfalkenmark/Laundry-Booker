@@ -154,38 +154,37 @@
 
 (function() {
   'use strict';
-
   angular.module('booker')
-    .controller('CalenderController', ['$scope', 'CalenderService', CalenderController]);
-
-  function CalenderController($scope, CalenderService) {
-
-    $scope.dates = CalenderService.createCalender();
-    $scope.plusWeek = function(){
-      CalenderService.plusWeek();
-      $scope.dates = CalenderService.createCalender();
+    .directive('dayModal', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        info: "="
+      },
+      templateUrl: 'js/app/directives/dayModal.html'
     };
-    $scope.minusWeek = function(){
-      CalenderService.minusWeek();
-      $scope.dates = CalenderService.createCalender();
-    };
-
-  }
+  });
 })();
 
+/*
+Angular services are substitutable objects that are wired together
+using dependency injection (DI).
+You can use services to organize and share code across your app.
+*/
 (function() {
   'use strict';
+
   angular.module('booker')
     .service('CalenderService', [CalenderService]);
 
-    function CalenderService(){
+  function CalenderService(){
   var milliSeconds = 24 * 60 * 60 * 1000;
   var daySwitch = 0;
 
   return {
     createCalender: createCalender,
     plusWeek: plusWeek,
-    minusWeek: minusWeek
+    minusWeek: minusWeek,
   };
 
   function createCalender()
@@ -197,10 +196,21 @@
     {
       var day = {};
       d = date;
+      if(i == 0) // Så att dagarna skiljer sig från varandra på något sätt
+      {
+        day.likes = "hej";
+      }
+
+      day.laundryBookings = 0;
+      day.tumblerBookings = 0;
+      day.mangelBookings = 0;
+
+
       d = (d.setDate((d.getDate() + 1)));
       day.dayName = d;
       dates.push(day);
     }
+  //  console.log(dates)
     return dates;
   }
 
@@ -220,6 +230,70 @@
     }
   }
 }
+})();
 
+/*
+Angular services are substitutable objects that are wired together
+using dependency injection (DI).
+You can use services to organize and share code across your app.
+*/
+(function() {
+  'use strict';
+  angular.module('booker')
+      .service('ModalService', [ModalService]);
+
+  function ModalService()
+  {
+      return {
+      test: test,
+      };
+    function test(index)
+    {
+        //console.log("hej")
+
+         var container = document.getElementsByClassName('container')[0];
+        console.log(index);
+
+        return index;
+
+    }
+  }
+
+
+
+})();
+
+(function() {
+  'use strict';
+
+  angular.module('booker')
+    .controller('CalenderController', ['$scope', 'CalenderService','ModalService', CalenderController]);
+
+  function CalenderController($scope, CalenderService, ModalService) {
+
+    $scope.dates = CalenderService.createCalender();
+    $scope.plusWeek = function(){
+      CalenderService.plusWeek();
+      $scope.dates = CalenderService.createCalender();
+    };
+    $scope.minusWeek = function(){
+      CalenderService.minusWeek();
+      $scope.dates = CalenderService.createCalender();
+    };
+
+    $scope.test = ModalService.test;
+  }
+})();
+
+(function() {
+  'use strict';
+
+ angular.module('booker')
+     .controller('ModalController', ['$scope', 'ModalService', ModalController]);
+
+  function ModalController($scope, ModalService)
+  {
+    $scope.indexa = ModalService.test();
+  }
 
 })();

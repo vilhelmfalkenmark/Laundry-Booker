@@ -10,13 +10,11 @@
   <link rel="stylesheet" href="css/stylesheet.css">
   <!--endbuild-->
 </head>
-
 <body>
-
   <div class="container">
-    <h1>Tvättstugebokaren</h1>
     <div class="app-container" ng-app="booker">
-
+      <h1>Tvättstugebokaren</h1>
+      <day-modal info="what"></day-modal>
       <section>
         <!-- MINA BOKNINGAR -->
         <div class="my-bookings-container">
@@ -30,29 +28,26 @@
           </div>
         </div>
       </section>
-
       <!-- PILAR -->
-      <div ng-controller="CalenderController">
+        <div ng-controller="CalenderController">
         <div class="arrow-container">
           <div class="left-arrow"><i class="flaticon-arrow487" ng-click="minusWeek()"></i></div>
           <div class="week-nr">Rubrik</div>
           <div class="right-arrow"><i class="flaticon-arrow487" ng-click="plusWeek()"></i></div>
         </div>
         <div class="clear"> </div>
-        </section>
-
         <!-- KALENDER -->
         <div class="weekdays-container">
-          <div class="weekday" ng-repeat="date in dates">
+          <div class="weekday" ng-repeat="date in dates" ng-click="what($index)">
             <div class="weekday-left-col">
               <div class="weekday-nr">{{date.dayName | date:'dd'}}</div>
               <div class="weekday-day">{{date.dayName | date:'EEE'}}</div>
             </div>
             <div class="weekday-right-col">
                 <div class="preview-container">
-                  <div class="preview laundy-preview"><!--<i class="flaticon-wash3"></i>--> Tvätttider:</div>
-                  <div class="preview dryer-preview"><!--<i class="flaticon-washing11"></i>--> Torkskåpstider:</div>
-                  <div class="preview tumbler-preview"><!--<i class="flaticon-washingmachine3"></i>-->Torkumlare:</div>
+                  <div class="preview laundy-preview"><!--<i class="flaticon-wash3"></i>--> Tvätttider: {{date.laundryBookings}}</div>
+                  <div class="preview dryer-preview"><!--<i class="flaticon-washing11"></i>--> Torkskåpstider: {{date.tumblerBookings}}</div>
+                  <div class="preview tumbler-preview"><!--<i class="flaticon-washingmachine3"></i>-->Torkumlare: {{date.mangelBookings}}</div>
                   <div class="preview mangel-preview"><!--<i class="flaticon-wash3"></i>-->Mangel: </div>
                 </div>
             </div>
@@ -61,9 +56,18 @@
         <!-- SLUT KALENDER -->
       </div>
       <!-- SLUT mainController -->
+      <!-- <div class="modal" ng-controller="ModalContoller">
+          <div></div>
+      </div> -->
 
     </div>
+
+
+
+
   </div>
+
+
 
   <script src="js/libs/angular.min.js"></script>
   <script src="js/libs/jquery-2.1.4.min.js"></script>

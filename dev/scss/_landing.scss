@@ -34,11 +34,19 @@ Pilar
 {
   width: 10%;
   text-align: center;
+  cursor: pointer;
   i
   {
+    transition: all 0.3s ease;
     display: block;
     font-size: 46px;
     padding: 10px 0;
+
+    &:hover
+    {
+      color: lighten($darkGrey, 10%);;
+    }
+
   }
 }
 .left-arrow
@@ -69,6 +77,8 @@ KALENDER - VÄNSTER DEL (veckodag och månadsnummer)
   margin: 5px 0;
   height: 100px;
   width: 100%;
+  transition: all 0.1s ease;
+  cursor: pointer;
   &:nth-of-type(odd)
   {
     background-color: $calenderOdd;
@@ -79,6 +89,12 @@ KALENDER - VÄNSTER DEL (veckodag och månadsnummer)
     background-color: $calenderEven;
     color: $darkGrey;
   }
+  &:hover
+  {
+    background-color: green;
+    color: white;
+  }
+
 }
 .weekday-nr
 {

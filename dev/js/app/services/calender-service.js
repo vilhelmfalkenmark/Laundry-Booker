@@ -1,16 +1,22 @@
+/*
+Angular services are substitutable objects that are wired together
+using dependency injection (DI).
+You can use services to organize and share code across your app.
+*/
 (function() {
   'use strict';
+
   angular.module('booker')
     .service('CalenderService', [CalenderService]);
 
-    function CalenderService(){
+  function CalenderService(){
   var milliSeconds = 24 * 60 * 60 * 1000;
   var daySwitch = 0;
 
   return {
     createCalender: createCalender,
     plusWeek: plusWeek,
-    minusWeek: minusWeek
+    minusWeek: minusWeek,
   };
 
   function createCalender()
@@ -22,10 +28,21 @@
     {
       var day = {};
       d = date;
+      if(i == 0) // Så att dagarna skiljer sig från varandra på något sätt
+      {
+        day.likes = "hej";
+      }
+
+      day.laundryBookings = 0;
+      day.tumblerBookings = 0;
+      day.mangelBookings = 0;
+
+
       d = (d.setDate((d.getDate() + 1)));
       day.dayName = d;
       dates.push(day);
     }
+  //  console.log(dates)
     return dates;
   }
 
@@ -45,6 +62,4 @@
     }
   }
 }
-
-
 })();
