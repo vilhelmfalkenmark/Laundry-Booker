@@ -5,12 +5,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tvättstugebokaren</title>
+  <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+  <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,700,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/icons/flaticon.css">
   <!--build:css css/styles.min.css-->
   <link rel="stylesheet" href="css/stylesheet.css">
   <!--endbuild-->
 </head>
 <body>
+
+<header class="row">
+<div class="span-l2-m2-s2"><img src="images/lb-logo.svg" alt="Logotyp" class="lb-logo"></div>    
+<div class="span-l10-m10-s10">
+<button class="right"><i class="fa fa-sign-out"></i> Logga ut</button>    
+<button class="right">Mina bokningar</button>  
+</div>   
+</header> 
+    
   <div class="container">
     <div class="app-container" ng-app="booker">
       <h1>Tvättstugebokaren</h1>
@@ -32,7 +44,7 @@
         <div ng-controller="CalenderController">
         <div class="arrow-container">
           <div class="left-arrow"><i class="flaticon-arrow487" ng-click="minusWeek()"></i></div>
-          <div class="week-nr">Rubrik</div>
+          <div class="week-nr">Välj tid:</div>
           <div class="right-arrow"><i class="flaticon-arrow487" ng-click="plusWeek()"></i></div>
         </div>
         <div class="clear"> </div>
