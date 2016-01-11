@@ -5,59 +5,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tvättstugebokaren</title>
+  <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+  <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,700,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/icons/flaticon.css">
   <!--build:css css/styles.min.css-->
   <link rel="stylesheet" href="css/stylesheet.css">
   <!--endbuild-->
 </head>
-
 <body>
 
-  <div class="container">
-    <h1>Tvättstugebokaren</h1>
-    <div class="app-container" ng-app="booker">
-
+<header class="row">
+<div class="span-l2-m2-s2"><img src="images/lb-logo.svg" alt="Logotyp" class="lb-logo"></div>    
+<div class="span-l6-m6-s6">
       <section>
         <!-- MINA BOKNINGAR -->
         <div class="my-bookings-container">
-          <div class="weekday">
-            <div class="weekday-left-col">
-              <div class="weekday-nr">8</div>
-              <div class="weekday-day">Mån</div>
-            </div>
-            <div class="weekday-right-col">
-            </div>
-          </div>
         </div>
       </section>
+</div>   
+<div class="span-l4-m4-s4">
+    
+<button class="right"><i class="fa fa-fw fa-sign-out"></i> Logga ut</button>    
+<button class="right"><i class="fa fa-fw fa-list"></i> Mina bokningar <b>(0)</b></button> 
+</div>
+</header> 
+    
+  <div class="row">
+    <div class="row app-container" ng-app="booker">
 
       <!-- PILAR -->
-      <div ng-controller="CalenderController">
+        <div ng-controller="CalenderController">
         <div class="arrow-container">
-          <div class="left-arrow"><i class="flaticon-arrow487" ng-click="minusWeek()"></i></div>
-          <div class="week-nr">Rubrik</div>
-          <div class="right-arrow"><i class="flaticon-arrow487" ng-click="plusWeek()"></i></div>
+          <div class="left-arrow span-l2-m2-s2" ng-click="minusWeek()"><i class="fa fa-chevron-circle-left"></i></div>
+          <div class="week-nr span-l8-m8-s8">Välj tid att boka:</div>
+          <div class="right-arrow span-l2-m2-s2" ng-click="plusWeek()"><i class="fa fa-chevron-circle-right"></i></div>
         </div>
         <div class="clear"> </div>
-        </section>
-
         <!-- KALENDER -->
         <div class="weekdays-container">
-          <div class="weekday" ng-repeat="date in dates">
+          <div class="weekday" ng-repeat="date in dates" ng-click="what($index)">
             <div class="weekday-left-col">
               <div class="weekday-nr">{{date.dayName | date:'dd'}}</div>
               <div class="weekday-day">{{date.dayName | date:'EEE'}}</div>
             </div>
             <div class="weekday-right-col">
+                <div class="preview-container">
+                  <div class="preview laundy-preview"><!--<i class="flaticon-wash3"></i>--> Tvätttider: {{date.laundryBookings}}</div>
+                  <div class="preview dryer-preview"><!--<i class="flaticon-washing11"></i>--> Torkskåpstider: {{date.tumblerBookings}}</div>
+                  <div class="preview tumbler-preview"><!--<i class="flaticon-washingmachine3"></i>-->Torkumlare: {{date.mangelBookings}}</div>
+                  <div class="preview mangel-preview"><!--<i class="flaticon-wash3"></i>-->Mangel: </div>
+                </div>
             </div>
           </div>
         </div>
         <!-- SLUT KALENDER -->
       </div>
       <!-- SLUT mainController -->
+      <!-- <div class="modal" ng-controller="ModalContoller">
+          <div></div>
+      </div> -->
 
     </div>
+
+
+
+
   </div>
+
+
 
   <script src="js/libs/angular.min.js"></script>
   <script src="js/libs/jquery-2.1.4.min.js"></script>
@@ -66,5 +82,4 @@
   <!-- endbuild -->
 
 </body>
-
 </html>

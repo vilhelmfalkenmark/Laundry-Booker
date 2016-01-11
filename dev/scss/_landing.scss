@@ -1,16 +1,17 @@
+$calenderDayHeight:  100px;
+
 .weekdays-container, .my-bookings-container, .arrow-container
 {
-  margin: 0 auto;
-  width: 60%;
-  min-width: 315px;
-  max-width: 780px;
+    display: flex;
+    align-items: center;
 }
 
 .my-bookings-container
 {
-  background-color: $beige;
-  height: 80px;
-  margin-bottom: 30px;
+
+}
+.weekdays-container {
+    flex-direction: column;
 }
 
 
@@ -18,61 +19,61 @@
 Pilar
 ==================== */
 
+.arrow-container {
+    background: $lightGrey;
+}
+
 .week-nr
 {
   text-align: center;
-//  background-color: red;
-font-size: 36px;
-  float: left;
-  width: 80%;
+  font-size: 36px;
   padding: 10px 0;
 
 }
 
 .left-arrow, .right-arrow
 {
-  width: 10%;
-  text-align: center;
+    padding: 0 20px;
+  cursor: pointer;
   i
   {
+    transition: all 0.3s ease;
     display: block;
     font-size: 46px;
     padding: 10px 0;
+    &:hover
+    {
+      color: $highlightColor;
+    }
+
   }
 }
 .left-arrow
 {
-  float: left;
-  i
-  {
-    transform: rotate(180deg);
-  }
+  text-align: left;
 }
 .right-arrow
 {
-  float: right;
+  text-align: right;
 }
 
 /* ======================
-KALENDER
+KALENDER - VÄNSTER DEL (veckodag och månadsnummer)
 ==================== */
 .weekday-left-col
 {
   float: left;
-  width: 80px;
-  border-right: 5px solid white;
-  height: 80px;
-}
-.weekday-right-col
-{
-  float: left;
-  width: 90%;
+  width: 14%;
+  border-right: 3px solid white;
+  height: $calenderDayHeight;
 }
 .weekday
 {
   margin: 5px 0;
-  height: 80px;
+  height: 100px;
   width: 100%;
+  transition: all 0.1s ease;
+  cursor: pointer;
   &:nth-of-type(odd)
   {
     background-color: $calenderOdd;
@@ -83,10 +84,16 @@ KALENDER
     background-color: $calenderEven;
     color: $darkGrey;
   }
+  &:hover
+  {
+    background-color: green;
+    color: white;
+  }
+
 }
 .weekday-nr
 {
-  margin-top: 14px;
+  margin-top: 20px;
   text-align: center;
   font-size: 36px;
 }
@@ -94,6 +101,37 @@ KALENDER
 {
   text-align: center;
 }
+
+/* ======================
+KALENDER - HÖGER DEL (bokningsdelen preview)
+==================== */
+.weekday-right-col
+{
+  float: left;
+  width: 85%;
+//  border-left: 1% solid red;
+  position: relative;
+}
+.preview-container
+{
+  position: absolute;
+  height: 100%;
+  right: 5px;
+
+  div
+  {
+    padding: 3.5px;
+  }
+
+
+
+//  @extend .flex-center;
+}
+
+
+
+
+
 
 
 

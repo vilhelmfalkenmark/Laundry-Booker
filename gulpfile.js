@@ -46,7 +46,7 @@ gulp.task('sass', function() {
 });
 
 gulp.task('js', function() {
-	return gulp.src("dev/js/app/**/*")
+	return gulp.src("dev/js/app/**/*.js")
 		.pipe(concat('main.js'))
 		.pipe(gulp.dest("dev/js"));
 });
@@ -59,7 +59,7 @@ gulp.task('watch', function() {
     gulp.watch('dev/scss/**/*.scss', ['sass']);
     gulp.watch('dev/*.html', browserSync.reload);
     gulp.watch("dev/js/app/**/*", ["js"]);
-    gulp.watch('dev/js/**/*.js', browserSync.reload);
+    gulp.watch('dev/js/**/*', browserSync.reload);
 
 });
 
