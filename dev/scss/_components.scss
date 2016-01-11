@@ -7,10 +7,15 @@ button {
     font-family: 'Titillium Web', sans-serif;
     font-size: 16px;
     text-transform: uppercase;
-    font-weight: 700;
     background: transparent;
     border: 1px solid white;
     color: $white;
+    transition: all 0.3s;
+    cursor: pointer;
+    &:hover {
+        background: $white;
+        color: $highlightColor;
+    }
 }
 .highlight {
         background: $highlightColor;

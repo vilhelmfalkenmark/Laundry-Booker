@@ -17,35 +17,29 @@
 
 <header class="row">
 <div class="span-l2-m2-s2"><img src="images/lb-logo.svg" alt="Logotyp" class="lb-logo"></div>    
-<div class="span-l10-m10-s10">
-<button class="right"><i class="fa fa-sign-out"></i> Logga ut</button>    
-<button class="right">Mina bokningar</button>  
-</div>   
-</header> 
-    
-  <div class="container">
-    <div class="app-container" ng-app="booker">
-      <h1>Tvättstugebokaren</h1>
-      <day-modal info="what"></day-modal>
+<div class="span-l6-m6-s6">
       <section>
         <!-- MINA BOKNINGAR -->
         <div class="my-bookings-container">
-          <div class="weekday">
-            <div class="weekday-left-col">
-              <div class="weekday-nr">8</div>
-              <div class="weekday-day">Mån</div>
-            </div>
-            <div class="weekday-right-col">
-            </div>
-          </div>
         </div>
       </section>
+</div>   
+<div class="span-l4-m4-s4">
+    
+<button class="right"><i class="fa fa-fw fa-sign-out"></i> Logga ut</button>    
+<button class="right"><i class="fa fa-fw fa-list"></i> Mina bokningar <b>(0)</b></button> 
+</div>
+</header> 
+    
+  <div class="row">
+    <div class="row app-container" ng-app="booker">
+
       <!-- PILAR -->
         <div ng-controller="CalenderController">
         <div class="arrow-container">
-          <div class="left-arrow"><i class="flaticon-arrow487" ng-click="minusWeek()"></i></div>
-          <div class="week-nr">Välj tid:</div>
-          <div class="right-arrow"><i class="flaticon-arrow487" ng-click="plusWeek()"></i></div>
+          <div class="left-arrow span-l2-m2-s2" ng-click="minusWeek()"><i class="fa fa-chevron-circle-left"></i></div>
+          <div class="week-nr span-l8-m8-s8">Välj tid att boka:</div>
+          <div class="right-arrow span-l2-m2-s2" ng-click="plusWeek()"><i class="fa fa-chevron-circle-right"></i></div>
         </div>
         <div class="clear"> </div>
         <!-- KALENDER -->

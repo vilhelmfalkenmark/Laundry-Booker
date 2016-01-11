@@ -2,17 +2,16 @@ $calenderDayHeight:  100px;
 
 .weekdays-container, .my-bookings-container, .arrow-container
 {
-  margin: 0 auto;
-  width: 60%;
-  min-width: 315px;
-  max-width: 780px;
+    display: flex;
+    align-items: center;
 }
 
 .my-bookings-container
 {
-  background-color: $beige;
-  height: $calenderDayHeight;
-  margin-bottom: 30px;
+
+}
+.weekdays-container {
+    flex-direction: column;
 }
 
 
@@ -20,20 +19,21 @@ $calenderDayHeight:  100px;
 Pilar
 ==================== */
 
+.arrow-container {
+    background: $lightGrey;
+}
+
 .week-nr
 {
   text-align: center;
   font-size: 36px;
-  float: left;
-  width: 80%;
   padding: 10px 0;
 
 }
 
 .left-arrow, .right-arrow
 {
-  width: 10%;
-  text-align: center;
+    padding: 0 20px;
   cursor: pointer;
   i
   {
@@ -41,25 +41,20 @@ Pilar
     display: block;
     font-size: 46px;
     padding: 10px 0;
-
     &:hover
     {
-      color: lighten($darkGrey, 10%);;
+      color: $highlightColor;
     }
 
   }
 }
 .left-arrow
 {
-  float: left;
-  i
-  {
-    transform: rotate(180deg);
-  }
+  text-align: left;
 }
 .right-arrow
 {
-  float: right;
+  text-align: right;
 }
 
 /* ======================
