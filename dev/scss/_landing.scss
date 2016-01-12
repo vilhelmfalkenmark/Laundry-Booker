@@ -12,6 +12,8 @@ $calenderDayHeight:  100px;
 }
 .weekdays-container {
     flex-direction: column;
+    padding: 0 20px;
+    background: $lightGrey;
 }
 
 
@@ -21,22 +23,23 @@ Pilar
 
 .arrow-container {
     background: $lightGrey;
+    padding-top: 10px;
 }
 
 .week-nr
 {
   text-align: center;
   font-size: 36px;
-  padding: 10px 0;
+  padding: 0px 0;
 
 }
 
 .left-arrow, .right-arrow
 {
     padding: 0 20px;
-  cursor: pointer;
-  i
-  {
+    cursor: pointer;
+    i
+    {
     transition: all 0.3s ease;
     display: block;
     font-size: 46px;
@@ -45,7 +48,6 @@ Pilar
     {
       color: $highlightColor;
     }
-
   }
 }
 .left-arrow
@@ -62,18 +64,17 @@ KALENDER - VÄNSTER DEL (veckodag och månadsnummer)
 ==================== */
 .weekday-left-col
 {
-  float: left;
-  width: 14%;
-  border-right: 3px solid white;
-  height: $calenderDayHeight;
+    @extend .flex-center;
+    flex-direction: column;
+    height: 100px;
 }
 .weekday
 {
-  margin: 5px 0;
-  height: 100px;
-  width: 100%;
-  transition: all 0.1s ease;
+  margin: 10px;
+  border: 1px solid $calenderBorder;
+          transition: all 0.1s ease;
   cursor: pointer;
+    border-radius: 5px;
   &:nth-of-type(odd)
   {
     background-color: $calenderOdd;
@@ -86,20 +87,25 @@ KALENDER - VÄNSTER DEL (veckodag och månadsnummer)
   }
   &:hover
   {
-    background-color: green;
-    color: white;
-  }
+    background-color: $mediumGrey;
 
+  }
 }
-.weekday-nr
+.weekday-nr, .weekday-expand
 {
-  margin-top: 20px;
   text-align: center;
   font-size: 36px;
+    line-height: 36px;
 }
 .weekday-day
 {
   text-align: center;
+}
+
+.weekday-expand {
+    border-left: 1px solid $calenderSpace;
+    @extend .flex-center;
+    height: 100px;
 }
 
 /* ======================
@@ -107,25 +113,42 @@ KALENDER - HÖGER DEL (bokningsdelen preview)
 ==================== */
 .weekday-right-col
 {
-  float: left;
-  width: 85%;
-//  border-left: 1% solid red;
-  position: relative;
+
 }
+
+.time-col {
+    border-left: 1px solid $calenderSpace;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    height: 100px;
+
+}
+
+.available {
+    color: $available;
+}
+.full {
+    color: $full;
+}
+
+.partial {
+    color: $partial;  
+}
+
 .preview-container
 {
-  position: absolute;
-  height: 100%;
-  right: 5px;
+    width: 100%;
+    p {
+        text-align: center;
+        margin: 8px 0 0 0;
+        font-size: 18px;
+    }
 
   div
   {
-    padding: 3.5px;
-  }
-
-
-
-//  @extend .flex-center;
+    width: 25%;
+  };
 }
 
 

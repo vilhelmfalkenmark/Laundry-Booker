@@ -14,9 +14,9 @@
 }
 
 @media screen and (min-width: 960px) {
-  [class*="-l12"] { width: 100%; }
-  [class*="-l11"] { width: 91.6666667%; }
-  [class*="-l10"] { width: 83.333333334%; }
+  [class*="-ll12"] { width: 100%; }
+  [class*="-ll11"] { width: 91.6666667%; }
+  [class*="-ll10"] { width: 83.333333334%; }
   [class*="-l9"] { width: 75%; }
   [class*="-l8"] { width: 66.666666667%; }
   [class*="-l7"] { width: 58.3333333%; }
@@ -25,14 +25,15 @@
   [class*="-l4"] { width: 33.333333333%; }
   [class*="-l3"] { width: 25%; }
   [class*="-l2"] { width: 16.666666667%; }
+  [class*="-l1"] { width: 8.33333333%; }
   [class*="-l0"] { width: 0; }
 }
 
 @media screen and (min-width: 500px) and (max-width: 959px) {
 
-  [class*="-m12"] { width: 100%; }
-  [class*="-m11"] { width: 91.6666667%; }
-  [class*="-m10"] { width: 83.333333334%; }
+  [class*="-mm12"] { width: 100%; }
+  [class*="-mm11"] { width: 91.6666667%; }
+  [class*="-mm10"] { width: 83.333333334%; }
   [class*="-m9"] { width: 75%; }
   [class*="-m8"] { width: 66.666666667%; }
   [class*="-m7"] { width: 58.3333333%; }
@@ -41,6 +42,7 @@
   [class*="-m4"] { width: 33.333333333%; }
   [class*="-m3"] { width: 25%; }
   [class*="-m2"] { width: 16.666666667%; }
+  [class*="-m1"] { width: 8.33333333%; }
   [class*="-m0"] { width: 0; }
 }
 
@@ -50,9 +52,9 @@
   margin: 0 auto;
 }
   [class*="span"] { padding: 0; }
-  [class*="-s12"] { width: 100%; }
-  [class*="-s11"] { width: 91.6666667%; }
-  [class*="-s10"] { width: 83.333333334%; }
+  [class*="-ss12"] { width: 100%; }
+  [class*="-ss11"] { width: 91.6666667%; }
+  [class*="-ss10"] { width: 83.333333334%; }
   [class*="-s9"] { width: 75%; }
   [class*="-s8"] { width: 66.666666667%; }
   [class*="-s7"] { width: 58.3333333%; }
@@ -61,5 +63,6 @@
   [class*="-s4"] { width: 33.333333333%; }
   [class*="-s3"] { width: 25%; }
   [class*="-s2"] { width: 16.666666667%; }
+  [class*="-s1"] { width: 8.33333333%; }
   [class*="-s0"] { width: 0; }
 }
