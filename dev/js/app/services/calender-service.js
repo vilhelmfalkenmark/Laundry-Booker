@@ -9,16 +9,22 @@ You can use services to organize and share code across your app.
   angular.module('booker')
     .service('CalenderService', [CalenderService]);
 
+
+
   function CalenderService(){
   var milliSeconds = 24 * 60 * 60 * 1000;
-  var daySwitch = 0; 
+  var daySwitch = 0;
 
 
   return {
     createCalender: createCalender,
     plusWeek: plusWeek,
     minusWeek: minusWeek,
+    bookTime: bookTime
   };
+  function bookTime(time) {
+  this.booked = false;
+  }
 
   function createCalender()
   {
@@ -26,8 +32,8 @@ You can use services to organize and share code across your app.
     var dates = [];
     var d;
     var leftArrow = (daySwitch > 0) ? true : false;
-    var rightArrow = (daySwitch < 14) ? true : false; 
-      
+    var rightArrow = (daySwitch < 14) ? true : false;
+
     for(var i = 0; i < 7; i++)
     {
       var day = {};
@@ -35,7 +41,18 @@ You can use services to organize and share code across your app.
       day.laundryBookings = 0;
       day.tumblerBookings = 0;
       day.mangelBookings = 0;
-        
+
+      var dayIterator; // Så att man ser även ser dagens datum
+
+      if(i == 0)
+      {
+        dayIterator = 0;
+      }
+      else {
+        dayIterator = 1;
+      }
+
+
       d = (d.setDate((d.getDate() + 1)));
       day.dayName = d;
       dates.push(day);
@@ -59,6 +76,6 @@ You can use services to organize and share code across your app.
       createCalender();
     }
   }
-      
+
 }
 })();

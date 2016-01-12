@@ -2,9 +2,11 @@
   'use strict';
 
   angular.module('booker')
-    .controller('CalenderController', ['$scope', 'CalenderService','ModalService', CalenderController]);
+    .controller('CalenderController', ['$scope', 'CalenderService', CalenderController]);
 
-  function CalenderController($scope, CalenderService, ModalService) {
+  function CalenderController($scope, CalenderService) {
+
+    $scope.bookTime = CalenderService.bookTime; 
 
     $scope.returnArray = CalenderService.createCalender();
     $scope.plusWeek = function(){
@@ -15,7 +17,5 @@
       CalenderService.minusWeek();
       $scope.returnArray = CalenderService.createCalender();
     };
-
-    $scope.test = ModalService.test;
   }
 })();

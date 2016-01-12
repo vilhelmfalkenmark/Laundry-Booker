@@ -1,4 +1,4 @@
-$calenderDayHeight:  100px;
+$calenderDayHeight:  300px;
 
 .weekdays-container, .my-bookings-container, .arrow-container
 {
@@ -7,7 +7,7 @@ $calenderDayHeight:  100px;
 }
 
 .my-bookings-container
-{
+{ 
 
 }
 .weekdays-container {
@@ -151,7 +151,7 @@ KALENDER - HÖGER DEL (bokningsdelen preview)
 .partial {
     h2 {
     text-align: center;
-    color: $partial;  
+    color: $partial;
     }
 }
 
