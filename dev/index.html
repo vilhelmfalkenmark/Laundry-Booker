@@ -38,25 +38,37 @@
         <div ng-controller="CalenderController">
         <div class="arrow-container">
           <div class="left-arrow span-l2-m2-s2" ng-click="minusWeek()"><i class="fa fa-chevron-circle-left"></i></div>
-          <div class="week-nr span-l8-m8-s8">Välj tid att boka:</div>
+          <div class="week-nr span-l8-m8-s8">Välj dag att boka:</div>
           <div class="right-arrow span-l2-m2-s2" ng-click="plusWeek()"><i class="fa fa-chevron-circle-right"></i></div>
         </div>
-        <div class="clear"> </div>
+
         <!-- KALENDER -->
-        <div class="weekdays-container">
-          <div class="weekday" ng-repeat="date in dates" ng-click="what($index)">
-            <div class="weekday-left-col">
+        <div class="row weekdays-container">
+          <div class="row weekday" ng-repeat="date in dates" ng-click="what($index)">
+            <div class="weekday-left-col span-l1-m2-s3">
               <div class="weekday-nr">{{date.dayName | date:'dd'}}</div>
               <div class="weekday-day">{{date.dayName | date:'EEE'}}</div>
             </div>
-            <div class="weekday-right-col">
-                <div class="preview-container">
-                  <div class="preview laundy-preview"><!--<i class="flaticon-wash3"></i>--> Tvätttider: {{date.laundryBookings}}</div>
-                  <div class="preview dryer-preview"><!--<i class="flaticon-washing11"></i>--> Torkskåpstider: {{date.tumblerBookings}}</div>
-                  <div class="preview tumbler-preview"><!--<i class="flaticon-washingmachine3"></i>-->Torkumlare: {{date.mangelBookings}}</div>
-                  <div class="preview mangel-preview"><!--<i class="flaticon-wash3"></i>-->Mangel: </div>
+            <div class="weekday-right-col span-ll10-m8-s9">
+                <div class="time-col span-l3-m3-s3 available">07-11
+                    <div class="preview-container">
+                        <p><i class="fa fa-clock-o"></i> Ledigt</p>
+                    </div>
                 </div>
-            </div>
+                <div class="time-col span-l3-m3-s3 full">11-15
+                                    <div class="preview-container">
+                        <p><i class="fa fa-clock-o"></i> Fullbokat</p>
+                    </div>
+                </div>
+                <div class="time-col span-l3-m3-s3 partial">15-19
+                                                    <div class="preview-container">
+                        <p><i class="fa fa-clock-o"></i> Delvis bokat</p>
+                    </div>
+                </div>
+                <div class="time-col span-l3-m3-s3">19-23</div>
+                
+            </div> 
+              <div class="weekday-expand span-l1-m2-s3"><i class="fa fa-plus"></i></div>
           </div>
         </div>
         <!-- SLUT KALENDER -->
