@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="sv" ng-app="booker">
 
 <head>
     <meta charset="UTF-8">
@@ -23,6 +23,8 @@
                 <!-- MINA BOKNINGAR -->
                 <div class="my-bookings-container">
                     <p><i class="fa fa-fw fa-info-circle"></i>&nbsp;Din nästa bokade tid är: <b> Fredag 17/2 kl. 11-15</b></p>
+                    <div>DAG: {{bookedDay | date}} {{numberOfBookings}})</div>
+                    <div>TID: {{bookedTime}}</div>
                 </div>
             </section>
         </div>
@@ -122,8 +124,33 @@
                     </form>
                     </div>
                 </div>
+                <!-- KALENDER -->
+                <div class="row weekdays-container">
+                  <div class="row weekday" ng-repeat="date in dates">
+                    <div class="weekday-left-col span-l1-m2-s3">
+
+                      <div class="weekday-nr">{{date.dayName | date:'dd'}}</div>
+                      <div class="weekday-day">{{date.dayName | date:'EEE'}}</div>
+                    </div>
+                    <!--  START HÖGERKOLUMN (Dvs. tiderna i Varje dag) -->
+                    <div class="weekday-right-col span-ll10-m8-s9">
+
+                      <!--*******************************************************
+                      ============= START PÅ TIDSBLOCKEN ========================
+                      ng-class="{{date.available}}?'free-day':'booked-day'"
+                      *********************************************************-->
+                      <!-- START TIDSBLOCK-->
+                      <div class="time-col span-l3-m3-s3"  ng-class="booked?'available':'full'" ng-repeat="(time, booked) in date.times">{{time}}
+                        <div class="preview-container">
+                          <p><i class="fa fa-clock-o"></i> {{booked ? "Ledigt":"Bokad"}}</p>
+                          <button ng-show="booked" ng-click="bookTime(); myBookings(time, date.dayName)">{{booked ? "Boka":"Avboka"}}</button>
+                        </div>
+                      </div>
+                      <!--*******************************************************
+                      ============= SLUT PÅ TIDSBLOCKEN ========================
+                      *********************************************************-->
             </div>
-              <div class="weekday-expand span-l1-m2-s3"><i class="fa fa-plus"></i></div>
+            <div class="weekday-expand span-l1-m2-s3"><i class="fa fa-plus"></i></div>
           </div>
         </div>
         <!-- SLUT KALENDER -->
@@ -155,4 +182,5 @@
   <!-- endbuild -->
 
 </body>
+
 </html>
