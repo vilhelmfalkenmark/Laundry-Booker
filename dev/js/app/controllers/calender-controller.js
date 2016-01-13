@@ -6,14 +6,14 @@
 
   function CalenderController($scope, CalenderService, ModalService) {
 
-    $scope.dates = CalenderService.createCalender();
+    $scope.returnArray = CalenderService.createCalender();
     $scope.plusWeek = function(){
       CalenderService.plusWeek();
-      $scope.dates = CalenderService.createCalender();
+      $scope.returnArray = CalenderService.createCalender();
     };
     $scope.minusWeek = function(){
       CalenderService.minusWeek();
-      $scope.dates = CalenderService.createCalender();
+      $scope.returnArray = CalenderService.createCalender();
     };
 
     $scope.test = ModalService.test;

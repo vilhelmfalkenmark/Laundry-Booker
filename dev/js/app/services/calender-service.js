@@ -11,7 +11,8 @@ You can use services to organize and share code across your app.
 
   function CalenderService(){
   var milliSeconds = 24 * 60 * 60 * 1000;
-  var daySwitch = 0;
+  var daySwitch = 0; 
+
 
   return {
     createCalender: createCalender,
@@ -24,26 +25,23 @@ You can use services to organize and share code across your app.
     var date = new Date(new Date().getTime() + daySwitch*milliSeconds);
     var dates = [];
     var d;
+    var leftArrow = (daySwitch > 0) ? true : false;
+    var rightArrow = (daySwitch < 14) ? true : false; 
+      
     for(var i = 0; i < 7; i++)
     {
       var day = {};
       d = date;
-      if(i == 0) // Så att dagarna skiljer sig från varandra på något sätt
-      {
-        day.likes = "hej";
-      }
-
       day.laundryBookings = 0;
       day.tumblerBookings = 0;
       day.mangelBookings = 0;
-
-
+        
       d = (d.setDate((d.getDate() + 1)));
       day.dayName = d;
       dates.push(day);
     }
-  //  console.log(dates)
-    return dates;
+    var returnArray = [dates, [leftArrow, rightArrow]];
+    return returnArray;
   }
 
   function plusWeek() {
@@ -61,5 +59,6 @@ You can use services to organize and share code across your app.
       createCalender();
     }
   }
+      
 }
 })();

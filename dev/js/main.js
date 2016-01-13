@@ -156,6 +156,41 @@
 
 (function() {
   'use strict';
+
+  angular.module('booker')
+    .controller('CalenderController', ['$scope', 'CalenderService','ModalService', CalenderController]);
+
+  function CalenderController($scope, CalenderService, ModalService) {
+
+    $scope.returnArray = CalenderService.createCalender();
+    $scope.plusWeek = function(){
+      CalenderService.plusWeek();
+      $scope.returnArray = CalenderService.createCalender();
+    };
+    $scope.minusWeek = function(){
+      CalenderService.minusWeek();
+      $scope.returnArray = CalenderService.createCalender();
+    };
+
+    $scope.test = ModalService.test;
+  }
+})();
+
+(function() {
+  'use strict';
+
+ angular.module('booker')
+     .controller('ModalController', ['$scope', 'ModalService', ModalController]);
+
+  function ModalController($scope, ModalService)
+  {
+    $scope.indexa = ModalService.test();
+  }
+
+})();
+
+(function() {
+  'use strict';
   angular.module('booker')
     .directive('dayModal', function() {
     return {
@@ -168,6 +203,27 @@
   });
 })();
 
+$(document).ready(function () {
+    $('.weekdays-container').on('click', '.weekday-expand', function() {
+        $('.booking-container').slideUp(500);
+        if ($(this).hasClass('expanded')) {
+        $('.weekday-expand').removeClass('expanded');
+        $(this).parent().find('.booking-container').slideUp(500); 
+        $(this).removeClass('expanded');  
+        } 
+        else {
+        $('.weekday-expand').removeClass('expanded');
+        $(this).parent().find('.booking-container').slideDown(500);    
+        $(this).addClass('expanded'); 
+        }
+    });
+    $('.button-bookings').click(function() {
+    $('.my-bookings').slideToggle(500);    
+    });
+    $('.close-bookings').click(function() {
+    $('.my-bookings').slideUp(500);    
+    });
+});
 /*
 Angular services are substitutable objects that are wired together
 using dependency injection (DI).
@@ -181,7 +237,8 @@ You can use services to organize and share code across your app.
 
   function CalenderService(){
   var milliSeconds = 24 * 60 * 60 * 1000;
-  var daySwitch = 0;
+  var daySwitch = 0; 
+
 
   return {
     createCalender: createCalender,
@@ -194,26 +251,23 @@ You can use services to organize and share code across your app.
     var date = new Date(new Date().getTime() + daySwitch*milliSeconds);
     var dates = [];
     var d;
+    var leftArrow = (daySwitch > 0) ? true : false;
+    var rightArrow = (daySwitch < 14) ? true : false; 
+      
     for(var i = 0; i < 7; i++)
     {
       var day = {};
       d = date;
-      if(i == 0) // Så att dagarna skiljer sig från varandra på något sätt
-      {
-        day.likes = "hej";
-      }
-
       day.laundryBookings = 0;
       day.tumblerBookings = 0;
       day.mangelBookings = 0;
-
-
+        
       d = (d.setDate((d.getDate() + 1)));
       day.dayName = d;
       dates.push(day);
     }
-  //  console.log(dates)
-    return dates;
+    var returnArray = [dates, [leftArrow, rightArrow]];
+    return returnArray;
   }
 
   function plusWeek() {
@@ -231,6 +285,7 @@ You can use services to organize and share code across your app.
       createCalender();
     }
   }
+      
 }
 })();
 
@@ -262,40 +317,5 @@ You can use services to organize and share code across your app.
   }
 
 
-
-})();
-
-(function() {
-  'use strict';
-
-  angular.module('booker')
-    .controller('CalenderController', ['$scope', 'CalenderService','ModalService', CalenderController]);
-
-  function CalenderController($scope, CalenderService, ModalService) {
-
-    $scope.dates = CalenderService.createCalender();
-    $scope.plusWeek = function(){
-      CalenderService.plusWeek();
-      $scope.dates = CalenderService.createCalender();
-    };
-    $scope.minusWeek = function(){
-      CalenderService.minusWeek();
-      $scope.dates = CalenderService.createCalender();
-    };
-
-    $scope.test = ModalService.test;
-  }
-})();
-
-(function() {
-  'use strict';
-
- angular.module('booker')
-     .controller('ModalController', ['$scope', 'ModalService', ModalController]);
-
-  function ModalController($scope, ModalService)
-  {
-    $scope.indexa = ModalService.test();
-  }
 
 })();

@@ -12,6 +12,7 @@ button {
     color: $white;
     transition: all 0.3s;
     cursor: pointer;
+    background: $highlightColor;
     &:hover {
         background: $white;
         color: $highlightColor;
@@ -20,4 +21,26 @@ button {
 .highlight {
         background: $highlightColor;
         color: $white;
+        border: none;
+        margin: 15px auto;
+        &:hover {
+        color: $white;
+        background: $darkHighlightColor;
+    }
 }
+input {
+        border: 0;
+    border-radius: 0;
+    &:focus {
+        outline: none;
+    }
+}
+    input[type="checkbox"] {
+        width: 25px;
+        height: 25px;
+        margin: 0;
+    }
+    input[type="checkbox"]+label {
+        vertical-align: 7px;
+        margin-left: 5px;
+    }

@@ -12,7 +12,7 @@ $calenderDayHeight:  100px;
 }
 .weekdays-container {
     flex-direction: column;
-    padding: 0 20px;
+    padding: 0 20px 20px 20px;
     background: $lightGrey;
 }
 
@@ -24,6 +24,7 @@ Pilar
 .arrow-container {
     background: $lightGrey;
     padding-top: 10px;
+    color: $darkGrey;
 }
 
 .week-nr
@@ -64,17 +65,16 @@ KALENDER - VÄNSTER DEL (veckodag och månadsnummer)
 ==================== */
 .weekday-left-col
 {
-    @extend .flex-center;
-    flex-direction: column;
-    height: 100px;
+
 }
 .weekday
 {
+  display: flex;
   margin: 10px;
   border: 1px solid $calenderBorder;
-          transition: all 0.1s ease;
+  transition: all 0.1s ease;
   cursor: pointer;
-    border-radius: 5px;
+  border-radius: 5px;
   &:nth-of-type(odd)
   {
     background-color: $calenderOdd;
@@ -88,24 +88,23 @@ KALENDER - VÄNSTER DEL (veckodag och månadsnummer)
   &:hover
   {
     background-color: $mediumGrey;
-
   }
 }
-.weekday-nr, .weekday-expand
+.expanded {
+    i {
+        transform: rotate(45deg);
+    }
+}
+.weekday-nr
 {
+  padding-top: 25px;
   text-align: center;
   font-size: 36px;
-    line-height: 36px;
+  line-height: 36px;
 }
 .weekday-day
 {
   text-align: center;
-}
-
-.weekday-expand {
-    border-left: 1px solid $calenderSpace;
-    @extend .flex-center;
-    height: 100px;
 }
 
 /* ======================
@@ -113,7 +112,7 @@ KALENDER - HÖGER DEL (bokningsdelen preview)
 ==================== */
 .weekday-right-col
 {
-
+    display: flex;
 }
 
 .time-col {
@@ -121,19 +120,39 @@ KALENDER - HÖGER DEL (bokningsdelen preview)
     padding: 10px;
     font-size: 14px;
     font-weight: 700;
-    height: 100px;
+}
 
+.weekday-expand {
+  text-align: center;
+  font-size: 36px;
+  line-height: 110px;
+    border-left: 1px solid $calenderSpace;
+    i {
+    transition: all 0.3s;
+        &:hover {
+            color: $highlightColor;
+        }
+    }
 }
 
 .available {
+    h2 {
+    text-align: center;
     color: $available;
+    }
 }
 .full {
+    h2 {
+    text-align: center;
     color: $full;
+    }
 }
 
 .partial {
+    h2 {
+    text-align: center;
     color: $partial;  
+    }
 }
 
 .preview-container
@@ -144,6 +163,9 @@ KALENDER - HÖGER DEL (bokningsdelen preview)
         margin: 8px 0 0 0;
         font-size: 18px;
     }
+    h2 {
+        margin-top: 10px;
+    }
 
   div
   {
@@ -151,6 +173,30 @@ KALENDER - HÖGER DEL (bokningsdelen preview)
   };
 }
 
+.booking-container {
+    padding: 20px;
+    display: none;
+}
+.my-bookings-container {
+    color: $white;
+    i {
+        font-size: 24px;
+    }
+}
+.my-bookings {
+    display: none;
+    height: 200px;
+    background: $darkHighlightColor;
+    color: white;
+    padding: 20px;
+    position: relative;
+    .close-bookings {
+        position: absolute;
+        bottom: 0;
+        right: 20px;
+        cursor: pointer;
+    }
+}
 
 
 
