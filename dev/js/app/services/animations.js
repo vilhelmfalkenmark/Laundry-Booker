@@ -3,19 +3,19 @@ $(document).ready(function () {
         $('.booking-container').slideUp(500);
         if ($(this).hasClass('expanded')) {
         $('.weekday-expand').removeClass('expanded');
-        $(this).parent().find('.booking-container').slideUp(500); 
-        $(this).removeClass('expanded');  
-        } 
+        $(this).parent().find('.booking-container').slideUp(500);
+        $(this).removeClass('expanded');
+        }
         else {
         $('.weekday-expand').removeClass('expanded');
-        $(this).parent().find('.booking-container').slideDown(500);    
-        $(this).addClass('expanded'); 
+        $(this).parent().find('.booking-container').slideDown(500);
+        $(this).addClass('expanded');  
         }
     });
     $('.button-bookings').click(function() {
-    $('.my-bookings').slideToggle(500);    
+    $('.my-bookings').slideToggle(500);
     });
     $('.close-bookings').click(function() {
-    $('.my-bookings').slideUp(500);    
+    $('.my-bookings').slideUp(500);
     });
 });

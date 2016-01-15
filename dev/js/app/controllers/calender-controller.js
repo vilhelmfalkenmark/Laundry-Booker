@@ -7,7 +7,7 @@
   function CalenderController($scope, CalenderService) {
 
     $scope.bookTime = CalenderService.bookTime; // Pappafunktionen
-    $scope.bookedTime = CalenderService.bookedTime; 
+    $scope.bookedTime = CalenderService.bookedTime;
 
     $scope.numberOfBookings = 0;
 
@@ -15,8 +15,10 @@
       $scope.bookedTime = a;
       $scope.bookedDay = b;
       $scope.numberOfBookings++;
-    }
-    $scope.dates = CalenderService.createCalender();
+    };
+//    $scope.dates = CalenderService.createCalender();
+      $scope.returnArray = CalenderService.createCalender();
+
     $scope.plusWeek = function(){
       CalenderService.plusWeek();
       $scope.returnArray = CalenderService.createCalender();
