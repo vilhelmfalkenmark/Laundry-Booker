@@ -38,6 +38,12 @@
   </header>
   <div class="row my-bookings">
     <h2>Mina bokningar:</h2>
+    <!-- <ul>
+      <li></li>
+      <li>{{block.tumbler}}</li>
+      <li>{{block.dryer}}</li>
+      <li>{{block.mangel}}</li>
+    </ul> -->
 
     <p class="close-bookings"><i class="fa fa-times"></i> Stäng</p>
   </div>
@@ -62,25 +68,67 @@
               <!--================================================
               ==================  START TIDSBLOCK ================
               ==================================================-->
-              <div class="time-col span-l3-m3-s3 available" ng-class="booked?'available':'full'" ng-repeat="(time, booked) in date.times">{{time}}
+              <div class="time-col span-l3-m3-s3 available" ng-class="booked.available==0?'available': booked.available < 4 ?'partial':'full'" ng-repeat="(time, booked) in date.times">{{booked.timespan}}
                 <div class="preview-container">
-                  <h2><i class="fa fa-clock-o"></i> {{booked ? "Ledigt":"Bokad"}}</h2>
+                  <h2><i class="fa fa-clock-o"></i> {{booked.available==0?'Ledigt': booked.available < 4 ?'Delvis Bokat':'Fullbokat'}}</h2>
                 </div>
                 <div class="booking-container">
-                  <form>
-                    <input type="checkbox">
-                    <label for="washer"> Tvättmaskin</label>
+                  <p>  Lediga Maskiner denna tid: {{booked.available}}</p>
+                  <!-- <p>  Antal checkade boxar: {{checkStatus.check}}</p> -->
+
+                  <form >
+                    <span ng-repeat="(apparatus, apparatusBooked) in booked" ng-if="$index > 1">
+                        <!-- <p>Antal checkade boxar: {{checkStatus.check}}</p> -->
+                      <!-- <input type="checkbox" ng-model="apparatusBooked.checkedItem" ng-disabled="apparatusBooked"> -->
+                      <input type="checkbox" ng-disabled="!apparatusBooked"  ng-model="x">
+                      <label for="washer" ng-class="apparatusBooked ? 'not-booked-label':'booked-label'">{{apparatus}}</label>
+                      </br>
+                    </span>
+
+                    <!-- EXPERIMENT -->
+                    <ul>
+                    <li
+                     ng-repeat="(typeKey, typeVal) in inputs"
+                     ng-init="outputs[typeKey] = outputs[typeKey] || {}">
+                     <span>{{typeKey}} : </span>
+                     <ul>
+                       <li ng-repeat="value in typeVal">
+                         <label>{{value}}
+                           <input
+                             type="checkbox"
+                             ng-model="outputs[typeKey][value]"
+                             ng-checked="outputs[typeKey][value]"
+                             value="outputs[typeKey][value]"
+                           >
+                         </label>
+                       </li>
+                     </ul>
+                    </li>
+                    </ul>
+                    <h4>Outputs</h4>
+                    <ul ng-repeat="(key,value) in inputs">
+                    <li>{{key}} : {{outputs[key]}}</li>
+                    </ul>
+                    <!-- SLUT EXPERIMENT -->
+
+                    <!-- <input type="checkbox" ng-model="block.washer">
+                    <label for="washer">Tvättmaskin</label>
                     </br>
-                    <input type="checkbox">
-                    <label for="washer"> Torktumlare </label>
+                    <input type="checkbox" ng-model="block.tumbler">
+                    <label for="washer">Torktumlare</label>
                     </br>
-                    <input type="checkbox">
-                    <label for="washer"> Torkskåp </label>
+                    <input type="checkbox" ng-model="block.dryer">
+                    <label for="washer">Torkskåp</label>
                     </br>
-                    <input type="checkbox">
+                    <input type="checkbox" ng-model="block.mangel">
                     <label for="washer"> Mangel</label>
-                    </br>
-                    <button class="highlight center" ng-click="bookTime(); myBookings(time, date.dayName)">Boka</button>
+                    </br> -->
+                   <button class="highlight center" type="submit" ng-click="bookTime(); myBookings(date.times[$index].timespan, date.dayName,checkStatus)" ng-show="booked.available > 0">Boka</button>
+
+
+
+
+
                   </form>
                 </div>
               </div>

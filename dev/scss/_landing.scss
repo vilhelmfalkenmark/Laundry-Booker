@@ -184,7 +184,7 @@ KALENDER - HÖGER DEL (bokningsdelen preview)
     }
 }
 .my-bookings {
-    display: none;
+  //  display: none;
     height: 200px;
     background: $darkHighlightColor;
     color: white;
@@ -198,9 +198,16 @@ KALENDER - HÖGER DEL (bokningsdelen preview)
     }
 }
 
-
-
-
+/* VILLES CSS FÖR TEST */
+.booked-label
+{
+  text-decoration: line-through;
+  color: $full;
+}
+.not-booked-label
+{
+  color: $available;
+}
 
 
 
