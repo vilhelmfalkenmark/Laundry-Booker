@@ -5,8 +5,6 @@
 
 })();
 
-
-
 (function() {
   'use strict';
 
@@ -158,11 +156,37 @@
   'use strict';
 
   angular.module('booker')
-    .controller('CalenderController', ['$scope', 'CalenderService','ModalService', CalenderController]);
+    .controller('CalenderController', ['$scope', 'CalenderService', CalenderController]);
 
-  function CalenderController($scope, CalenderService, ModalService) {
+  function CalenderController($scope, CalenderService) {
 
-    $scope.returnArray = CalenderService.createCalender();
+    $scope.bookTime = CalenderService.bookTime; // Pappafunktionen
+    $scope.bookedTime = CalenderService.bookedTime;
+
+    $scope.numberOfBookings = 0;
+
+    // $scope.isCheckboxChecked = function() {
+    // return ($scope.block.washer || $scope.block.tumbler || $scope.block.dryer || $scope.block.mangel);
+    // };
+
+    $scope.myBookings = function(a,b){
+      $scope.bookedTime = a;
+      $scope.bookedDay = b;
+      $scope.numberOfBookings++;
+    };
+
+
+    /* EXPERIMENT */
+    $scope.outputs = {};
+    $scope.inputs = {
+    'category': ['one','two','three'],
+    'color':['blue','green']
+    };
+    /* EXPERIMENT */
+
+
+      $scope.returnArray = CalenderService.createCalender();
+
     $scope.plusWeek = function(){
       CalenderService.plusWeek();
       $scope.returnArray = CalenderService.createCalender();
@@ -171,36 +195,7 @@
       CalenderService.minusWeek();
       $scope.returnArray = CalenderService.createCalender();
     };
-
-    $scope.test = ModalService.test;
   }
-})();
-
-(function() {
-  'use strict';
-
- angular.module('booker')
-     .controller('ModalController', ['$scope', 'ModalService', ModalController]);
-
-  function ModalController($scope, ModalService)
-  {
-    $scope.indexa = ModalService.test();
-  }
-
-})();
-
-(function() {
-  'use strict';
-  angular.module('booker')
-    .directive('dayModal', function() {
-    return {
-      restrict: 'E',
-      scope: {
-        info: "="
-      },
-      templateUrl: 'js/app/directives/dayModal.html'
-    };
-  });
 })();
 
 $(document).ready(function () {
@@ -208,22 +203,23 @@ $(document).ready(function () {
         $('.booking-container').slideUp(500);
         if ($(this).hasClass('expanded')) {
         $('.weekday-expand').removeClass('expanded');
-        $(this).parent().find('.booking-container').slideUp(500); 
-        $(this).removeClass('expanded');  
-        } 
+        $(this).parent().find('.booking-container').slideUp(500);
+        $(this).removeClass('expanded');
+        }
         else {
         $('.weekday-expand').removeClass('expanded');
-        $(this).parent().find('.booking-container').slideDown(500);    
-        $(this).addClass('expanded'); 
+        $(this).parent().find('.booking-container').slideDown(500);
+        $(this).addClass('expanded');  
         }
     });
     $('.button-bookings').click(function() {
-    $('.my-bookings').slideToggle(500);    
+    $('.my-bookings').slideToggle(500);
     });
     $('.close-bookings').click(function() {
-    $('.my-bookings').slideUp(500);    
+    $('.my-bookings').slideUp(500);
     });
 });
+
 /*
 Angular services are substitutable objects that are wired together
 using dependency injection (DI).
@@ -235,87 +231,131 @@ You can use services to organize and share code across your app.
   angular.module('booker')
     .service('CalenderService', [CalenderService]);
 
-  function CalenderService(){
-  var milliSeconds = 24 * 60 * 60 * 1000;
-  var daySwitch = 0; 
+  function CalenderService($scope) {
+    var milliSeconds = 24 * 60 * 60 * 1000;
+    var daySwitch = 0;
 
+    return {
+      createCalender: createCalender,
+      plusWeek: plusWeek,
+      minusWeek: minusWeek,
+      bookTime: bookTime
+    };
 
-  return {
-    createCalender: createCalender,
-    plusWeek: plusWeek,
-    minusWeek: minusWeek,
-  };
+    function bookTime() {
 
-  function createCalender()
-  {
-    var date = new Date(new Date().getTime() + daySwitch*milliSeconds);
-    var dates = [];
-    var d;
-    var leftArrow = (daySwitch > 0) ? true : false;
-    var rightArrow = (daySwitch < 14) ? true : false; 
-      
-    for(var i = 0; i < 7; i++)
-    {
-      var day = {};
-      d = date;
-      day.laundryBookings = 0;
-      day.tumblerBookings = 0;
-      day.mangelBookings = 0;
-        
-      d = (d.setDate((d.getDate() + 1)));
-      day.dayName = d;
-      dates.push(day);
+        console.log(this.booked);
+        //this.booked = false; // GAMLA KODEN!
     }
-    var returnArray = [dates, [leftArrow, rightArrow]];
-    return returnArray;
-  }
 
-  function plusWeek() {
-    if(daySwitch < 14)
-    {
-      daySwitch += 7;
-      createCalender();
+
+    function createCalender() {
+      var date = new Date(new Date().getTime() + daySwitch * milliSeconds);
+      var dates = [];
+      var d;
+      var leftArrow = (daySwitch > 0) ? true : false;
+      var rightArrow = (daySwitch < 14) ? true : false;
+      for (var i = 0; i < 7; i++) {
+        var day = {};
+        d = date;
+        day.times = [ ///// !!!!!!!!! TRUE BETYDER ATT DET ÄR LEDIGT !!!!!!!!!!! //////////////
+           {
+              timespan: "6-10",
+              available: 0,
+              "Tvättmaskin": false, // Tvättmaskin
+              "Torktumlare": true, // Torktumlare
+              "Mangel": true, // Mangel
+              "Torkskåp": true // Torkskåp
+            },
+             {
+              timespan: "10-14",
+              available: 0,
+              "Tvättmaskin": false, // Tvättmaskin
+              "Torktumlare": false, // Torktumlare
+              "Mangel": false, // Mangel
+              "Torkskåp": false // Torkskåp
+            },
+            {
+              timespan: "14-18",
+              available: 0,
+              "Tvättmaskin": true, // Tvättmaskin
+              "Torktumlare": true, // Torktumlare
+              "Mangel": true, // Mangel
+              "Torkskåp": true // Torkskåp
+            },
+            {
+              timespan: "18-22",
+              available: 0,
+              "Tvättmaskin": false, // Tvättmaskin
+              "Torktumlare": true, // Torktumlare
+              "Mangel": true, // Mangel
+              "Torkskåp": true // Torkskåp
+            }
+          // "6-10": true, // True betyder att tiden är ledig
+          // "10-14": true,
+          // "14-18": false,
+          // "18-22": true
+        ];
+        var dayIterator; // Så att man ser även ser dagens datum
+
+        if (i === 0) {
+          dayIterator = 0;
+        } else {
+          dayIterator = 1;
+        }
+
+        d = (d.setDate((d.getDate() + dayIterator)));
+        day.dayName = d;
+        dates.push(day);
+      }
+
+
+        for (var key in dates) {
+          for (var time in dates[key].times) {
+              for(var item in dates[key].times[time])
+              {
+                //console.log(dates[key].times[time][item]);
+                //console.log(dates[key].times[time].available);
+                if(dates[key].times[time][item]=== true)
+                {
+                  dates[key].times[time].available++;
+                }
+                //console.log(dates[key].times[time].available);
+                //console.log(dates[key].times[time][item]);
+              }
+          }
+        }
+      //updateTime();
+      // for (var key in dates) {
+      //   for (var time in dates[key].times) {
+      //
+      //
+      //
+      //     if (dates[key].times[time] === true) {
+      //       dates[key].availableTimes++;
+      //     }
+      //   }
+      //
+      //   if (dates[key].availableTimes > 0) {
+      //     dates[key].available = true;
+      //   }
+      // }
+      var returnArray = [dates, [leftArrow, rightArrow]];
+    //  console.log(returnArray);
+      return returnArray;
     }
-  }
-
-  function minusWeek() {
-    if(daySwitch > 0)
-    {
-      daySwitch -= 7;
-      createCalender();
+    function plusWeek() {
+      if (daySwitch < 14) {
+        daySwitch += 7;
+        createCalender();
+      }
     }
-  }
-      
-}
-})();
-
-/*
-Angular services are substitutable objects that are wired together
-using dependency injection (DI).
-You can use services to organize and share code across your app.
-*/
-(function() {
-  'use strict';
-  angular.module('booker')
-      .service('ModalService', [ModalService]);
-
-  function ModalService()
-  {
-      return {
-      test: test,
-      };
-    function test(index)
-    {
-        //console.log("hej")
-
-         var container = document.getElementsByClassName('container')[0];
-        console.log(index);
-
-        return index;
-
+    function minusWeek() {
+      if (daySwitch > 0) {
+        daySwitch -= 7;
+        createCalender();
+      }
     }
+
   }
-
-
-
 })();

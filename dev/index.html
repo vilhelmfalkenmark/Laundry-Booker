@@ -1,158 +1,260 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="sv" ng-app="booker">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Laundry Booker</title>
-    <link rel="shortcut icon" type="image/png" href="images/favicon.png">
-    <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,700,300' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/icons/flaticon.css">
-    <!--build:css css/styles.min.css-->
-    <link rel="stylesheet" href="css/stylesheet.css">
-    <!--endbuild-->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laundry Booker</title>
+  <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+  <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,700,300' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/icons/flaticon.css">
+  <!--build:css css/styles.min.css-->
+  <link rel="stylesheet" href="css/stylesheet.css">
+  <!--endbuild-->
 </head>
 
-<body>
+<body ng-controller="CalenderController">
 
-    <header class="row">
-        <div class="span-l2-m2-s2"><img src="images/lb-logo.svg" alt="Logotyp" class="lb-logo"></div>
-        <div class="span-l6-m6-s6">
-            <section>
-                <!-- MINA BOKNINGAR -->
-                <div class="my-bookings-container">
-                    <p><i class="fa fa-fw fa-info-circle"></i>&nbsp;Din nästa bokade tid är: <b> Fredag 17/2 kl. 11-15</b></p>
-                </div>
-            </section>
+  <header class="row">
+    <div class="span-l2-m2-s2">
+      <img src="images/lb-logo.svg" alt="Logotyp" class="lb-logo">
+    </div>
+    <div class="span-l6-m6-s6">
+      <section>
+        <!-- MINA BOKNINGAR -->
+        <div class="my-bookings-container">
+          <p><i class="fa fa-fw fa-info-circle"></i>&nbsp;Din nästa bokade tid är: <b> {{bookedDay | date}} kl. {{bookedTime}}</b></p>
+          <!-- <div>DAG: {{bookedDay | date}} {{numberOfBookings}})</div>
+          <div>TID: {{bookedTime}}</div> -->
         </div>
-        <div class="span-l4-m4-s4">
+      </section>
+    </div>
+    <div class="span-l4-m4-s4">
 
-            <button class="right"><i class="fa fa-fw fa-sign-out"></i> Logga ut</button>
-            <button class="right button-bookings"><i class="fa fa-fw fa-list"></i> Mina bokningar <b>(1)</b></button>
-        </div>
-    </header>
-    <div class="row my-bookings">
-        <h2>Mina bokningar:</h2>
-        
+      <button class="right"><i class="fa fa-fw fa-sign-out"></i> Logga ut</button>
+      <button class="right button-bookings"><i class="fa fa-fw fa-list"></i> Mina bokningar <b>({{numberOfBookings}})</b></button>
+    </div>
+  </header>
+  <div class="row my-bookings">
+    <h2>Mina bokningar:</h2>
+    <!-- <ul>
+      <li></li>
+      <li>{{block.tumbler}}</li>
+      <li>{{block.dryer}}</li>
+      <li>{{block.mangel}}</li>
+    </ul> -->
+
     <p class="close-bookings"><i class="fa fa-times"></i> Stäng</p>
-    </div>
-
-    <div class="row">
-        <div class="row app-container" ng-app="booker">
-
-            <!-- PILAR -->
-            <div ng-controller="CalenderController">
-                <div class="arrow-container">
-                    <div class="left-arrow span-l2-m2-s2" ><i ng-click="minusWeek()" ng-show="returnArray[1][0]" class="fa fa-chevron-circle-left"></i></div>
-                    <div class="week-nr span-l8-m8-s8">Välj dag att boka:</div>
-                    <div class="right-arrow span-l2-m2-s2"><i ng-click="plusWeek()" ng-show="returnArray[1][1]" class="fa fa-chevron-circle-right"></i></div>
-                </div>
-
-                <!-- KALENDER -->
-                <div class="row weekdays-container">
-                    <div class="row weekday" ng-repeat="date in returnArray[0]" ng-click="what($index)">
-                        <div class="weekday-left-col span-l1-m2-s3">
-                            <div class="weekday-nr">{{date.dayName | date:'dd'}}</div>
-                            <div class="weekday-day">{{date.dayName | date:'EEE'}}</div>
-                        </div>
-                        <div class="weekday-right-col span-ll10-m8-s9">
-                            <div class="time-col span-l3-m3-s3 available">07-11
-                                <div class="preview-container">
-                                    <h2><i class="fa fa-clock-o"></i> Ledigt</h2>
-                                </div>
-                                <div class="booking-container">
-                                    <form>
-                                        <input type="checkbox">
-                                        <label for="washer"> Tvättmaskin</label>
-                                        </br>
-                                        <input type="checkbox">
-                                        <label for="washer"> Torktumlare </label>
-                                        </br>
-                                        <input type="checkbox">
-                                        <label for="washer"> Torkskåp </label>
-                                        </br>
-                                        <input type="checkbox" disabled>
-                                        <label for="washer"> Mangel</label>
-                                        </br>
-                                        <button class="highlight center">Boka</button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="time-col span-l3-m3-s3 full">11-15
-                                <div class="preview-container">
-                                    <h2><i class="fa fa-times"></i> Fullbokat<h2>
-                    </div>
-                    <div class="booking-container">
-                    <form>
-                    <input type="checkbox"><label for="washer"> Tvättmaskin</label> </br>
-                    <input type="checkbox"><label for="washer"> Torktumlare </label> </br>
-                    <input type="checkbox"><label for="washer"> Torkskåp </label> </br>
-                    <input type="checkbox" disabled><label for="washer"> Mangel</label> </br>
-                    <button class="highlight center">Boka</button>
-                    </form>
-                    </div>
-                </div>
-                <div class="time-col span-l3-m3-s3 partial">15-19
-                    <div class="preview-container">
-                        <h2><i class="fa fa-clock-o"></i> Delvis bokat<h2>
-                    </div>
-                                        <div class="booking-container">
-                    <form>
-                    <input type="checkbox"><label for="washer"> Tvättmaskin</label> </br>
-                    <input type="checkbox"><label for="washer"> Torktumlare </label> </br>
-                    <input type="checkbox"><label for="washer"> Torkskåp </label> </br>
-                    <input type="checkbox" disabled><label for="washer"> Mangel</label> </br>
-                    <button class="highlight center">Boka</button>
-                    </form>
-                    </div>
-                </div>
-                <div class="time-col span-l3-m3-s3 partial">19-23
-
-                    <div class="preview-container">
-                        <h2><i class="fa fa-clock-o"></i> Delvis bokat<h2>
-                    </div>
-                                        <div class="booking-container">
-                    <form>
-                    <input type="checkbox"><label for="washer"> Tvättmaskin</label> </br>
-                    <input type="checkbox"><label for="washer"> Torktumlare </label> </br>
-                    <input type="checkbox"><label for="washer"> Torkskåp </label> </br>
-                    <input type="checkbox" disabled><label for="washer"> Mangel</label> </br>
-                    <button class="highlight center">Boka</button>
-                    </form>
-                    </div>
-                </div>
-            </div> 
-              <div class="weekday-expand span-l1-m2-s3"><i class="fa fa-plus"></i></div>
-          </div>
-        </div>
-        <!-- SLUT KALENDER -->
-      </div>
-      <!-- SLUT mainController -->
-      <!-- <div class="modal" ng-controller="ModalContoller">
-          <div></div>
-      </div> -->
-
-    </div>
-
-
-
-
   </div>
-    
- <!-- FOOTER -->
-<footer class="row">
-<p>   
-<b>LaundryBooker</b> är ett bokningssystem skapat av <b>Vilhelm Falkenmark</b>, <b>Fredrik Löfgren</b> & <b>Simon Lager</b> i <b>Angular.js</b>   
-</p> 
-</footer>
+  <div class="row">
+    <div class="row app-container">
+      <div>
+        <div class="arrow-container">
+          <div class="left-arrow span-l2-m2-s2"><i ng-click="minusWeek()" ng-show="returnArray[1][0]" class="fa fa-chevron-circle-left"></i></div>
+          <div class="week-nr span-l8-m8-s8">Välj dag att boka:</div>
+          <div class="right-arrow span-l2-m2-s2"><i ng-click="plusWeek()" ng-show="returnArray[1][1]" class="fa fa-chevron-circle-right"></i></div>
+        </div>
+
+        <div class="row weekdays-container">
+          <div class="row weekday" ng-repeat="date in returnArray[0]">
+            <div class="weekday-left-col span-l1-m2-s3">
+              <div class="weekday-nr">{{date.dayName | date:'dd'}}</div>
+              <div class="weekday-day">{{date.dayName | date:'EEE'}}</div>
+            </div>
+
+            <div class="weekday-right-col span-ll10-m8-s9">
+
+              <!--================================================
+              ==================  START TIDSBLOCK ================
+              ==================================================-->
+              <div class="time-col span-l3-m3-s3 available" ng-class="booked.available==0?'available': booked.available < 4 ?'partial':'full'" ng-repeat="(time, booked) in date.times">{{booked.timespan}}
+                <div class="preview-container">
+                  <h2><i class="fa fa-clock-o"></i> {{booked.available==0?'Ledigt': booked.available < 4 ?'Delvis Bokat':'Fullbokat'}}</h2>
+                </div>
+                <div class="booking-container">
+                  <p>  Lediga Maskiner denna tid: {{booked.available}}</p>
+                  <!-- <p>  Antal checkade boxar: {{checkStatus.check}}</p> -->
+
+                  <form >
+                    <span ng-repeat="(apparatus, apparatusBooked) in booked" ng-if="$index > 1">
+                        <!-- <p>Antal checkade boxar: {{checkStatus.check}}</p> -->
+                      <!-- <input type="checkbox" ng-model="apparatusBooked.checkedItem" ng-disabled="apparatusBooked"> -->
+                      <input type="checkbox" ng-disabled="!apparatusBooked"  ng-model="x">
+                      <label for="washer" ng-class="apparatusBooked ? 'not-booked-label':'booked-label'">{{apparatus}}</label>
+                      </br>
+                    </span>
+
+                    <!-- EXPERIMENT -->
+                    <ul>
+                    <li
+                     ng-repeat="(typeKey, typeVal) in inputs"
+                     ng-init="outputs[typeKey] = outputs[typeKey] || {}">
+                     <span>{{typeKey}} : </span>
+                     <ul>
+                       <li ng-repeat="value in typeVal">
+                         <label>{{value}}
+                           <input
+                             type="checkbox"
+                             ng-model="outputs[typeKey][value]"
+                             ng-checked="outputs[typeKey][value]"
+                             value="outputs[typeKey][value]"
+                           >
+                         </label>
+                       </li>
+                     </ul>
+                    </li>
+                    </ul>
+                    <h4>Outputs</h4>
+                    <ul ng-repeat="(key,value) in inputs">
+                    <li>{{key}} : {{outputs[key]}}</li>
+                    </ul>
+                    <!-- SLUT EXPERIMENT -->
+
+                    <!-- <input type="checkbox" ng-model="block.washer">
+                    <label for="washer">Tvättmaskin</label>
+                    </br>
+                    <input type="checkbox" ng-model="block.tumbler">
+                    <label for="washer">Torktumlare</label>
+                    </br>
+                    <input type="checkbox" ng-model="block.dryer">
+                    <label for="washer">Torkskåp</label>
+                    </br>
+                    <input type="checkbox" ng-model="block.mangel">
+                    <label for="washer"> Mangel</label>
+                    </br> -->
+                   <button class="highlight center" type="submit" ng-click="bookTime(); myBookings(date.times[$index].timespan, date.dayName,checkStatus)" ng-show="booked.available > 0">Boka</button>
 
 
-  <script src="js/libs/angular.min.js"></script>
-  <script src="js/libs/jquery-2.1.4.min.js"></script>
-  <!--build:js js/main.min.js -->
-  <script src="js/main.js"></script>
-  <!-- endbuild -->
+
+
+
+                  </form>
+                </div>
+              </div>
+              <!--================================================
+              ==================  SLUT TIDSBLOCK ================
+              ==================================================-->
+
+
+
+              <!--================================================
+              ==================  START TIDSBLOCK ================
+              ==================================================-->
+
+              <!-- <div class="time-col span-l3-m3-s3 full">11-15
+                <div class="preview-container">
+                  <h2><i class="fa fa-times"></i> Fullbokat
+                    <h2>
+                </div>
+                <div class="booking-container">
+                  <form>
+                    <input type="checkbox">
+                    <label for="washer"> Tvättmaskin</label>
+                    </br>
+                    <input type="checkbox">
+                    <label for="washer"> Torktumlare </label>
+                    </br>
+                    <input type="checkbox">
+                    <label for="washer"> Torkskåp </label>
+                    </br>
+                    <input type="checkbox" disabled>
+                    <label for="washer"> Mangel</label>
+                    </br>
+                    <button class="highlight center">Boka</button>
+                  </form>
+                </div>
+              </div> -->
+
+              <!--================================================
+              ==================  SLUT TIDSBLOCK ================
+              ==================================================-->
+
+
+              <!--================================================
+              ==================  START TIDSBLOCK ================
+              ==================================================-->
+
+              <!-- <div class="time-col span-l3-m3-s3 partial">15-19
+                <div class="preview-container">
+                  <h2><i class="fa fa-clock-o"></i> Delvis bokat
+                    <h2>
+                </div>
+                <div class="booking-container">
+                  <form>
+                    <input type="checkbox">
+                    <label for="washer"> Tvättmaskin</label>
+                    </br>
+                    <input type="checkbox">
+                    <label for="washer"> Torktumlare </label>
+                    </br>
+                    <input type="checkbox">
+                    <label for="washer"> Torkskåp </label>
+                    </br>
+                    <input type="checkbox" disabled>
+                    <label for="washer"> Mangel</label>
+                    </br>
+                    <button class="highlight center">Boka</button>
+                  </form>
+                </div>
+              </div> -->
+
+              <!--================================================
+              ==================  SLUT TIDSBLOCK ================
+              ==================================================-->
+
+
+              <!--================================================
+              ==================  START TIDSBLOCK ================
+              ==================================================-->
+
+              <!-- <div class="time-col span-l3-m3-s3 partial">19-23
+                <div class="preview-container">
+                  <h2><i class="fa fa-clock-o"></i> Delvis bokat
+                    <h2>
+                </div>
+                <div class="booking-container">
+                  <form>
+                    <input type="checkbox">
+                    <label for="washer"> Tvättmaskin</label>
+                    </br>
+                    <input type="checkbox">
+                    <label for="washer"> Torktumlare </label>
+                    </br>
+                    <input type="checkbox">
+                    <label for="washer"> Torkskåp </label>
+                    </br>
+                    <input type="checkbox" disabled>
+                    <label for="washer"> Mangel</label>
+                    </br>
+                    <button class="highlight center">Boka</button>
+                  </form>
+                </div>
+              </div> -->
+
+              <!--================================================
+              ==================  SLUT TIDSBLOCK ================
+              ==================================================-->
+
+
+            </div>
+          <!-- </div> -->
+          <div class="weekday-expand span-l1-m2-s3"><i class="fa fa-plus"></i></div>
+        </div>
+        <!-- FOOTER -->
+        <footer class="row">
+          <p>
+            <b>LaundryBooker</b> är ett bokningssystem skapat av <b>Vilhelm Falkenmark</b>, <b>Fredrik Löfgren</b> & <b>Simon Lager</b> i <b>Angular.js</b>
+          </p>
+        </footer>
+
+
+        <script src="js/libs/angular.min.js"></script>
+        <script src="js/libs/jquery-2.1.4.min.js"></script>
+        <!--build:js js/main.min.js -->
+        <script src="js/main.js"></script>
+        <!-- endbuild -->
 
 </body>
+
 </html>
