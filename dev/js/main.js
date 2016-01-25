@@ -190,7 +190,8 @@
     $scope.members = MemberService.getMembers();
     $scope.sendMemberId = function(id){
       console.log(id);
-    }
+      $scope.activeMemberId = id;
+    };
   }
 })();
 
@@ -504,6 +505,10 @@ You can use services to organize and share code across your app.
         return members;
       }
 
+      // **** Gets members fom members.json  ****
+      // **** Problem is delay until data is ****
+      // **** fetched needs bugg controll    ****
+      // 
       // function getMembers(){
       //   return $http.get('./js/members/members.json')
       //   .then(function(res) {

@@ -102,7 +102,7 @@
                     </span>
                     <button class="highlight center" type="submit"
                     ng-click="markAsBooked();
-                    bookTime(date.dayName, date.times[$index].timespan, date.times[$index].apparatus1.marked, date.times[$index].apparatus2.marked, date.times[$index].apparatus3.marked,date.times[$index].apparatus4.marked, 1234);
+                    bookTime(date.dayName, date.times[$index].timespan, date.times[$index].apparatus1.marked, date.times[$index].apparatus2.marked, date.times[$index].apparatus3.marked,date.times[$index].apparatus4.marked, activeMemberId);
                     myBookings(date.times[$index].timespan, date.dayName,checkStatus)"
                     ng-show="booked.available > 0">Boka</button>
                   </form>

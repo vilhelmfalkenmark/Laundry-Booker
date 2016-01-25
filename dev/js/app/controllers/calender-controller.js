@@ -36,6 +36,7 @@
     $scope.members = MemberService.getMembers();
     $scope.sendMemberId = function(id){
       console.log(id);
+      $scope.activeMemberId = id;
     };
   }
 })();
