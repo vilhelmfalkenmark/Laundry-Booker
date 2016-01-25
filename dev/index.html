@@ -13,31 +13,34 @@
   <!--endbuild-->
 </head>
 <body ng-controller="CalenderController">
+    
+<div ng-controller="MyBookingsController">
+    
   <header class="row">
     <div class="span-l2-m2-s2">
       <img src="images/lb-logo.svg" alt="Logotyp" class="lb-logo">
     </div>
     <div class="span-l6-m6-s6">
       <section>
-
         <div class="my-bookings-container">
           <p><i class="fa fa-fw fa-info-circle"></i>&nbsp;Din nästa bokade tid är: <b> {{bookedDay | date}} kl. {{bookedTime}}</b></p>
           <div ng-repeat="member in members">
             <button type="button" name="button" ng-click="sendMemberId(member.id)">{{member.firstname}}</button>
           </div>
+          <p><i class="fa fa-fw fa-info-circle"></i>&nbsp;Din nästa bokade tid är: <b> {{myBookings[0].date | date}} kl. {{myBookings[0].time}}</b></p>
         </div>
       </section>
     </div>
     <div class="span-l4-m4-s4">
       <button class="right"><i class="fa fa-fw fa-sign-out"></i> Logga ut</button>
-      <button class="right button-bookings"><i class="fa fa-fw fa-list"></i> Mina bokningar <b>({{numberOfBookings}})</b></button>
+      <button class="right button-bookings"><i class="fa fa-fw fa-list"></i> Mina bokningar <b>({{myBookings.length}})</b></button>
     </div>
 
   </header>
   <!--================================================
   ==================  START MINA BOKNINGAR ===========
   ====================================================-->
-  <div class="row my-bookings" ng-controller="MyBookingsController">
+  <div class="row my-bookings">
     <h2>Mina bokningar:</h2>
     
     <div ng-repeat="bookedBlock in myBookings">
@@ -67,6 +70,8 @@
 
     <p class="close-bookings"><i class="fa fa-times"></i> Stäng</p>
   </div>
+    
+</div>
   <!--================================================
   ==================  SLUT MINA BOKNINGAR ============
   ====================================================-->

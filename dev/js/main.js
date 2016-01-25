@@ -224,7 +224,7 @@
       //       console.log("klickad!")
       // };
 
-     $scope.myBookings = MyBookingsService.myBookings("12345");
+     $scope.myBookings = MyBookingsService.myBookings("1234");
 
     }
 
