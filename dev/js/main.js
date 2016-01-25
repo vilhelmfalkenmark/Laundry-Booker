@@ -165,27 +165,16 @@
 
     $scope.numberOfBookings = 0;
 
-    // $scope.isCheckboxChecked = function() {
-    // return ($scope.block.washer || $scope.block.tumbler || $scope.block.dryer || $scope.block.mangel);
-    // };
-
     $scope.myBookings = function(a,b){
       $scope.bookedTime = a;
       $scope.bookedDay = b;
       $scope.numberOfBookings++;
     };
 
+    $scope.toggleSelection = CalenderService.toggleSelection;
+    $scope.checkedItems = CalenderService.checkedItems;
 
-    /* EXPERIMENT */
-    $scope.outputs = {};
-    $scope.inputs = {
-    'category': ['one','two','three'],
-    'color':['blue','green']
-    };
-    /* EXPERIMENT */
-
-
-      $scope.returnArray = CalenderService.createCalender();
+    $scope.returnArray = CalenderService.createCalender();
 
     $scope.plusWeek = function(){
       CalenderService.plusWeek();
@@ -196,6 +185,48 @@
       $scope.returnArray = CalenderService.createCalender();
     };
   }
+})();
+
+(function() {
+  'use strict';
+  angular.module('booker')
+    .controller('MyBookingsController', ['$scope', 'MyBookingsService', MyBookingsController]);
+
+    function MyBookingsController($scope, MyBookingsService) {
+
+      var myBookings = [
+        {
+          date: 21964196421978,
+          time: "6-10",
+          apparatus: ["tvättmaskin","mangel"],
+          bookerID: 1234
+        },
+        {
+          date: 21964196421978,
+          time: "6-10",
+          apparatus: ["tvättmaskin","mangel"],
+          bookerID: 1234
+        }
+      ];
+      function bookingPrototype(date, time, apparatus, bookerID) {
+        this.date = date;
+        this.time = time;
+        this.apparatus = apparatus;
+        this.bookerID = bookerID;
+      }
+      var l = 0;
+      function newBooking(date, time, apparatus) {
+      console.log("NEWBOOKING ÄR KLICKAD!");
+      myBookings[l] = new bookingPrototype(date, time, apparatus);
+      l++;
+
+      console.log(myBookings)
+
+  }
+
+
+    }
+
 })();
 
 $(document).ready(function () {
@@ -227,10 +258,8 @@ You can use services to organize and share code across your app.
 */
 (function() {
   'use strict';
-
   angular.module('booker')
     .service('CalenderService', [CalenderService]);
-
   function CalenderService($scope) {
     var milliSeconds = 24 * 60 * 60 * 1000;
     var daySwitch = 0;
@@ -241,14 +270,17 @@ You can use services to organize and share code across your app.
       minusWeek: minusWeek,
       bookTime: bookTime
     };
-
-    function bookTime() {
-
-        console.log(this.booked);
-        //this.booked = false; // GAMLA KODEN!
+    function bookTime()
+    {
+        for (var item in this.booked)
+        {
+          if(this.booked[item].marked === true && this.booked[item].bookedBy === null)
+          {
+            this.booked[item].bookedBy = 1234; // ID på person som bokat
+            this.booked.available--;
+          }
+        }
     }
-
-
     function createCalender() {
       var date = new Date(new Date().getTime() + daySwitch * milliSeconds);
       var dates = [];
@@ -262,39 +294,103 @@ You can use services to organize and share code across your app.
            {
               timespan: "6-10",
               available: 0,
-              "Tvättmaskin": false, // Tvättmaskin
-              "Torktumlare": true, // Torktumlare
-              "Mangel": true, // Mangel
-              "Torkskåp": true // Torkskåp
+              apparatus1:
+                {
+                name: "tvättmaskin",
+                marked: false,
+                bookedBy: null
+                },
+                apparatus2:
+                {
+                name: "Torktumlare",
+                marked: false,
+                bookedBy: null
+                },
+                apparatus3:
+                {
+                name: "Mangel",
+                marked: false,
+                bookedBy: null
+                },
+                apparatus4:
+                {
+                name: "Torkskåp",
+                marked: false,
+                bookedBy: null
+                }
             },
              {
               timespan: "10-14",
               available: 0,
-              "Tvättmaskin": false, // Tvättmaskin
-              "Torktumlare": false, // Torktumlare
-              "Mangel": false, // Mangel
-              "Torkskåp": false // Torkskåp
+              apparatus1: {
+              name: "tvättmaskin",
+              marked: false,
+              bookedBy: null
+              },
+              apparatus2: {
+              name: "Torktumlare",
+              marked: false,
+              bookedBy: null
+              },
+              apparatus3: {
+              name: "Mangel",
+              marked: false,
+              bookedBy: null
+              },
+              apparatus4: {
+              name: "Torkskåp",
+              marked: false,
+              bookedBy: null
+              }
             },
             {
               timespan: "14-18",
               available: 0,
-              "Tvättmaskin": true, // Tvättmaskin
-              "Torktumlare": true, // Torktumlare
-              "Mangel": true, // Mangel
-              "Torkskåp": true // Torkskåp
+              apparatus1: {
+              name: "tvättmaskin",
+              marked: false,
+              bookedBy: null
+              },
+              apparatus2: {
+              name: "Torktumlare",
+              marked: false,
+              bookedBy: null
+              },
+              apparatus3: {
+              name: "Mangel",
+              marked: false,
+              bookedBy: null
+              },
+              apparatus4: {
+              name: "Torkskåp",
+              marked: false,
+              bookedBy: null
+              }
             },
             {
               timespan: "18-22",
               available: 0,
-              "Tvättmaskin": false, // Tvättmaskin
-              "Torktumlare": true, // Torktumlare
-              "Mangel": true, // Mangel
-              "Torkskåp": true // Torkskåp
+              apparatus1: {
+              name: "tvättmaskin",
+              marked: false,
+              bookedBy: null
+            },
+              apparatus2: {
+              name: "Torktumlare",
+              marked: false,
+              bookedBy: null
+              },
+              apparatus3: {
+              name: "Mangel",
+              marked: false,
+              bookedBy: null
+              },
+              apparatus4: {
+              name: "Torkskåp",
+              marked: false,
+              bookedBy: null
             }
-          // "6-10": true, // True betyder att tiden är ledig
-          // "10-14": true,
-          // "14-18": false,
-          // "18-22": true
+          }
         ];
         var dayIterator; // Så att man ser även ser dagens datum
 
@@ -303,20 +399,17 @@ You can use services to organize and share code across your app.
         } else {
           dayIterator = 1;
         }
-
         d = (d.setDate((d.getDate() + dayIterator)));
         day.dayName = d;
         dates.push(day);
       }
-
-
         for (var key in dates) {
           for (var time in dates[key].times) {
               for(var item in dates[key].times[time])
               {
                 //console.log(dates[key].times[time][item]);
                 //console.log(dates[key].times[time].available);
-                if(dates[key].times[time][item]=== true)
+                if(dates[key].times[time][item].bookedBy === null)
                 {
                   dates[key].times[time].available++;
                 }
@@ -325,23 +418,7 @@ You can use services to organize and share code across your app.
               }
           }
         }
-      //updateTime();
-      // for (var key in dates) {
-      //   for (var time in dates[key].times) {
-      //
-      //
-      //
-      //     if (dates[key].times[time] === true) {
-      //       dates[key].availableTimes++;
-      //     }
-      //   }
-      //
-      //   if (dates[key].availableTimes > 0) {
-      //     dates[key].available = true;
-      //   }
-      // }
       var returnArray = [dates, [leftArrow, rightArrow]];
-    //  console.log(returnArray);
       return returnArray;
     }
     function plusWeek() {
@@ -358,4 +435,16 @@ You can use services to organize and share code across your app.
     }
 
   }
+})();
+
+(function() {
+  'use strict';
+  angular.module('booker')
+    .service('MyBookingsService', [MyBookingsService]);
+
+    function MyBookingsService($scope)
+    {
+      
+    }
+
 })();
