@@ -6,22 +6,28 @@ You can use services to organize and share code across your app.
 (function() {
   'use strict';
   angular.module('booker')
-    .service('CalenderService', [CalenderService]);
-  function CalenderService($scope) {
+    .service('CalenderService', ['$firebaseArray', CalenderService]);
+  function CalenderService($firebaseArray) {
+    var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
+    var b = $firebaseArray(ref); 
     var milliSeconds = 24 * 60 * 60 * 1000;
     var daySwitch = 0;
     var bookings = [];
-
-    bookTime(1453732728151,"6-10",false, false, true, true, 1234);
-    bookTime(1453732728151,"14-18",false, false, true, true, 1234);
-
+/*
+    b.$loaded().then(function(b) { 
+    b.forEach(function(object) {
+           console.log(object.bookedBy);
+    });
+});
+*/
+      
     return {
       createCalender: createCalender,
       plusWeek: plusWeek,
       minusWeek: minusWeek,
       markAsBooked: markAsBooked,
       bookTime: bookTime,
-      bookings: bookings
+      bookings: b, 
     };
     function markAsBooked()
     {
@@ -34,6 +40,8 @@ You can use services to organize and share code across your app.
           }
         }
     }
+
+      
     function bookTime(date, time, app1, app2, app3, app4, id)
     {
       var newBooking = {};
@@ -43,27 +51,24 @@ You can use services to organize and share code across your app.
       if(app1 === true)
       {
         newBooking.bookedApparatus.push("Tvättmaskin");
-        newBooking.apparatus1 = "Tvättmaskin";
       }
       if(app2 === true)
       {
         newBooking.bookedApparatus.push("Torktumlare");
-        newBooking.apparatus2 = "Torktumlare";
       }
       if(app3 === true)
       {
         newBooking.bookedApparatus.push("Mangel");
-        newBooking.apparatus3 = "Mangel";
       }
       if(app4 === true)
       {
         newBooking.bookedApparatus.push("Torkskåp");
-        newBooking.apparatus4 = "Torkskåp";
       }
       newBooking.bookedBy = id;
 
       bookings.push(newBooking);
-      console.log(bookings);
+        
+      b.$add(newBooking);
     }
 
 

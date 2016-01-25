@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  angular.module('booker', []);
+  angular.module('booker', ['firebase']);
 
 })();
 
@@ -195,6 +195,24 @@
   }
 })();
 
+/*angular.module('booker')
+    .controller("BookingCtrl", function ($scope, $firebaseArray) {
+        var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
+        $scope.bookings = $firebaseArray(ref);
+        $scope.addBooking = function () {
+            for (var item in this.booked) {
+                if (this.booked[item].marked === true) {
+                    $scope.bookings.$add({
+                        bookedBy: this.booked[item].bookedBy,
+                        name: this.booked[item].name,
+                        date: this.date.dayName,
+                        timespan: this.booked.timespan
+                    });
+                }
+            }
+        }
+    });
+    */
 (function() {
   'use strict';
   angular.module('booker')
@@ -206,7 +224,7 @@
       //       console.log("klickad!")
       // };
 
-     $scope.newBooking = MyBookingsService.newBooking;
+     $scope.myBookings = MyBookingsService.myBookings("12345");
 
     }
 
@@ -237,6 +255,37 @@ $(document).ready(function () {
     });
 });
 
+(function() {
+  'use strict';
+  angular.module('booker')
+    .service('BookingService', ['$scope, $firebaseArray', BookingService]);
+    function BookingService($scope, $firebaseArray) {
+    var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
+    $scope.bookings = $firebaseArray(ref); 
+    return {
+      bookTime: bookTime
+    };
+    function bookTime()
+    {
+        for (var item in this.booked)
+        {
+          if(this.booked[item].marked === true && this.booked[item].bookedBy === null)
+          {
+              
+                                $scope.bookings.$add({
+                                    bookedBy: this.booked[item].bookedBy,
+                                    name: this.booked[item].name,
+                                    date: this.date.dayName,
+                                    timespan: this.booked.timespan
+                                });
+                        
+                    
+          }
+        }
+    }
+  }
+
+});
 /*
 Angular services are substitutable objects that are wired together
 using dependency injection (DI).
@@ -245,22 +294,28 @@ You can use services to organize and share code across your app.
 (function() {
   'use strict';
   angular.module('booker')
-    .service('CalenderService', [CalenderService]);
-  function CalenderService($scope) {
+    .service('CalenderService', ['$firebaseArray', CalenderService]);
+  function CalenderService($firebaseArray) {
+    var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
+    var b = $firebaseArray(ref); 
     var milliSeconds = 24 * 60 * 60 * 1000;
     var daySwitch = 0;
     var bookings = [];
-
-    bookTime(1453732728151,"6-10",false, false, true, true, 1234);
-    bookTime(1453732728151,"14-18",false, false, true, true, 1234);
-
+/*
+    b.$loaded().then(function(b) { 
+    b.forEach(function(object) {
+           console.log(object.bookedBy);
+    });
+});
+*/
+      
     return {
       createCalender: createCalender,
       plusWeek: plusWeek,
       minusWeek: minusWeek,
       markAsBooked: markAsBooked,
       bookTime: bookTime,
-      bookings: bookings
+      bookings: b, 
     };
     function markAsBooked()
     {
@@ -273,6 +328,8 @@ You can use services to organize and share code across your app.
           }
         }
     }
+
+      
     function bookTime(date, time, app1, app2, app3, app4, id)
     {
       var newBooking = {};
@@ -282,27 +339,24 @@ You can use services to organize and share code across your app.
       if(app1 === true)
       {
         newBooking.bookedApparatus.push("Tvättmaskin");
-        newBooking.apparatus1 = "Tvättmaskin";
       }
       if(app2 === true)
       {
         newBooking.bookedApparatus.push("Torktumlare");
-        newBooking.apparatus2 = "Torktumlare";
       }
       if(app3 === true)
       {
         newBooking.bookedApparatus.push("Mangel");
-        newBooking.apparatus3 = "Mangel";
       }
       if(app4 === true)
       {
         newBooking.bookedApparatus.push("Torkskåp");
-        newBooking.apparatus4 = "Torkskåp";
       }
       newBooking.bookedBy = id;
 
       bookings.push(newBooking);
-      console.log(bookings);
+        
+      b.$add(newBooking);
     }
 
 
@@ -465,106 +519,32 @@ You can use services to organize and share code across your app.
 (function() {
   'use strict';
   angular.module('booker')
-    .service('MemberService', ['$http', MemberService]);
 
-    function MemberService($http){
-      var members = [
-        {
-          "id": 1,
-          "firstname": "Vilhelm",
-          "lastname": "Falkenmark",
-          "username": "vilhelmfalkenmark",
-          "floor": "3",
-          "apartment": "1408",
-          "password": "1234"
-        },
-        {
-          "id": 2,
-          "firstname": "Simon",
-          "lastname": "Lager",
-          "username": "simonlager",
-          "floor": "4",
-          "apartment": "4322",
-          "password": "1234"
-        },
-        {
-          "id": 3,
-          "firstname": "Fredrik",
-          "lastname": "Löfgren",
-          "username": "fredriklofgren",
-          "floor": "4",
-          "apartment": "8109",
-          "password": "1234"
-        }
-      ];
-      return {
-        getMembers: getMembers
-      };
+    .service('MyBookingsService', ['$firebaseArray', MyBookingsService]);
 
-      function getMembers(){
-        return members;
-      }
 
-      // **** Gets members fom members.json  ****
-      // **** Problem is delay until data is ****
-      // **** fetched needs bugg controll    ****
-      // 
-      // function getMembers(){
-      //   return $http.get('./js/members/members.json')
-      //   .then(function(res) {
-      //     // console.log(res.data);
-      //     return res;
-      //   }, function(err) {
-      //     console.log(err);
-      //   });
-      // }
-    }
-})();
-
-(function() {
-  'use strict';
-  angular.module('booker')
-    .service('MyBookingsService', [MyBookingsService]);
-
-    function MyBookingsService($scope)
+    
+    function MyBookingsService($firebaseArray)
     {
+    var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
+    var b = $firebaseArray(ref); 
       return {
-        newBooking: newBooking
-      };
-
-      var myBookings = [
-        {
-          date: 21964196421978,
-          time: "6-10",
-          apparatus: ["tvättmaskin","mangel"],
-          bookerID: 1234
-        },
-        {
-          date: 21964196421978,
-          time: "6-10",
-          apparatus: ["tvättmaskin","mangel"],
-          bookerID: 1234
-        }
-      ];
-      console.log(myBookings);
-      // function bookingPrototype(date, time, apparatus, bookerID) {
-      //   this.date = date;
-      //   this.time = time;
-      //   this.apparatus = apparatus;
-      //   this.bookerID = bookerID;
-      // }
-      var l = 0;
-
-
-      function newBooking() {
-        console.log("NEWBOOKING ÄR KLICKAD!");
-    //  myBookings[l] = new bookingPrototype(date, time, apparatus);
-      l++;
-
-    //  console.log(myBookings)
-
-    }
-
+        myBookings: myBookings
+      };        
+        
+function myBookings(id) {
+    var myBookingsList = [];
+    b.$loaded().then(function(b) { 
+    b.forEach(function(object) {
+          if (object.bookedBy == id) {
+              myBookingsList.push(object);
+          }
+    });
+});
+    return myBookingsList;
+}
+        
+        
     }
 
 })();

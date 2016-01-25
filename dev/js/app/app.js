@@ -1,6 +1,6 @@
 (function() {
   'use strict';
 
-  angular.module('booker', []);
+  angular.module('booker', ['firebase']);
 
 })();

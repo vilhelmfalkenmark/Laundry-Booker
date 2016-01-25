@@ -9,7 +9,7 @@
       //       console.log("klickad!")
       // };
 
-     $scope.newBooking = MyBookingsService.newBooking;
+     $scope.myBookings = MyBookingsService.myBookings("12345");
 
     }
 
