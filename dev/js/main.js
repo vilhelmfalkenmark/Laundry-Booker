@@ -186,6 +186,10 @@
     };
     }
 })();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
 /*angular.module('booker')
     .controller("BookingCtrl", function ($scope, $firebaseArray) {
         var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
@@ -210,10 +214,19 @@
     .controller('MyBookingsController', ['$scope', 'MyBookingsService', MyBookingsController]);
 
     function MyBookingsController($scope, MyBookingsService) {
+<<<<<<< HEAD
      
     $scope.showBookingById = function(id) {
     $scope.myBookings = MyBookingsService.myBookings(id);    
     };
+=======
+
+      // $scope.newBooking = function(){
+      //       console.log("klickad!")
+      // };
+
+     $scope.myBookings = MyBookingsService.myBookings("12345");
+>>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
 
     }
 
@@ -283,9 +296,16 @@ You can use services to organize and share code across your app.
     .service('CalenderService', ['$firebaseArray', CalenderService]);
   function CalenderService($firebaseArray) {
     var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
+<<<<<<< HEAD
     var bookings = $firebaseArray(ref); 
     var milliSeconds = 24 * 60 * 60 * 1000;
     var daySwitch = 0;
+=======
+    var b = $firebaseArray(ref); 
+    var milliSeconds = 24 * 60 * 60 * 1000;
+    var daySwitch = 0;
+    var bookings = [];
+>>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
 /*
     b.$loaded().then(function(b) { 
     b.forEach(function(object) {
@@ -293,7 +313,10 @@ You can use services to organize and share code across your app.
     });
 });
 */
+<<<<<<< HEAD
 
+=======
+>>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
       
     return {
       createCalender: createCalender,
@@ -301,7 +324,11 @@ You can use services to organize and share code across your app.
       minusWeek: minusWeek,
       markAsBooked: markAsBooked,
       bookTime: bookTime,
+<<<<<<< HEAD
       bookings: bookings, 
+=======
+      bookings: b, 
+>>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
     };
     function markAsBooked()
     {
@@ -339,8 +366,15 @@ You can use services to organize and share code across your app.
         newBooking.bookedApparatus.push("Torkskåp");
       }
       newBooking.bookedBy = id;
+<<<<<<< HEAD
         
       bookings.$add(newBooking);
+=======
+
+      bookings.push(newBooking);
+        
+      b.$add(newBooking);
+>>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
     }
 
 
@@ -503,6 +537,7 @@ You can use services to organize and share code across your app.
 (function() {
   'use strict';
   angular.module('booker')
+<<<<<<< HEAD
     .service('MemberService', ['$http', MemberService]);
 
     function MemberService($http){
@@ -562,6 +597,8 @@ You can use services to organize and share code across your app.
 (function() {
   'use strict';
   angular.module('booker')
+=======
+>>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
     .service('MyBookingsService', ['$firebaseArray', MyBookingsService]);
 
 
@@ -572,6 +609,7 @@ You can use services to organize and share code across your app.
     var b = $firebaseArray(ref); 
       return {
         myBookings: myBookings
+<<<<<<< HEAD
       }; 
             
 function myBookings(id) {
@@ -584,6 +622,18 @@ function myBookings(id) {
     });
 }, function (errorObject) {
   console.log("The read failed: " + errorObject.code);
+=======
+      };        
+        
+function myBookings(id) {
+    var myBookingsList = [];
+    b.$loaded().then(function(b) { 
+    b.forEach(function(object) {
+          if (object.bookedBy == id) {
+              myBookingsList.push(object);
+          }
+    });
+>>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
 });
     return myBookingsList;
 }

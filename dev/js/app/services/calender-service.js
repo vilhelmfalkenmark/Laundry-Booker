@@ -9,25 +9,25 @@ You can use services to organize and share code across your app.
     .service('CalenderService', ['$firebaseArray', CalenderService]);
   function CalenderService($firebaseArray) {
     var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
-    var bookings = $firebaseArray(ref); 
+    var bookings = $firebaseArray(ref);
     var milliSeconds = 24 * 60 * 60 * 1000;
     var daySwitch = 0;
 /*
-    b.$loaded().then(function(b) { 
+    b.$loaded().then(function(b) {
     b.forEach(function(object) {
            console.log(object.bookedBy);
     });
 });
 */
 
-      
+
     return {
       createCalender: createCalender,
       plusWeek: plusWeek,
       minusWeek: minusWeek,
       markAsBooked: markAsBooked,
       bookTime: bookTime,
-      bookings: bookings, 
+      bookings: bookings,
     };
     function markAsBooked()
     {
@@ -41,7 +41,7 @@ You can use services to organize and share code across your app.
         }
     }
 
-      
+
     function bookTime(date, time, app1, app2, app3, app4, id)
     {
       var newBooking = {};
@@ -65,7 +65,7 @@ You can use services to organize and share code across your app.
         newBooking.bookedApparatus.push("Torkskåp");
       }
       newBooking.bookedBy = id;
-        
+
       bookings.$add(newBooking);
     }
 

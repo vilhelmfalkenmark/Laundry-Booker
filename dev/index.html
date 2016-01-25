@@ -13,9 +13,9 @@
   <!--endbuild-->
 </head>
 <body ng-controller="CalenderController">
-    
+
 <div ng-controller="MyBookingsController">
-    
+
   <header class="row">
     <div class="span-l2-m2-s2">
       <img src="images/lb-logo.svg" alt="Logotyp" class="lb-logo">
@@ -46,9 +46,9 @@
     <div class="row" ng-repeat="bookedBlock in myBookings">
         <h4>Bokad dag: {{bookedBlock.date | date:'EEEE'}} {{bookedBlock.date | date:'dd'}} {{bookedBlock.date | date:'MMMM'}} Kl: {{bookedBlock.time}}</h4>
         <div ng-repeat="apparatus in bookedBlock.bookedApparatus">
-            <div class="span-l6-m6-s6">   
+            <div class="span-l6-m6-s6">
                 <p>{{apparatus}}</p>
-            </div> 
+            </div>
             <div class="span-l6-m6-s6">
                 <button class="small-btn highlight">Avboka {{apparatus}}</button>
             </div>
