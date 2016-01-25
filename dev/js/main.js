@@ -156,9 +156,9 @@
   'use strict';
 
   angular.module('booker')
-    .controller('CalenderController', ['$scope', 'CalenderService', CalenderController]);
+    .controller('CalenderController', ['$scope', 'CalenderService', 'MemberService', CalenderController]);
 
-  function CalenderController($scope, CalenderService) {
+  function CalenderController($scope, CalenderService, MemberService) {
 
     $scope.bookTime = CalenderService.bookTime; // Pappafunktionen
     $scope.bookedTime = CalenderService.bookedTime;
@@ -186,6 +186,11 @@
       CalenderService.minusWeek();
       $scope.returnArray = CalenderService.createCalender();
     };
+
+    $scope.fetchMembers = function(){
+      $scope.members = MemberService.getMembers();
+    };
+
   }
 })();
 
@@ -454,6 +459,29 @@ You can use services to organize and share code across your app.
     }
 
   }
+})();
+
+(function() {
+  'use strict';
+  angular.module('booker')
+    .service('MemberService', ['$http', MemberService]);
+
+    function MemberService($http){
+
+      return {
+        getMembers: getMembers
+      };
+
+      function getMembers(){
+        return $http.get('./js/members/members.json')
+        .then(function(res) {
+          console.log(res.data);
+          return res.data;
+        }, function(err) {
+          console.log(err);
+        });
+      }
+    }
 })();
 
 (function() {
