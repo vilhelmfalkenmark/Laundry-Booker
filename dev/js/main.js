@@ -162,7 +162,7 @@
 
     $scope.bookTime = CalenderService.bookTime; // Pappafunktionen
     $scope.bookedTime = CalenderService.bookedTime;
-
+    $scope.markAsBooked = CalenderService.markAsBooked;
     $scope.numberOfBookings = 0;
 
     $scope.myBookings = function(a,b){
@@ -175,6 +175,8 @@
     $scope.checkedItems = CalenderService.checkedItems;
 
     $scope.returnArray = CalenderService.createCalender();
+    $scope.bookings = CalenderService.bookings;
+
 
     $scope.plusWeek = function(){
       CalenderService.plusWeek();
@@ -194,38 +196,16 @@
 
     function MyBookingsController($scope, MyBookingsService) {
 
-      var myBookings = [
-        {
-          date: 21964196421978,
-          time: "6-10",
-          apparatus: ["tvättmaskin","mangel"],
-          bookerID: 1234
-        },
-        {
-          date: 21964196421978,
-          time: "6-10",
-          apparatus: ["tvättmaskin","mangel"],
-          bookerID: 1234
-        }
-      ];
-      function bookingPrototype(date, time, apparatus, bookerID) {
-        this.date = date;
-        this.time = time;
-        this.apparatus = apparatus;
-        this.bookerID = bookerID;
-      }
-      var l = 0;
-      function newBooking(date, time, apparatus) {
-      console.log("NEWBOOKING ÄR KLICKAD!");
-      myBookings[l] = new bookingPrototype(date, time, apparatus);
-      l++;
+      // $scope.newBooking = function(){
+      //       console.log("klickad!")
+      // };
 
-      console.log(myBookings)
-
-  }
-
+     $scope.newBooking = MyBookingsService.newBooking;
 
     }
+
+
+
 
 })();
 
@@ -263,24 +243,63 @@ You can use services to organize and share code across your app.
   function CalenderService($scope) {
     var milliSeconds = 24 * 60 * 60 * 1000;
     var daySwitch = 0;
+    var bookings = [];
+
+    bookTime(1453732728151,"6-10",false, false, true, true, 1234);
+    bookTime(1453732728151,"14-18",false, false, true, true, 1234);
 
     return {
       createCalender: createCalender,
       plusWeek: plusWeek,
       minusWeek: minusWeek,
-      bookTime: bookTime
+      markAsBooked: markAsBooked,
+      bookTime: bookTime,
+      bookings: bookings
     };
-    function bookTime()
+    function markAsBooked()
     {
         for (var item in this.booked)
         {
           if(this.booked[item].marked === true && this.booked[item].bookedBy === null)
           {
-            this.booked[item].bookedBy = 1234; // ID på person som bokat
+            this.booked[item].bookedBy = true; // ID på person som bokat
             this.booked.available--;
           }
         }
     }
+    function bookTime(date, time, app1, app2, app3, app4, id)
+    {
+      var newBooking = {};
+      newBooking.date = date;
+      newBooking.time = time;
+      newBooking.bookedApparatus = [];
+      if(app1 === true)
+      {
+        newBooking.bookedApparatus.push("Tvättmaskin");
+        newBooking.apparatus1 = "Tvättmaskin";
+      }
+      if(app2 === true)
+      {
+        newBooking.bookedApparatus.push("Torktumlare");
+        newBooking.apparatus2 = "Torktumlare";
+      }
+      if(app3 === true)
+      {
+        newBooking.bookedApparatus.push("Mangel");
+        newBooking.apparatus3 = "Mangel";
+      }
+      if(app4 === true)
+      {
+        newBooking.bookedApparatus.push("Torkskåp");
+        newBooking.apparatus4 = "Torkskåp";
+      }
+      newBooking.bookedBy = id;
+
+      bookings.push(newBooking);
+      console.log(bookings);
+    }
+
+
     function createCalender() {
       var date = new Date(new Date().getTime() + daySwitch * milliSeconds);
       var dates = [];
@@ -444,7 +463,43 @@ You can use services to organize and share code across your app.
 
     function MyBookingsService($scope)
     {
-      
+      return {
+        newBooking: newBooking
+      };
+
+      var myBookings = [
+        {
+          date: 21964196421978,
+          time: "6-10",
+          apparatus: ["tvättmaskin","mangel"],
+          bookerID: 1234
+        },
+        {
+          date: 21964196421978,
+          time: "6-10",
+          apparatus: ["tvättmaskin","mangel"],
+          bookerID: 1234
+        }
+      ];
+      console.log(myBookings);
+      // function bookingPrototype(date, time, apparatus, bookerID) {
+      //   this.date = date;
+      //   this.time = time;
+      //   this.apparatus = apparatus;
+      //   this.bookerID = bookerID;
+      // }
+      var l = 0;
+
+
+      function newBooking() {
+        console.log("NEWBOOKING ÄR KLICKAD!");
+    //  myBookings[l] = new bookingPrototype(date, time, apparatus);
+      l++;
+
+    //  console.log(myBookings)
+
+    }
+
     }
 
 })();

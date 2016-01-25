@@ -22,7 +22,7 @@
 
         <div class="my-bookings-container">
           <p><i class="fa fa-fw fa-info-circle"></i>&nbsp;Din nästa bokade tid är: <b> {{bookedDay | date}} kl. {{bookedTime}}</b></p>
-        </div> 
+        </div>
       </section>
     </div>
     <div class="span-l4-m4-s4">
@@ -37,8 +37,19 @@
   ====================================================-->
   <div class="row my-bookings" ng-controller="MyBookingsController">
     <h2>Mina bokningar:</h2>
-    <div ng-repeat="date in returnArray[0]">
-      <div ng-repeat="(time, booked) in date.times">
+    <div ng-repeat="bookedBlock in bookings">
+        <h4>Bokad dag: {{bookedBlock.date | date:'EEEE'}} {{bookedBlock.date | date:'dd'}} {{bookedBlock.date | date:'MMMM'}} Kl: {{bookedBlock.time}}</h4>
+        <div ng-repeat="apparatus in bookedBlock.bookedApparatus">
+          <p>{{apparatus}} <button class="small-btn">Avboka {{apparatus}}</button></p>
+        </div>
+        <!-- IN MED INLOGGAT HÄR -->
+       <div ng-show="bookedBlock.bookedBy == 1234">
+
+
+
+         <!-- {{bookedBlock}} -->
+      </div>
+      <!-- <div ng-repeat="(time, booked) in date.times">
         <div ng-repeat="(key, object) in booked" class="mybookings-list-date">
         </div>
         <div ng-repeat="(key, object) in booked" class="mybookings-list-time">
@@ -46,8 +57,10 @@
         <div ng-repeat="(key, object) in booked">
           <p ng-show="object.bookedBy != null">{{object.name}}</p>
         </div>
-      </div>
+      </div> -->
     </div>
+
+
     <p class="close-bookings"><i class="fa fa-times"></i> Stäng</p>
   </div>
   <!--================================================
@@ -81,12 +94,15 @@
                   <p> Lediga Maskiner denna tid: {{booked.available}}</p>
                   <form>
                     <span ng-repeat="(key, object) in booked" ng-if="$index > 1">
-
                       <input type="checkbox" ng-disabled="object.bookedBy" ng-model="object.marked">
                       <label for="washer" ng-class="object.bookedBy?'booked-label':'not-booked-label'">{{object.name}}</label>
                       </br>
                     </span>
-                    <button class="highlight center" type="submit" ng-click="bookTime(); myBookings(date.times[$index].timespan, date.dayName,checkStatus)" ng-show="booked.available > 0">Boka</button>
+                    <button class="highlight center" type="submit"
+                    ng-click="markAsBooked();
+                    bookTime(date.dayName, date.times[$index].timespan, date.times[$index].apparatus1.marked, date.times[$index].apparatus2.marked, date.times[$index].apparatus3.marked,date.times[$index].apparatus4.marked, 1234);
+                    myBookings(date.times[$index].timespan, date.dayName,checkStatus)"
+                    ng-show="booked.available > 0">Boka</button>
                   </form>
                 </div>
               </div>

@@ -8,7 +8,7 @@
 
     $scope.bookTime = CalenderService.bookTime; // Pappafunktionen
     $scope.bookedTime = CalenderService.bookedTime;
-
+    $scope.markAsBooked = CalenderService.markAsBooked;
     $scope.numberOfBookings = 0;
 
     $scope.myBookings = function(a,b){
@@ -21,6 +21,8 @@
     $scope.checkedItems = CalenderService.checkedItems;
 
     $scope.returnArray = CalenderService.createCalender();
+    $scope.bookings = CalenderService.bookings;
+
 
     $scope.plusWeek = function(){
       CalenderService.plusWeek();
