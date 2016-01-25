@@ -195,10 +195,10 @@
     }
 =======
 
-    $scope.fetchMembers = function(){
-      $scope.members = MemberService.getMembers();
-    };
-
+    $scope.members = MemberService.getMembers();
+    $scope.sendMemberId = function(id){
+      console.log(id);
+    }
   }
 >>>>>>> 3a58640... WIP member service
 })();
