@@ -44,7 +44,7 @@
       // **** Gets members fom members.json  ****
       // **** Problem is delay until data is ****
       // **** fetched needs bugg controll    ****
-      // 
+      //
       // function getMembers(){
       //   return $http.get('./js/members/members.json')
       //   .then(function(res) {
