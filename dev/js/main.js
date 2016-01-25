@@ -316,6 +316,7 @@ You can use services to organize and share code across your app.
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     var bookings = $firebaseArray(ref); 
     var milliSeconds = 24 * 60 * 60 * 1000;
     var daySwitch = 0;
@@ -331,13 +332,23 @@ You can use services to organize and share code across your app.
     var daySwitch = 0;
     var bookings = [];
 >>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
+=======
+    var b = $firebaseArray(ref);
+    var milliSeconds = 24 * 60 * 60 * 1000;
+    var daySwitch = 0;
+    var bookings = [];
+    bookTime(1453732728151, "6-10", true, true, true, true, 1234);
+    bookTime(1453825376239, "14-18", false, false, true, false, 1234);
+    bookTime(1453744186246, "14-18", true, false, true, false, 1234);
+>>>>>>> c1e71a8... Added the loop of doom to compare the Database JSON with the JSON that renders in the view
 /*
-    b.$loaded().then(function(b) { 
+    b.$loaded().then(function(b) {
     b.forEach(function(object) {
            console.log(object.bookedBy);
     });
 });
 */
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -351,12 +362,16 @@ You can use services to organize and share code across your app.
 =======
       
 >>>>>>> 55cafd9... added db from simon
+=======
+
+>>>>>>> c1e71a8... Added the loop of doom to compare the Database JSON with the JSON that renders in the view
     return {
       createCalender: createCalender,
       plusWeek: plusWeek,
       minusWeek: minusWeek,
       markAsBooked: markAsBooked,
       bookTime: bookTime,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -380,30 +395,35 @@ You can use services to organize and share code across your app.
             this.booked[item].bookedBy = true; //
             this.booked.available--;
           }
+=======
+      bookings: b,
+    };
+
+    function markAsBooked() {
+      for (var item in this.booked) {
+        if (this.booked[item].marked === true && this.booked[item].bookedBy === null) {
+          this.booked[item].bookedBy = true; // ID på person som bokat
+          this.booked.available--;
+>>>>>>> c1e71a8... Added the loop of doom to compare the Database JSON with the JSON that renders in the view
         }
+      }
     }
 
-      
-    function bookTime(date, time, app1, app2, app3, app4, id)
-    {
+    function bookTime(date, time, app1, app2, app3, app4, id) {
       var newBooking = {};
       newBooking.date = date;
       newBooking.time = time;
       newBooking.bookedApparatus = [];
-      if(app1 === true)
-      {
+      if (app1 === true) {
         newBooking.bookedApparatus.push("Tvättmaskin");
       }
-      if(app2 === true)
-      {
+      if (app2 === true) {
         newBooking.bookedApparatus.push("Torktumlare");
       }
-      if(app3 === true)
-      {
+      if (app3 === true) {
         newBooking.bookedApparatus.push("Mangel");
       }
-      if(app4 === true)
-      {
+      if (app4 === true) {
         newBooking.bookedApparatus.push("Torkskåp");
       }
       newBooking.bookedBy = id;
@@ -413,20 +433,23 @@ You can use services to organize and share code across your app.
 =======
 
       bookings.push(newBooking);
-        
+
       b.$add(newBooking);
 >>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
     }
+    console.log(bookings);
 
 
     function createCalender() {
       var date = new Date(new Date().getTime() + daySwitch * milliSeconds);
+      // var date = new Date(getTime() + daySwitch * milliSeconds);
       var dates = [];
       var d;
       var leftArrow = (daySwitch > 0) ? true : false;
       var rightArrow = (daySwitch < 14) ? true : false;
       for (var i = 0; i < 7; i++) {
         var day = {};
+<<<<<<< HEAD
         d = date;
         day.times = [
            {
@@ -528,50 +551,201 @@ You can use services to organize and share code across your app.
               marked: false,
               bookedBy: null
             }
-          }
-        ];
-        var dayIterator; // Så att man ser även ser dagens datum
+=======
+          d = date;
+        //  var dayNumber = d.getDate();
+          //console.log(dayNumber);
+        // var yolo = new Date(bookings[0].date);
+        // console.log(yolo.getDate());
+        //  console.log(bookings.length);
 
+        day.times = [{
+          timespan: "6-10",
+          available: 0,
+          apparatus1: {
+            name: "Tvättmaskin",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus2: {
+            name: "Torktumlare",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus3: {
+            name: "Mangel",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus4: {
+            name: "Torkskåp",
+            marked: false,
+            bookedBy: null
+>>>>>>> c1e71a8... Added the loop of doom to compare the Database JSON with the JSON that renders in the view
+          }
+        }, {
+          timespan: "10-14",
+          available: 0,
+          apparatus1: {
+            name: "Tvättmaskin",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus2: {
+            name: "Torktumlare",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus3: {
+            name: "Mangel",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus4: {
+            name: "Torkskåp",
+            marked: false,
+            bookedBy: null
+          }
+        }, {
+          timespan: "14-18",
+          available: 0,
+          apparatus1: {
+            name: "Tvättmaskin",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus2: {
+            name: "Torktumlare",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus3: {
+            name: "Mangel",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus4: {
+            name: "Torkskåp",
+            marked: false,
+            bookedBy: null
+          }
+        }, {
+          timespan: "18-22",
+          available: 0,
+          apparatus1: {
+            name: "Tvättmaskin",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus2: {
+            name: "Torktumlare",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus3: {
+            name: "Mangel",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus4: {
+            name: "Torkskåp",
+            marked: false,
+            bookedBy: null
+          }
+        }];
+
+        var dayIterator; // Så att man ser även ser dagens datum
         if (i === 0) {
           dayIterator = 0;
         } else {
           dayIterator = 1;
         }
         d = (d.setDate((d.getDate() + dayIterator)));
+        //console.log(d);
         day.dayName = d;
-        dates.push(day);
-      }
-        for (var key in dates) {
-          for (var time in dates[key].times) {
-              for(var item in dates[key].times[time])
+
+        var dateDay = new Date(d);
+        var month = dateDay;
+        var year = dateDay;
+        dateDay = dateDay.getDate();
+        month = month.getMonth();
+        year = year.getFullYear();
+        var fullDate = (year+""+month+""+dateDay);
+
+        console.log(fullDate); 
+
+       //console.log((day.dayName).getDate());
+        for (var j = 0; j < bookings.length; j++)
+         {
+           // BLUEPRINT FÖR HUR VI SKRIVER VÅRA STRÄNGVÄRDEN FÖR DATUMEN FRÅN DATABASEN.
+          //console.log(new Date(bookings[j].date).getFullYear()+""+new Date(bookings[j].date).getMonth()+""+new Date(bookings[j].date).getDate())
+          if (fullDate == (new Date(bookings[j].date).getFullYear()+""+new Date(bookings[j].date).getMonth()+""+new Date(bookings[j].date).getDate()))
+          {
+            // MANIPULERA VÅRT FÄRDIGA OBJEKT.
+            //console.log(day.times) // Alla tider i det nyskapade Objektet.
+              for(var k=0;k<day.times.length; k++)
               {
-                //console.log(dates[key].times[time][item]);
-                //console.log(dates[key].times[time].available);
-                if(dates[key].times[time][item].bookedBy === null)
+                if(day.times[k].timespan == bookings[j].time)
                 {
-                  dates[key].times[time].available++;
+                  for(var timeblock in day.times[k])
+                  {
+                  //  console.log(timeblock);
+                    for(var apparatus in day.times[k][timeblock])
+                    {
+                    //  console.log(day.times[k][timeblock][apparatus] + " är apparatus");
+                      for(var n = 0; n<bookings[i].bookedApparatus.length;n++)
+                      {
+                      // console.log(bookings[i].bookedApparatus[n] +" är bookings[i].bookedApparatus[n] ");
+                      //  console.log(day.times[k][timeblock][apparatus] +" är day.times[k][timeblock][apparatus]");
+                        if(bookings[i].bookedApparatus[n] == day.times[k][timeblock][apparatus])
+                        {
+                          day.times[k][timeblock].bookedBy = bookings[j].bookedBy; // ID PÅ MEDLEMMEN
+                        }
+                      //  console.log(bookings[i].bookedApparatus[n]);
+                      }
+                    }
+                  }
                 }
-                //console.log(dates[key].times[time].available);
-                //console.log(dates[key].times[time][item]);
+                //console.log(day.times[k].timespan);
               }
+          // console.log("Hejsan!");
+          //  console.log(bookings[j].date + " Är datumet");
+          //  console.log(bookings[j].bookedApparatus + " Är de bokade apparaterna");
           }
         }
+        dates.push(day);
+
+      }
+      for (var key in dates) {
+        for (var time in dates[key].times) {
+          for (var item in dates[key].times[time]) {
+            //console.log(dates[key].times[time][item]);
+            //console.log(dates[key].times[time].available);
+            if (dates[key].times[time][item].bookedBy === null) {
+              dates[key].times[time].available++;
+            }
+            //console.log(dates[key].times[time].available);
+            //console.log(dates[key].times[time][item]);
+          }
+        }
+      }
       var returnArray = [dates, [leftArrow, rightArrow]];
       return returnArray;
     }
+
     function plusWeek() {
       if (daySwitch < 14) {
         daySwitch += 7;
         createCalender();
       }
     }
+
     function minusWeek() {
       if (daySwitch > 0) {
         daySwitch -= 7;
         createCalender();
       }
     }
-
   }
 })();
 

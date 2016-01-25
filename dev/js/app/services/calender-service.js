@@ -39,6 +39,7 @@ You can use services to organize and share code across your app.
             this.booked.available--;
           }
         }
+      }
     }
 
 
@@ -48,36 +49,35 @@ You can use services to organize and share code across your app.
       newBooking.date = date;
       newBooking.time = time;
       newBooking.bookedApparatus = [];
-      if(app1 === true)
-      {
+      if (app1 === true) {
         newBooking.bookedApparatus.push("Tvättmaskin");
       }
-      if(app2 === true)
-      {
+      if (app2 === true) {
         newBooking.bookedApparatus.push("Torktumlare");
       }
-      if(app3 === true)
-      {
+      if (app3 === true) {
         newBooking.bookedApparatus.push("Mangel");
       }
-      if(app4 === true)
-      {
+      if (app4 === true) {
         newBooking.bookedApparatus.push("Torkskåp");
       }
       newBooking.bookedBy = id;
 
       bookings.$add(newBooking);
     }
+    console.log(bookings);
 
 
     function createCalender() {
       var date = new Date(new Date().getTime() + daySwitch * milliSeconds);
+      // var date = new Date(getTime() + daySwitch * milliSeconds);
       var dates = [];
       var d;
       var leftArrow = (daySwitch > 0) ? true : false;
       var rightArrow = (daySwitch < 14) ? true : false;
       for (var i = 0; i < 7; i++) {
         var day = {};
+<<<<<<< HEAD
         d = date;
         day.times = [
            {
@@ -179,49 +179,99 @@ You can use services to organize and share code across your app.
               marked: false,
               bookedBy: null
             }
-          }
-        ];
-        var dayIterator; // Så att man ser även ser dagens datum
+          }];
 
+        var dayIterator; // Så att man ser även ser dagens datum
         if (i === 0) {
           dayIterator = 0;
         } else {
           dayIterator = 1;
         }
         d = (d.setDate((d.getDate() + dayIterator)));
+        //console.log(d);
         day.dayName = d;
-        dates.push(day);
-      }
-        for (var key in dates) {
-          for (var time in dates[key].times) {
-              for(var item in dates[key].times[time])
+
+        var dateDay = new Date(d);
+        var month = dateDay;
+        var year = dateDay;
+        dateDay = dateDay.getDate();
+        month = month.getMonth();
+        year = year.getFullYear();
+        var fullDate = (year+""+month+""+dateDay);
+
+        console.log(fullDate);
+
+       //console.log((day.dayName).getDate());
+        for (var j = 0; j < bookings.length; j++)
+         {
+           // BLUEPRINT FÖR HUR VI SKRIVER VÅRA STRÄNGVÄRDEN FÖR DATUMEN FRÅN DATABASEN.
+          //console.log(new Date(bookings[j].date).getFullYear()+""+new Date(bookings[j].date).getMonth()+""+new Date(bookings[j].date).getDate())
+          if (fullDate == (new Date(bookings[j].date).getFullYear()+""+new Date(bookings[j].date).getMonth()+""+new Date(bookings[j].date).getDate()))
+          {
+            // MANIPULERA VÅRT FÄRDIGA OBJEKT.
+            //console.log(day.times) // Alla tider i det nyskapade Objektet.
+              for(var k=0;k<day.times.length; k++)
               {
-                //console.log(dates[key].times[time][item]);
-                //console.log(dates[key].times[time].available);
-                if(dates[key].times[time][item].bookedBy === null)
+                if(day.times[k].timespan == bookings[j].time)
                 {
-                  dates[key].times[time].available++;
+                  for(var timeblock in day.times[k])
+                  {
+                  //  console.log(timeblock);
+                    for(var apparatus in day.times[k][timeblock])
+                    {
+                    //  console.log(day.times[k][timeblock][apparatus] + " är apparatus");
+                      for(var n = 0; n<bookings[i].bookedApparatus.length;n++)
+                      {
+                      // console.log(bookings[i].bookedApparatus[n] +" är bookings[i].bookedApparatus[n] ");
+                      //  console.log(day.times[k][timeblock][apparatus] +" är day.times[k][timeblock][apparatus]");
+                        if(bookings[i].bookedApparatus[n] == day.times[k][timeblock][apparatus])
+                        {
+                          day.times[k][timeblock].bookedBy = bookings[j].bookedBy; // ID PÅ MEDLEMMEN
+                        }
+                      //  console.log(bookings[i].bookedApparatus[n]);
+                      }
+                    }
+                  }
                 }
-                //console.log(dates[key].times[time].available);
-                //console.log(dates[key].times[time][item]);
+                //console.log(day.times[k].timespan);
               }
+          // console.log("Hejsan!");
+          //  console.log(bookings[j].date + " Är datumet");
+          //  console.log(bookings[j].bookedApparatus + " Är de bokade apparaterna");
           }
         }
+        dates.push(day);
+
+      }
+      for (var key in dates) {
+        for (var time in dates[key].times) {
+          for (var item in dates[key].times[time]) {
+            //console.log(dates[key].times[time][item]);
+            //console.log(dates[key].times[time].available);
+            if (dates[key].times[time][item].bookedBy === null) {
+              dates[key].times[time].available++;
+            }
+            //console.log(dates[key].times[time].available);
+            //console.log(dates[key].times[time][item]);
+          }
+        }
+      }
       var returnArray = [dates, [leftArrow, rightArrow]];
       return returnArray;
     }
+
     function plusWeek() {
       if (daySwitch < 14) {
         daySwitch += 7;
         createCalender();
       }
     }
+
     function minusWeek() {
       if (daySwitch > 0) {
         daySwitch -= 7;
         createCalender();
       }
     }
-
-  }
+  
 })();
