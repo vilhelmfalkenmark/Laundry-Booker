@@ -33,9 +33,9 @@
       $scope.returnArray = CalenderService.createCalender();
     };
 
-    $scope.fetchMembers = function(){
-      $scope.members = MemberService.getMembers();
+    $scope.members = MemberService.getMembers();
+    $scope.sendMemberId = function(id){
+      console.log(id);
     };
-
   }
 })();

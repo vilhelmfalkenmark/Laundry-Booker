@@ -187,10 +187,10 @@
       $scope.returnArray = CalenderService.createCalender();
     };
 
-    $scope.fetchMembers = function(){
-      $scope.members = MemberService.getMembers();
-    };
-
+    $scope.members = MemberService.getMembers();
+    $scope.sendMemberId = function(id){
+      console.log(id);
+    }
   }
 })();
 
@@ -467,20 +467,52 @@ You can use services to organize and share code across your app.
     .service('MemberService', ['$http', MemberService]);
 
     function MemberService($http){
-
+      var members = [
+        {
+          "id": 1,
+          "firstname": "Vilhelm",
+          "lastname": "Falkenmark",
+          "username": "vilhelmfalkenmark",
+          "floor": "3",
+          "apartment": "1408",
+          "password": "1234"
+        },
+        {
+          "id": 2,
+          "firstname": "Simon",
+          "lastname": "Lager",
+          "username": "simonlager",
+          "floor": "4",
+          "apartment": "4322",
+          "password": "1234"
+        },
+        {
+          "id": 3,
+          "firstname": "Fredrik",
+          "lastname": "Löfgren",
+          "username": "fredriklofgren",
+          "floor": "4",
+          "apartment": "8109",
+          "password": "1234"
+        }
+      ];
       return {
         getMembers: getMembers
       };
 
       function getMembers(){
-        return $http.get('./js/members/members.json')
-        .then(function(res) {
-          console.log(res.data);
-          return res.data;
-        }, function(err) {
-          console.log(err);
-        });
+        return members;
       }
+
+      // function getMembers(){
+      //   return $http.get('./js/members/members.json')
+      //   .then(function(res) {
+      //     // console.log(res.data);
+      //     return res;
+      //   }, function(err) {
+      //     console.log(err);
+      //   });
+      // }
     }
 })();
 

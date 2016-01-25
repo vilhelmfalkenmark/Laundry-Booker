@@ -22,19 +22,18 @@
 
         <div class="my-bookings-container">
           <p><i class="fa fa-fw fa-info-circle"></i>&nbsp;Din nästa bokade tid är: <b> {{bookedDay | date}} kl. {{bookedTime}}</b></p>
+          <div ng-repeat="member in members">
+            <button type="button" name="button" ng-click="sendMemberId(member.id)">{{member.firstname}}</button>
+          </div>
         </div>
       </section>
     </div>
     <div class="span-l4-m4-s4">
-      <button type="button" name="button" ng-click="fetchMembers()">YOLO</button>
-      <button type="button" name="button">{{members[0].firstname}}</button>
-      <button type="button" name="button">{{members[1].firstname}}</button>
-      <button type="button" name="button">{{members[2].firstname}}</button>
       <button class="right"><i class="fa fa-fw fa-sign-out"></i> Logga ut</button>
       <button class="right button-bookings"><i class="fa fa-fw fa-list"></i> Mina bokningar <b>({{numberOfBookings}})</b></button>
     </div>
-  </header>
 
+  </header>
   <!--================================================
   ==================  START MINA BOKNINGAR ===========
   ====================================================-->
