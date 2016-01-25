@@ -11,27 +11,16 @@
 
     $scope.numberOfBookings = 0;
 
-    // $scope.isCheckboxChecked = function() {
-    // return ($scope.block.washer || $scope.block.tumbler || $scope.block.dryer || $scope.block.mangel);
-    // };
-
     $scope.myBookings = function(a,b){
       $scope.bookedTime = a;
       $scope.bookedDay = b;
       $scope.numberOfBookings++;
     };
 
+    $scope.toggleSelection = CalenderService.toggleSelection;
+    $scope.checkedItems = CalenderService.checkedItems;
 
-    /* EXPERIMENT */
-    $scope.outputs = {};
-    $scope.inputs = {
-    'category': ['one','two','three'],
-    'color':['blue','green']
-    };
-    /* EXPERIMENT */
-
-
-      $scope.returnArray = CalenderService.createCalender();
+    $scope.returnArray = CalenderService.createCalender();
 
     $scope.plusWeek = function(){
       CalenderService.plusWeek();
