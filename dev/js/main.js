@@ -260,7 +260,7 @@ $(document).ready(function () {
         else {
         $('.weekday-expand').removeClass('expanded');
         $(this).parent().find('.booking-container').slideDown(500);
-        $(this).addClass('expanded');
+        $(this).addClass('expanded');  
         }
     });
     $('.button-bookings').click(function() {
@@ -277,7 +277,7 @@ $(document).ready(function () {
     .service('BookingService', ['$scope, $firebaseArray', BookingService]);
     function BookingService($scope, $firebaseArray) {
     var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
-    $scope.bookings = $firebaseArray(ref);
+    $scope.bookings = $firebaseArray(ref); 
     return {
       bookTime: bookTime
     };
@@ -287,15 +287,15 @@ $(document).ready(function () {
         {
           if(this.booked[item].marked === true && this.booked[item].bookedBy === null)
           {
-
+              
                                 $scope.bookings.$add({
                                     bookedBy: this.booked[item].bookedBy,
                                     name: this.booked[item].name,
                                     date: this.date.dayName,
                                     timespan: this.booked.timespan
                                 });
-
-
+                        
+                    
           }
         }
     }
@@ -315,6 +315,7 @@ You can use services to organize and share code across your app.
     var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     var bookings = $firebaseArray(ref); 
     var milliSeconds = 24 * 60 * 60 * 1000;
     var daySwitch = 0;
@@ -323,17 +324,21 @@ You can use services to organize and share code across your app.
 =======
     var b = $firebaseArray(ref);
 >>>>>>> 3a58640... WIP member service
+=======
+    var b = $firebaseArray(ref); 
+>>>>>>> 55cafd9... added db from simon
     var milliSeconds = 24 * 60 * 60 * 1000;
     var daySwitch = 0;
     var bookings = [];
 >>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
 /*
-    b.$loaded().then(function(b) {
+    b.$loaded().then(function(b) { 
     b.forEach(function(object) {
            console.log(object.bookedBy);
     });
 });
 */
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
@@ -343,12 +348,16 @@ You can use services to organize and share code across your app.
 =======
 
 >>>>>>> 3a58640... WIP member service
+=======
+      
+>>>>>>> 55cafd9... added db from simon
     return {
       createCalender: createCalender,
       plusWeek: plusWeek,
       minusWeek: minusWeek,
       markAsBooked: markAsBooked,
       bookTime: bookTime,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       bookings: bookings, 
@@ -358,6 +367,9 @@ You can use services to organize and share code across your app.
 =======
       bookings: b,
 >>>>>>> 3a58640... WIP member service
+=======
+      bookings: b, 
+>>>>>>> 55cafd9... added db from simon
     };
     function markAsBooked()
     {
@@ -371,7 +383,7 @@ You can use services to organize and share code across your app.
         }
     }
 
-
+      
     function bookTime(date, time, app1, app2, app3, app4, id)
     {
       var newBooking = {};
@@ -401,7 +413,7 @@ You can use services to organize and share code across your app.
 =======
 
       bookings.push(newBooking);
-
+        
       b.$add(newBooking);
 >>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
     }
@@ -567,6 +579,7 @@ You can use services to organize and share code across your app.
   'use strict';
   angular.module('booker')
 <<<<<<< HEAD
+<<<<<<< HEAD
     .service('MemberService', ['$http', MemberService]);
 
     function MemberService($http){
@@ -629,15 +642,78 @@ You can use services to organize and share code across your app.
 =======
 >>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
     .service('MyBookingsService', ['$firebaseArray', MyBookingsService]);
+=======
+    .service('MemberService', ['$http', MemberService]);
+>>>>>>> 55cafd9... added db from simon
+
+    function MemberService($http){
+      var members = [
+        {
+          "id": 1,
+          "firstname": "Vilhelm",
+          "lastname": "Falkenmark",
+          "username": "vilhelmfalkenmark",
+          "floor": "3",
+          "apartment": "1408",
+          "password": "1234"
+        },
+        {
+          "id": 2,
+          "firstname": "Simon",
+          "lastname": "Lager",
+          "username": "simonlager",
+          "floor": "4",
+          "apartment": "4322",
+          "password": "1234"
+        },
+        {
+          "id": 3,
+          "firstname": "Fredrik",
+          "lastname": "Löfgren",
+          "username": "fredriklofgren",
+          "floor": "4",
+          "apartment": "8109",
+          "password": "1234"
+        }
+      ];
+      return {
+        getMembers: getMembers
+      };
+
+      function getMembers(){
+        return members;
+      }
+
+      // **** Gets members fom members.json  ****
+      // **** Problem is delay until data is ****
+      // **** fetched needs bugg controll    ****
+      // 
+      // function getMembers(){
+      //   return $http.get('./js/members/members.json')
+      //   .then(function(res) {
+      //     // console.log(res.data);
+      //     return res;
+      //   }, function(err) {
+      //     console.log(err);
+      //   });
+      // }
+    }
+})();
+
+(function() {
+  'use strict';
+  angular.module('booker')
+    .service('MyBookingsService', ['$firebaseArray', MyBookingsService]);
 
 
-
+    
     function MyBookingsService($firebaseArray)
     {
     var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
-    var b = $firebaseArray(ref);
+    var b = $firebaseArray(ref); 
       return {
         myBookings: myBookings
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       }; 
@@ -659,9 +735,13 @@ function myBookings(id) {
       };
 
 >>>>>>> 3a58640... WIP member service
+=======
+      };        
+        
+>>>>>>> 55cafd9... added db from simon
 function myBookings(id) {
     var myBookingsList = [];
-    b.$loaded().then(function(b) {
+    b.$loaded().then(function(b) { 
     b.forEach(function(object) {
           if (object.bookedBy == id) {
               myBookingsList.push(object);
@@ -671,8 +751,8 @@ function myBookings(id) {
 });
     return myBookingsList;
 }
-
-
+        
+        
     }
 
 })();
