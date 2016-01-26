@@ -31,11 +31,12 @@
       </section>
     </div>
     <div class="span-l4-m4-s4">
-      <button class="right"><i class="fa fa-fw fa-sign-out"></i> Logga ut</button>
+      <button class="right" id="submit" name="submit" type="submit" ng-click="notification.status = 'show'; notification.message = ' Allt gick bra!'; notification.type = 'error';"><i class="fa fa-fw fa-sign-out"></i> Logga ut</button>
       <button class="right button-bookings"><i class="fa fa-fw fa-list"></i> Mina bokningar <b>({{myBookings.length}})</b></button>
     </div>
 
   </header>
+<div class="row alert alert-{{notification.type}}" style="display: none;" role="alert" data-notification="{{notification.status}}">{{notification.message}}</div>
   <!--================================================
   ==================  START MINA BOKNINGAR ===========
   ====================================================-->
@@ -90,8 +91,7 @@
               ==================================================-->
               <div class="time-col span-l3-m3-s3" ng-class="booked.available==0?'full': booked.available < 4 ?'partial':'available'" ng-repeat="(time, booked) in date.times">{{booked.timespan}}
                 <div class="preview-container">
-                  <h2><i class="fa fa-clock-o"></i> {{booked.available==0?'Fullbokat': booked.available
-                    < 4 ? 'Delvis Bokat': 'Ledigt'}}</h2>
+                  <h2><i class="fa fa-clock-o"></i> {{booked.available==0?'Fullbokat': booked.available < 4 ? 'Delvis Bokat': 'Ledigt'}}</h2>
                 </div>
                 <div class="booking-container">
                   <p> Lediga Maskiner denna tid: {{booked.available}}</p>
