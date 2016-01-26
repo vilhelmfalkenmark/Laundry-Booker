@@ -23,9 +23,8 @@
     <div class="span-l6-m6-s6">
       <section>
         <div class="my-bookings-container">
-          <p><i class="fa fa-fw fa-info-circle"></i>&nbsp;Din nästa bokade tid är: <b> {{bookedDay | date}} kl. {{bookedTime}}</b></p>
           <div ng-repeat="member in members">
-            <button type="button" name="button" ng-click="sendMemberId(member.id)">{{member.firstname}}</button>
+            <button type="button" name="button" ng-click="sendMemberId(member.id);showBookingById(member.id)">{{member.firstname}}</button>
           </div>
           <p><i class="fa fa-fw fa-info-circle"></i>&nbsp;Din nästa bokade tid är: <b> {{myBookings[0].date | date}} kl. {{myBookings[0].time}}</b></p>
         </div>
@@ -41,36 +40,27 @@
   ==================  START MINA BOKNINGAR ===========
   ====================================================-->
   <div class="row my-bookings">
+    <div class="span-l6-m6-s12">
     <h2>Mina bokningar:</h2>
-    
-    <div ng-repeat="bookedBlock in myBookings">
+     <div ng-show="!myBookings.length">Du har för närvarande inga bokningar.</div>
+    <div class="row" ng-repeat="bookedBlock in myBookings">
         <h4>Bokad dag: {{bookedBlock.date | date:'EEEE'}} {{bookedBlock.date | date:'dd'}} {{bookedBlock.date | date:'MMMM'}} Kl: {{bookedBlock.time}}</h4>
-
-        <!-- IN MED INLOGGAT HÄR -->
-       
-
         <div ng-repeat="apparatus in bookedBlock.bookedApparatus">
-          <p>{{apparatus}} <button class="small-btn highlight">Avboka {{apparatus}}</button></p>
+            <div class="span-l6-m6-s6">   
+                <p>{{apparatus}}</p>
+            </div> 
+            <div class="span-l6-m6-s6">
+                <button class="small-btn highlight">Avboka {{apparatus}}</button>
+            </div>
         </div>
 
-         <!-- {{bookedBlock}} -->
-      
-      <!-- <div ng-repeat="(time, booked) in date.times">
-        <div ng-repeat="(key, object) in booked" class="mybookings-list-date">
-        </div>
-        <div ng-repeat="(key, object) in booked" class="mybookings-list-time">
-        </div>
-        <div ng-repeat="(key, object) in booked">
-          <p ng-show="object.bookedBy != null">{{object.name}}</p>
-        </div>
-      </div> -->
-
-        
 </div>
 
     <p class="close-bookings"><i class="fa fa-times"></i> Stäng</p>
-  </div>
-    
+    </div>
+          <div class="span-l6-m6-s12">
+              <p>Här kan vi lägga nån mer information.</p>
+      </div>
 </div>
   <!--================================================
   ==================  SLUT MINA BOKNINGAR ============
@@ -109,8 +99,7 @@
                     </span>
                     <button class="highlight center" type="submit"
                     ng-click="markAsBooked();
-                    bookTime(date.dayName, date.times[$index].timespan, date.times[$index].apparatus1.marked, date.times[$index].apparatus2.marked, date.times[$index].apparatus3.marked,date.times[$index].apparatus4.marked, activeMemberId);
-                    myBookings(date.times[$index].timespan, date.dayName,checkStatus)"
+                    bookTime(date.dayName, date.times[$index].timespan, date.times[$index].apparatus1.marked, date.times[$index].apparatus2.marked, date.times[$index].apparatus3.marked,date.times[$index].apparatus4.marked, activeMemberId)";
                     ng-show="booked.available > 0">Boka</button>
                   </form>
                 </div>

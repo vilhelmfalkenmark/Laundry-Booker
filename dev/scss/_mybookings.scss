@@ -1,17 +1,24 @@
 .my-bookings
 {
-  //width: 300px;
-  position: relative;
+
   p
   {
-    margin: 20px 0;
+    margin: 0;
+      line-height: 34px;
   }
-}
+
 .small-btn
 {
-  padding: 5px;
-  width: 250px;
-  position: absolute;
-  left: 300px;
-  margin-left: 15px;
+  padding: 5px 10px;
+  margin: 0 0 5px 0;
+    width: 220px;
+}
+
+h4 {
+    margin: 0;
+}
+
+hr {
+
+}
 }

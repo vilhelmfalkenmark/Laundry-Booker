@@ -15,7 +15,7 @@
           "password": "1234"
         },
         {
-          "id": 2,
+          "id": 1234,
           "firstname": "Simon",
           "lastname": "Lager",
           "username": "simonlager",

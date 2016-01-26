@@ -4,16 +4,11 @@
     .controller('MyBookingsController', ['$scope', 'MyBookingsService', MyBookingsController]);
 
     function MyBookingsController($scope, MyBookingsService) {
-
-      // $scope.newBooking = function(){
-      //       console.log("klickad!")
-      // };
-
-     $scope.myBookings = MyBookingsService.myBookings("1234");
+     
+    $scope.showBookingById = function(id) {
+    $scope.myBookings = MyBookingsService.myBookings(id);    
+    };
 
     }
-
-
-
 
 })();
