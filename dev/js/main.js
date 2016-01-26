@@ -156,9 +156,9 @@
     'use strict';
 
     angular.module('booker')
-        .controller('CalenderController', ['$scope', 'CalenderService', 'MemberService', CalenderController]);
+        .controller('CalenderController', ['$scope', 'CalenderService', 'MemberService', 'MyBookingsService', CalenderController]);
 
-    function CalenderController($scope, CalenderService, MemberService) {
+    function CalenderController($scope, CalenderService, MemberService, MyBookingsService) {
 
         $scope.bookTime = CalenderService.bookTime; // Pappafunktionen
         $scope.bookedTime = CalenderService.bookedTime;
@@ -170,7 +170,6 @@
         $scope.returnArray = CalenderService.createCalender();
         $scope.bookings = CalenderService.bookings;
 
-
         $scope.plusWeek = function () {
             CalenderService.plusWeek();
             $scope.returnArray = CalenderService.createCalender();
@@ -179,6 +178,7 @@
             CalenderService.minusWeek();
             $scope.returnArray = CalenderService.createCalender();
         };
+    
 
     $scope.members = MemberService.getMembers();
     $scope.sendMemberId = function(id){
@@ -212,8 +212,11 @@
     function MyBookingsController($scope, MyBookingsService) {
      
     $scope.showBookingById = function(id) {
-    $scope.myBookings = MyBookingsService.myBookings(id);    
+    //$scope.myBookings = MyBookingsService.myBookings(id);    
+     MyBookingsService.myBookings(id,$scope);    
     };
+        
+
 
     }
 
@@ -280,19 +283,18 @@ You can use services to organize and share code across your app.
 (function() {
   'use strict';
   angular.module('booker')
-    .service('CalenderService', ['$firebaseArray', CalenderService]);
-  function CalenderService($firebaseArray) {
+    .service('CalenderService', ['$firebaseArray', 'MyBookingsService', CalenderService]);
+  function CalenderService($firebaseArray, MyBookingsService) {
     var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
     var bookings = $firebaseArray(ref); 
     var milliSeconds = 24 * 60 * 60 * 1000;
     var daySwitch = 0;
-/*
-    b.$loaded().then(function(b) { 
-    b.forEach(function(object) {
-           console.log(object.bookedBy);
-    });
+
+      
+    bookings.$loaded().then(function(b) { 
+    createCalender();
 });
-*/
+
 
       
     return {
@@ -341,6 +343,7 @@ You can use services to organize and share code across your app.
       newBooking.bookedBy = id;
         
       bookings.$add(newBooking);
+
     }
 
 
@@ -564,8 +567,6 @@ You can use services to organize and share code across your app.
   angular.module('booker')
     .service('MyBookingsService', ['$firebaseArray', MyBookingsService]);
 
-
-    
     function MyBookingsService($firebaseArray)
     {
     var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
@@ -574,14 +575,16 @@ You can use services to organize and share code across your app.
         myBookings: myBookings
       }; 
             
-function myBookings(id) {
-    var myBookingsList = [];
+function myBookings(id, $scope) {
+var myBookingsList = [];    
     ref.on("value", function(snapshot) {
+    myBookingsList = [];
     snapshot.forEach(function(object) {
     if (object.val().bookedBy == id) {    
     myBookingsList.push(object.val());
     }
     });
+    $scope.myBookings = myBookingsList;    
 }, function (errorObject) {
   console.log("The read failed: " + errorObject.code);
 });

@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('booker')
-        .controller('CalenderController', ['$scope', 'CalenderService', 'MemberService', CalenderController]);
+        .controller('CalenderController', ['$scope', 'CalenderService', 'MemberService', 'MyBookingsService', CalenderController]);
 
-    function CalenderController($scope, CalenderService, MemberService) {
+    function CalenderController($scope, CalenderService, MemberService, MyBookingsService) {
 
         $scope.bookTime = CalenderService.bookTime; // Pappafunktionen
         $scope.bookedTime = CalenderService.bookedTime;
@@ -16,7 +16,6 @@
         $scope.returnArray = CalenderService.createCalender();
         $scope.bookings = CalenderService.bookings;
 
-
         $scope.plusWeek = function () {
             CalenderService.plusWeek();
             $scope.returnArray = CalenderService.createCalender();
@@ -25,6 +24,7 @@
             CalenderService.minusWeek();
             $scope.returnArray = CalenderService.createCalender();
         };
+    
 
     $scope.members = MemberService.getMembers();
     $scope.sendMemberId = function(id){
