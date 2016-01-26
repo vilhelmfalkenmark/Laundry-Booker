@@ -1,5 +1,10 @@
 # Laundry Booker
 
+## Clone repo
+```bash
+$ git clone https://github.com/vilhelmfalkenmark/Laundry-Booker.git
+```
+
 ## Install dependencies
 ```bash
 $ npm install
