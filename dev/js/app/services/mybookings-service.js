@@ -13,6 +13,7 @@
 
 function myBookings(id, $scope) {
 var myBookingsList = [];
+
     ref.on("value", function(snapshot) {
     myBookingsList = [];
     snapshot.forEach(function(object) {

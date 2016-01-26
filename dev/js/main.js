@@ -171,6 +171,7 @@
         $scope.bookings = CalenderService.bookings;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         $scope.cancelBooking = CalenderService.cancelBooking;
         
         // $scope.cancelBooking = function(a,b,c)
@@ -182,6 +183,8 @@
 
 
 
+=======
+>>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
 =======
 >>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
         $scope.plusWeek = function () {
@@ -230,7 +233,12 @@
 
     $scope.showBookingById = function(id) {
 <<<<<<< HEAD
+<<<<<<< HEAD
     $scope.myBookings = MyBookingsService.myBookings(id);
+=======
+    //$scope.myBookings = MyBookingsService.myBookings(id);    
+     MyBookingsService.myBookings(id,$scope);    
+>>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
 =======
     //$scope.myBookings = MyBookingsService.myBookings(id);    
      MyBookingsService.myBookings(id,$scope);    
@@ -305,18 +313,30 @@ You can use services to organize and share code across your app.
   'use strict';
   angular.module('booker')
 <<<<<<< HEAD
+<<<<<<< HEAD
     .service('CalenderService', ['$firebaseArray','$firebaseObject', CalenderService]);
 
   function CalenderService($firebaseArray,$firebaseObject) {
     var ref = new Firebase("https://villes-laundy.firebaseio.com/bookings");
     var daySwitch = 0;
 =======
+=======
+>>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
     .service('CalenderService', ['$firebaseArray', 'MyBookingsService', CalenderService]);
   function CalenderService($firebaseArray, MyBookingsService) {
     var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
     var bookings = $firebaseArray(ref); 
     var milliSeconds = 24 * 60 * 60 * 1000;
     var daySwitch = 0;
+<<<<<<< HEAD
+=======
+
+      
+    bookings.$loaded().then(function(b) { 
+    createCalender();
+});
+
+>>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
 
       
     bookings.$loaded().then(function(b) { 
@@ -394,6 +414,11 @@ You can use services to organize and share code across your app.
       }
       newBooking.bookedBy = id;
       bookings.$add(newBooking);
+<<<<<<< HEAD
+=======
+
+    }
+>>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
 
     }
 
@@ -640,6 +665,7 @@ You can use services to organize and share code across your app.
     .service('MyBookingsService', ['$firebaseArray', MyBookingsService]);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   function MyBookingsService($firebaseArray) {
     var ref = new Firebase("https://villes-laundy.firebaseio.com/bookings");
     var b = $firebaseArray(ref);
@@ -649,6 +675,8 @@ You can use services to organize and share code across your app.
 
     
 =======
+=======
+>>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
     function MyBookingsService($firebaseArray)
     {
     var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
