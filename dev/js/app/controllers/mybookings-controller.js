@@ -9,12 +9,7 @@
     //$scope.myBookings = MyBookingsService.myBookings(id);    
 
      MyBookingsService.myBookings(id,$scope);
-
-        
-
-
-
-
+    }
     }
 
 })();

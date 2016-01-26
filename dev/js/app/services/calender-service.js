@@ -9,19 +9,36 @@ You can use services to organize and share code across your app.
     .service('CalenderService', ['$firebaseArray', 'MyBookingsService', CalenderService]);
   function CalenderService($firebaseArray, MyBookingsService) {
     var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
-    var bookings = $firebaseArray(ref);
+    var b = $firebaseArray(ref);
     var milliSeconds = 24 * 60 * 60 * 1000;
     var daySwitch = 0;
-
-
-    bookings.$loaded().then(function(b) {
-    createCalender();
-});
-
+    var array;
+    
       
-
-
-
+    function getBookings($scope) { 
+    var list = [];
+    ref.on("value", function(snapshot) {
+    list = [];
+    snapshot.forEach(function(object) {
+    list.push(object.val());
+    array = createCalender(list);
+    });
+    $scope.returnArray = array;
+        
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
+});
+    return array;
+    }      
+      /*
+    function getBookings($scope) {      
+    b.$loaded().then(function(b) {
+    array = createCalender(b);
+    $scope.returnArray = array;    
+    });
+    return array;
+    }    
+      */
   //  bookTime(1453805499917,"6-10",false, false, true,false, 1);
     return {
       createCalender: createCalender,
@@ -29,10 +46,13 @@ You can use services to organize and share code across your app.
       minusWeek: minusWeek,
       markAsBooked: markAsBooked,
       bookTime: bookTime,
-      bookings: bookings,
-      cancelBooking: cancelBooking
+      bookings: b,
+      cancelBooking: cancelBooking,
+      getBookings: getBookings
 
     };
+      
+
 
     function cancelBooking(apparatus,date,timespan,memberID)
     {
@@ -87,11 +107,12 @@ You can use services to organize and share code across your app.
         newBooking.bookedApparatus.push("Torkskåp");
       }
       newBooking.bookedBy = id;
-      bookings.$add(newBooking);
+      b.$add(newBooking);
 
     }
 
-    function createCalender() {
+    function createCalender(bookings) {
+        
       var date = new Date(new Date().getTime() + daySwitch * milliSeconds);
       // var date = new Date(getTime() + daySwitch * milliSeconds);
       var dates = [];
@@ -216,7 +237,7 @@ You can use services to organize and share code across your app.
         //console.log(fullDate);
         //console.log((day.dayName).getDate());
         for (var j = 0; j < bookings.length; j++)
-        {
+        {    
         //  console.log(bookings);
           // BLUEPRINT FÖR HUR VI SKRIVER VÅRA STRÄNGVÄRDEN FÖR DATUMEN FRÅN DATABASEN.
           //console.log(new Date(bookings[j].date).getFullYear()+""+new Date(bookings[j].date).getMonth()+""+new Date(bookings[j].date).getDate())
@@ -252,18 +273,19 @@ You can use services to organize and share code across your app.
         }
       }
       var returnArray = [dates, [leftArrow, rightArrow]];
+
       return returnArray;
     }
     function plusWeek() {
       if (daySwitch < 14) {
         daySwitch += 7;
-        createCalender();
+        getBookings();
       }
     }
     function minusWeek() {
       if (daySwitch > 0) {
         daySwitch -= 7;
-        createCalender();
+        getBookings();
       }
     }
   }

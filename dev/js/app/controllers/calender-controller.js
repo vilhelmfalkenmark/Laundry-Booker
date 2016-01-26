@@ -13,7 +13,8 @@
         $scope.toggleSelection = CalenderService.toggleSelection;
         $scope.checkedItems = CalenderService.checkedItems;
 
-        $scope.returnArray = CalenderService.createCalender();
+        
+        CalenderService.getBookings($scope);
         $scope.bookings = CalenderService.bookings;
 
 

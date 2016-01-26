@@ -167,13 +167,13 @@
         $scope.toggleSelection = CalenderService.toggleSelection;
         $scope.checkedItems = CalenderService.checkedItems;
 
-        $scope.returnArray = CalenderService.createCalender();
+        
+        CalenderService.getBookings($scope);
         $scope.bookings = CalenderService.bookings;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
         $scope.cancelBooking = CalenderService.cancelBooking;
-        
+
         // $scope.cancelBooking = function(a,b,c)
         // {
         //   ref.remove();
@@ -182,11 +182,6 @@
         // };
 
 
-
-=======
->>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
-=======
->>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
         $scope.plusWeek = function () {
             CalenderService.plusWeek();
             $scope.returnArray = CalenderService.createCalender();
@@ -196,6 +191,7 @@
             $scope.returnArray = CalenderService.createCalender();
         };
     
+
 
     $scope.members = MemberService.getMembers();
 
@@ -232,21 +228,10 @@
     function MyBookingsController($scope, MyBookingsService) {
 
     $scope.showBookingById = function(id) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    $scope.myBookings = MyBookingsService.myBookings(id);
-=======
     //$scope.myBookings = MyBookingsService.myBookings(id);    
-     MyBookingsService.myBookings(id,$scope);    
->>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
-=======
-    //$scope.myBookings = MyBookingsService.myBookings(id);    
-     MyBookingsService.myBookings(id,$scope);    
->>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
-    };
-        
 
-
+     MyBookingsService.myBookings(id,$scope);
+    }
     }
 
 })();
@@ -297,37 +282,6 @@ $(document).ready(function () {
     });
 });
 
-(function() {
-  'use strict';
-  angular.module('booker')
-    .service('BookingService', ['$scope, $firebaseArray', BookingService]);
-    function BookingService($scope, $firebaseArray) {
-    var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
-    $scope.bookings = $firebaseArray(ref); 
-    return {
-      bookTime: bookTime
-    };
-    function bookTime()
-    {
-        for (var item in this.booked)
-        {
-          if(this.booked[item].marked === true && this.booked[item].bookedBy === null)
-          {
-              
-                                $scope.bookings.$add({
-                                    bookedBy: this.booked[item].bookedBy,
-                                    name: this.booked[item].name,
-                                    date: this.date.dayName,
-                                    timespan: this.booked.timespan
-                                });
-                        
-                    
-          }
-        }
-    }
-  }
-
-});
 /*
 Angular services are substitutable objects that are wired together
 using dependency injection (DI).
@@ -336,42 +290,39 @@ You can use services to organize and share code across your app.
 (function() {
   'use strict';
   angular.module('booker')
-<<<<<<< HEAD
-<<<<<<< HEAD
-    .service('CalenderService', ['$firebaseArray','$firebaseObject', CalenderService]);
-
-  function CalenderService($firebaseArray,$firebaseObject) {
-    var ref = new Firebase("https://villes-laundy.firebaseio.com/bookings");
-    var daySwitch = 0;
-=======
-=======
->>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
     .service('CalenderService', ['$firebaseArray', 'MyBookingsService', CalenderService]);
   function CalenderService($firebaseArray, MyBookingsService) {
     var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
-    var bookings = $firebaseArray(ref); 
+    var b = $firebaseArray(ref);
     var milliSeconds = 24 * 60 * 60 * 1000;
     var daySwitch = 0;
-<<<<<<< HEAD
-=======
-
+    var array;
+    
       
-    bookings.$loaded().then(function(b) { 
-    createCalender();
+    function getBookings($scope) { 
+    var list = [];
+    ref.on("value", function(snapshot) {
+    list = [];
+    snapshot.forEach(function(object) {
+    list.push(object.val());
+    array = createCalender(list);
+    });
+    $scope.returnArray = array;
+        
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
 });
-
->>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
-
-      
-    bookings.$loaded().then(function(b) { 
-    createCalender();
-});
-
->>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
-
-    var bookings = $firebaseArray(ref);
-    var milliSeconds = 24 * 60 * 60 * 1000;
-
+    return array;
+    }      
+      /*
+    function getBookings($scope) {      
+    b.$loaded().then(function(b) {
+    array = createCalender(b);
+    $scope.returnArray = array;    
+    });
+    return array;
+    }    
+      */
   //  bookTime(1453805499917,"6-10",false, false, true,false, 1);
     return {
       createCalender: createCalender,
@@ -379,10 +330,13 @@ You can use services to organize and share code across your app.
       minusWeek: minusWeek,
       markAsBooked: markAsBooked,
       bookTime: bookTime,
-      bookings: bookings,
-      cancelBooking: cancelBooking
+      bookings: b,
+      cancelBooking: cancelBooking,
+      getBookings: getBookings
 
     };
+      
+
 
     function cancelBooking(apparatus,date,timespan,memberID)
     {
@@ -437,16 +391,12 @@ You can use services to organize and share code across your app.
         newBooking.bookedApparatus.push("Torkskåp");
       }
       newBooking.bookedBy = id;
-      bookings.$add(newBooking);
-<<<<<<< HEAD
-=======
-
-    }
->>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
+      b.$add(newBooking);
 
     }
 
-    function createCalender() {
+    function createCalender(bookings) {
+        
       var date = new Date(new Date().getTime() + daySwitch * milliSeconds);
       // var date = new Date(getTime() + daySwitch * milliSeconds);
       var dates = [];
@@ -571,7 +521,7 @@ You can use services to organize and share code across your app.
         //console.log(fullDate);
         //console.log((day.dayName).getDate());
         for (var j = 0; j < bookings.length; j++)
-        {
+        {    
         //  console.log(bookings);
           // BLUEPRINT FÖR HUR VI SKRIVER VÅRA STRÄNGVÄRDEN FÖR DATUMEN FRÅN DATABASEN.
           //console.log(new Date(bookings[j].date).getFullYear()+""+new Date(bookings[j].date).getMonth()+""+new Date(bookings[j].date).getDate())
@@ -594,8 +544,6 @@ You can use services to organize and share code across your app.
             }
           }
         }
-
-
       dates.push(day);
       }
       for (var key in dates) {
@@ -609,18 +557,19 @@ You can use services to organize and share code across your app.
         }
       }
       var returnArray = [dates, [leftArrow, rightArrow]];
+
       return returnArray;
     }
     function plusWeek() {
       if (daySwitch < 14) {
         daySwitch += 7;
-        createCalender();
+        getBookings();
       }
     }
     function minusWeek() {
       if (daySwitch > 0) {
         daySwitch -= 7;
-        createCalender();
+        getBookings();
       }
     }
   }
@@ -688,60 +637,33 @@ You can use services to organize and share code across your app.
   angular.module('booker')
     .service('MyBookingsService', ['$firebaseArray', MyBookingsService]);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  function MyBookingsService($firebaseArray) {
-    var ref = new Firebase("https://villes-laundy.firebaseio.com/bookings");
-    var b = $firebaseArray(ref);
-    return {
-      myBookings: myBookings
-    };
-
-    
-=======
-=======
->>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
     function MyBookingsService($firebaseArray)
     {
     var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
-    var b = $firebaseArray(ref); 
+    var b = $firebaseArray(ref);
       return {
         myBookings: myBookings
-      }; 
-            
+      };
+
 function myBookings(id, $scope) {
-var myBookingsList = [];    
+var myBookingsList = [];
+
     ref.on("value", function(snapshot) {
     myBookingsList = [];
     snapshot.forEach(function(object) {
-    if (object.val().bookedBy == id) {    
+    if (object.val().bookedBy == id) {
     myBookingsList.push(object.val());
     }
     });
-    $scope.myBookings = myBookingsList;    
+    $scope.myBookings = myBookingsList;
 }, function (errorObject) {
   console.log("The read failed: " + errorObject.code);
 });
     return myBookingsList;
 }
-        
-        
-    }
->>>>>>> 2e74c73... Fixed problem with duplicate elemetns in my bookings
 
 
-    function myBookings(id) {
-      var myBookingsList = [];
-      ref.on("value", function(snapshot) {
-        snapshot.forEach(function(object) {
-          if (object.val().bookedBy == id) {
-            myBookingsList.push(object.val());
-          }
-        });
-      }, function(errorObject) {
-        console.log("The read failed: " + errorObject.code);
-      });
-      return myBookingsList;
     }
-  }
+
+
 })();
