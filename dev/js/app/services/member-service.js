@@ -2,7 +2,6 @@
   'use strict';
   angular.module('booker')
     .service('MemberService', ['$http', MemberService]);
-
     function MemberService($http){
       var members = [
         {
@@ -15,7 +14,7 @@
           "password": "1234"
         },
         {
-          "id": 1234,
+          "id": 2,
           "firstname": "Simon",
           "lastname": "Lager",
           "username": "simonlager",
@@ -36,7 +35,6 @@
       return {
         getMembers: getMembers
       };
-
       function getMembers(){
         return members;
       }

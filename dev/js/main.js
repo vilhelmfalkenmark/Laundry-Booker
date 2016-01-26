@@ -155,17 +155,10 @@
 (function () {
     'use strict';
 
-<<<<<<< HEAD
     angular.module('booker')
         .controller('CalenderController', ['$scope', 'CalenderService', 'MemberService', CalenderController]);
 
     function CalenderController($scope, CalenderService, MemberService) {
-=======
-  angular.module('booker')
-    .controller('CalenderController', ['$scope', 'CalenderService', 'MemberService', CalenderController]);
-
-  function CalenderController($scope, CalenderService, MemberService) {
->>>>>>> 3a58640... WIP member service
 
         $scope.bookTime = CalenderService.bookTime; // Pappafunktionen
         $scope.bookedTime = CalenderService.bookedTime;
@@ -176,6 +169,16 @@
 
         $scope.returnArray = CalenderService.createCalender();
         $scope.bookings = CalenderService.bookings;
+
+        $scope.cancelBooking = CalenderService.cancelBooking;
+        
+        // $scope.cancelBooking = function(a,b,c)
+        // {
+        //   ref.remove();
+        //   console.log("hej");
+        //   console.log(a,b,c);
+        // };
+
 
 
         $scope.plusWeek = function () {
@@ -188,25 +191,14 @@
         };
 
     $scope.members = MemberService.getMembers();
-    $scope.sendMemberId = function(id){
+
+    $scope.sendMemberId = function(id, username){
     $scope.activeMemberId = id;
+    $scope.activeMemberfullName = username;
     };
-<<<<<<< HEAD
     }
-=======
-
-    $scope.members = MemberService.getMembers();
-    $scope.sendMemberId = function(id){
-      console.log(id);
-      $scope.activeMemberId = id;
-    };
-  }
->>>>>>> 3a58640... WIP member service
 })();
-<<<<<<< HEAD
-=======
 
->>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
 /*angular.module('booker')
     .controller("BookingCtrl", function ($scope, $firebaseArray) {
         var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
@@ -231,19 +223,10 @@
     .controller('MyBookingsController', ['$scope', 'MyBookingsService', MyBookingsController]);
 
     function MyBookingsController($scope, MyBookingsService) {
-<<<<<<< HEAD
-     
+
     $scope.showBookingById = function(id) {
-    $scope.myBookings = MyBookingsService.myBookings(id);    
+    $scope.myBookings = MyBookingsService.myBookings(id);
     };
-=======
-
-      // $scope.newBooking = function(){
-      //       console.log("klickad!")
-      // };
-
-     $scope.myBookings = MyBookingsService.myBookings("12345");
->>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
 
     }
 
@@ -310,110 +293,67 @@ You can use services to organize and share code across your app.
 (function() {
   'use strict';
   angular.module('booker')
-    .service('CalenderService', ['$firebaseArray', CalenderService]);
-  function CalenderService($firebaseArray) {
-    var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    var bookings = $firebaseArray(ref); 
-    var milliSeconds = 24 * 60 * 60 * 1000;
+    .service('CalenderService', ['$firebaseArray','$firebaseObject', CalenderService]);
+
+  function CalenderService($firebaseArray,$firebaseObject) {
+    var ref = new Firebase("https://villes-laundy.firebaseio.com/bookings");
     var daySwitch = 0;
-=======
-    var b = $firebaseArray(ref); 
-=======
-    var b = $firebaseArray(ref);
->>>>>>> 3a58640... WIP member service
-=======
-    var b = $firebaseArray(ref); 
->>>>>>> 55cafd9... added db from simon
+
+    var bookings = $firebaseArray(ref);
     var milliSeconds = 24 * 60 * 60 * 1000;
-    var daySwitch = 0;
-    var bookings = [];
->>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
-=======
-    var b = $firebaseArray(ref);
-    var milliSeconds = 24 * 60 * 60 * 1000;
-    var daySwitch = 0; 
-    var bookings = [];
-    bookTime(1453732728151, "6-10", true, true, true, true, 1234);
-    bookTime(1453825376239, "14-18", false, false, true, false, 1234);
-    bookTime(1453744186246, "14-18", true, false, true, false, 1234);
->>>>>>> c1e71a8... Added the loop of doom to compare the Database JSON with the JSON that renders in the view
-/*
-    b.$loaded().then(function(b) {
-    b.forEach(function(object) {
-           console.log(object.bookedBy);
-    });
-});
-*/
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
-      
-=======
-
->>>>>>> 3a58640... WIP member service
-=======
-      
->>>>>>> 55cafd9... added db from simon
-=======
-
->>>>>>> c1e71a8... Added the loop of doom to compare the Database JSON with the JSON that renders in the view
+  //  bookTime(1453805499917,"6-10",false, false, true,false, 1);
     return {
       createCalender: createCalender,
       plusWeek: plusWeek,
       minusWeek: minusWeek,
       markAsBooked: markAsBooked,
       bookTime: bookTime,
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-      bookings: bookings, 
-=======
-      bookings: b, 
->>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
-=======
-      bookings: b,
->>>>>>> 3a58640... WIP member service
-=======
-      bookings: b, 
->>>>>>> 55cafd9... added db from simon
-    };
-    function markAsBooked()
-    {
-        for (var item in this.booked)
-        {
-          if(this.booked[item].marked === true && this.booked[item].bookedBy === null)
-          {
-            this.booked[item].bookedBy = true; //
-            this.booked.available--;
-          }
-=======
-      bookings: b,
+      bookings: bookings,
+      cancelBooking: cancelBooking
+
     };
 
-    function markAsBooked()
+    function cancelBooking(apparatus,date,timespan,memberID)
     {
+      console.log(apparatus);
+      console.log(date);
+      console.log(memberID);
+      // var database = ref.child("bookings");
+      //var database = $firebaseObject(ref);
+      var database = $firebaseArray(ref);
+      //console.log(database);
+      database.$loaded()
+      {
+        console.log(database);
+      }
+      //console.log(bookings);
+    //  bookings.remove();
+      console.log("Tjena från CalenderService");
+    }
+
+
+    function markAsBooked() {
       for (var item in this.booked) {
         if (this.booked[item].marked === true && this.booked[item].bookedBy === null) {
-          this.booked[item].bookedBy = true; // ID på person som bokat
+          this.booked[item].bookedBy = true; //
           this.booked.available--;
->>>>>>> c1e71a8... Added the loop of doom to compare the Database JSON with the JSON that renders in the view
         }
       }
     }
+    //console.log(daySwitch);
     function bookTime(date, time, app1, app2, app3, app4, id) {
+
+      if(app1 == false && app2 == false && app3 == false && app4 == false )
+      {
+        console.log("Jodå!")
+        return false;
+      }
       var newBooking = {};
       newBooking.date = date;
       newBooking.time = time;
       newBooking.bookedApparatus = [];
+
       if (app1 === true) {
         newBooking.bookedApparatus.push("Tvättmaskin");
       }
@@ -427,20 +367,9 @@ You can use services to organize and share code across your app.
         newBooking.bookedApparatus.push("Torkskåp");
       }
       newBooking.bookedBy = id;
-<<<<<<< HEAD
-<<<<<<< HEAD
-        
       bookings.$add(newBooking);
-=======
-
-=======
->>>>>>> f066232... Rewritten loop to go through the objects fetched by the JSON file
-      bookings.push(newBooking);
-
-      b.$add(newBooking);
->>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
     }
-  //  console.log(bookings);
+
     function createCalender() {
       var date = new Date(new Date().getTime() + daySwitch * milliSeconds);
       // var date = new Date(getTime() + daySwitch * milliSeconds);
@@ -448,113 +377,9 @@ You can use services to organize and share code across your app.
       var d;
       var leftArrow = (daySwitch > 0) ? true : false;
       var rightArrow = (daySwitch < 14) ? true : false;
-      for (var i = 0; i < 2; i++) {
+      for (var i = 0; i < 7; i++) {
         var day = {};
-<<<<<<< HEAD
         d = date;
-        day.times = [
-           {
-              timespan: "6-10",
-              available: 0,
-              apparatus1:
-                {
-                name: "tvättmaskin",
-                marked: false,
-                bookedBy: null
-                },
-                apparatus2:
-                {
-                name: "Torktumlare",
-                marked: false,
-                bookedBy: null
-                },
-                apparatus3:
-                {
-                name: "Mangel",
-                marked: false,
-                bookedBy: null
-                },
-                apparatus4:
-                {
-                name: "Torkskåp",
-                marked: false,
-                bookedBy: null
-                }
-            },
-             {
-              timespan: "10-14",
-              available: 0,
-              apparatus1: {
-              name: "tvättmaskin",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus2: {
-              name: "Torktumlare",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus3: {
-              name: "Mangel",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus4: {
-              name: "Torkskåp",
-              marked: false,
-              bookedBy: null
-              }
-            },
-            {
-              timespan: "14-18",
-              available: 0,
-              apparatus1: {
-              name: "tvättmaskin",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus2: {
-              name: "Torktumlare",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus3: {
-              name: "Mangel",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus4: {
-              name: "Torkskåp",
-              marked: false,
-              bookedBy: null
-              }
-            },
-            {
-              timespan: "18-22",
-              available: 0,
-              apparatus1: {
-              name: "tvättmaskin",
-              marked: false,
-              bookedBy: null
-            },
-              apparatus2: {
-              name: "Torktumlare",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus3: {
-              name: "Mangel",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus4: {
-              name: "Torkskåp",
-              marked: false,
-              bookedBy: null
-            }
-=======
-          d = date;
-
         day.times = [{
           timespan: "6-10",
           available: 0,
@@ -577,7 +402,6 @@ You can use services to organize and share code across your app.
             name: "Torkskåp",
             marked: false,
             bookedBy: null
->>>>>>> c1e71a8... Added the loop of doom to compare the Database JSON with the JSON that renders in the view
           }
         }, {
           timespan: "10-14",
@@ -666,69 +490,57 @@ You can use services to organize and share code across your app.
         dateDay = dateDay.getDate();
         month = month.getMonth();
         year = year.getFullYear();
-        var fullDate = (year+""+month+""+dateDay);
+        var fullDate = (year + "" + month + "" + dateDay);
 
-        console.log(fullDate);
-
-       //console.log((day.dayName).getDate());
+        //console.log(fullDate);
+        //console.log((day.dayName).getDate());
         for (var j = 0; j < bookings.length; j++)
         {
+        //  console.log(bookings);
           // BLUEPRINT FÖR HUR VI SKRIVER VÅRA STRÄNGVÄRDEN FÖR DATUMEN FRÅN DATABASEN.
           //console.log(new Date(bookings[j].date).getFullYear()+""+new Date(bookings[j].date).getMonth()+""+new Date(bookings[j].date).getDate())
-          if (fullDate == (new Date(bookings[j].date).getFullYear()+""+new Date(bookings[j].date).getMonth()+""+new Date(bookings[j].date).getDate()))
-          {
-          //console.log(fullDate + " Är datumet där bokningen finns!");
-            for(var k = 0;k<bookings[j].bookedApparatus.length;k++)
-            {
+          if (fullDate == (new Date(bookings[j].date).getFullYear() + "" + new Date(bookings[j].date).getMonth() + "" + new Date(bookings[j].date).getDate())) {
+            //console.log(fullDate + " Är datumet där bokningen finns!");
+            for (var k = 0; k < bookings[j].bookedApparatus.length; k++) {
               //console.log(bookings[j].time + " är tiden där det finns "+k+" bokningar");
-              for(var item in day)
-              {
-                  for(var timeblock in day[item])
-                  {
-                    //console.log(day[item][timeblock].timespan);
-                    if(bookings[j].time == day[item][timeblock].timespan)
-                      {
-                        for(var apparatus in day[item][timeblock])
-                        {
-                          if(day[item][timeblock][apparatus].name == bookings[j].bookedApparatus[k])
-                          {
-                            day[item][timeblock][apparatus].bookedBy = 1234;
-                          }
-                        }
+              for (var item in day) {
+                for (var timeblock in day[item]) {
+                  //console.log(day[item][timeblock].timespan);
+                  if (bookings[j].time == day[item][timeblock].timespan) {
+                    for (var apparatus in day[item][timeblock]) {
+                      if (day[item][timeblock][apparatus].name == bookings[j].bookedApparatus[k]) {
+                        day[item][timeblock][apparatus].bookedBy = 1234;
                       }
-                    //console.log(bookings[j].time);
+                    }
                   }
+                }
               }
             }
           }
         }
-        dates.push(day);
 
+
+      dates.push(day);
       }
       for (var key in dates) {
         for (var time in dates[key].times) {
-          for (var item in dates[key].times[time]) {
-            //console.log(dates[key].times[time][item]);
-            //console.log(dates[key].times[time].available);
+          for (var item in dates[key].times[time])
+          {
             if (dates[key].times[time][item].bookedBy === null) {
               dates[key].times[time].available++;
             }
-            //console.log(dates[key].times[time].available);
-            //console.log(dates[key].times[time][item]);
           }
         }
       }
       var returnArray = [dates, [leftArrow, rightArrow]];
       return returnArray;
     }
-
     function plusWeek() {
       if (daySwitch < 14) {
         daySwitch += 7;
         createCalender();
       }
     }
-
     function minusWeek() {
       if (daySwitch > 0) {
         daySwitch -= 7;
@@ -741,74 +553,7 @@ You can use services to organize and share code across your app.
 (function() {
   'use strict';
   angular.module('booker')
-<<<<<<< HEAD
-<<<<<<< HEAD
     .service('MemberService', ['$http', MemberService]);
-
-    function MemberService($http){
-      var members = [
-        {
-          "id": 1,
-          "firstname": "Vilhelm",
-          "lastname": "Falkenmark",
-          "username": "vilhelmfalkenmark",
-          "floor": "3",
-          "apartment": "1408",
-          "password": "1234"
-        },
-        {
-          "id": 1234,
-          "firstname": "Simon",
-          "lastname": "Lager",
-          "username": "simonlager",
-          "floor": "4",
-          "apartment": "4322",
-          "password": "1234"
-        },
-        {
-          "id": 3,
-          "firstname": "Fredrik",
-          "lastname": "Löfgren",
-          "username": "fredriklofgren",
-          "floor": "4",
-          "apartment": "8109",
-          "password": "1234"
-        }
-      ];
-      return {
-        getMembers: getMembers
-      };
-
-      function getMembers(){
-        return members;
-      }
-
-      // **** Gets members fom members.json  ****
-      // **** Problem is delay until data is ****
-      // **** fetched needs bugg controll    ****
-      // 
-      // function getMembers(){
-      //   return $http.get('./js/members/members.json')
-      //   .then(function(res) {
-      //     // console.log(res.data);
-      //     return res;
-      //   }, function(err) {
-      //     console.log(err);
-      //   });
-      // }
-    }
-})();
-
-(function() {
-  'use strict';
-  angular.module('booker')
-=======
->>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
-    .service('MyBookingsService', ['$firebaseArray', MyBookingsService]);
-=======
-    .service('MemberService', ['$http', MemberService]);
->>>>>>> 55cafd9... added db from simon
-
     function MemberService($http){
       var members = [
         {
@@ -842,7 +587,6 @@ You can use services to organize and share code across your app.
       return {
         getMembers: getMembers
       };
-
       function getMembers(){
         return members;
       }
@@ -850,7 +594,7 @@ You can use services to organize and share code across your app.
       // **** Gets members fom members.json  ****
       // **** Problem is delay until data is ****
       // **** fetched needs bugg controll    ****
-      // 
+      //
       // function getMembers(){
       //   return $http.get('./js/members/members.json')
       //   .then(function(res) {
@@ -868,54 +612,28 @@ You can use services to organize and share code across your app.
   angular.module('booker')
     .service('MyBookingsService', ['$firebaseArray', MyBookingsService]);
 
+  function MyBookingsService($firebaseArray) {
+    var ref = new Firebase("https://villes-laundy.firebaseio.com/bookings");
+    var b = $firebaseArray(ref);
+    return {
+      myBookings: myBookings
+    };
 
     
-    function MyBookingsService($firebaseArray)
-    {
-    var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
-    var b = $firebaseArray(ref); 
-      return {
-        myBookings: myBookings
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-      }; 
-            
-function myBookings(id) {
-    var myBookingsList = [];
-    ref.on("value", function(snapshot) {
-    snapshot.forEach(function(object) {
-    if (object.val().bookedBy == id) {    
-    myBookingsList.push(object.val());
-    }
-    });
-}, function (errorObject) {
-  console.log("The read failed: " + errorObject.code);
-=======
-      };        
-        
-=======
-      };
 
->>>>>>> 3a58640... WIP member service
-=======
-      };        
-        
->>>>>>> 55cafd9... added db from simon
-function myBookings(id) {
-    var myBookingsList = [];
-    b.$loaded().then(function(b) { 
-    b.forEach(function(object) {
-          if (object.bookedBy == id) {
-              myBookingsList.push(object);
+
+    function myBookings(id) {
+      var myBookingsList = [];
+      ref.on("value", function(snapshot) {
+        snapshot.forEach(function(object) {
+          if (object.val().bookedBy == id) {
+            myBookingsList.push(object.val());
           }
-    });
->>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
-});
-    return myBookingsList;
-}
-        
-        
+        });
+      }, function(errorObject) {
+        console.log("The read failed: " + errorObject.code);
+      });
+      return myBookingsList;
     }
-
+  }
 })();

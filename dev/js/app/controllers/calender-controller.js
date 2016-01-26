@@ -16,6 +16,16 @@
         $scope.returnArray = CalenderService.createCalender();
         $scope.bookings = CalenderService.bookings;
 
+        $scope.cancelBooking = CalenderService.cancelBooking;
+        
+        // $scope.cancelBooking = function(a,b,c)
+        // {
+        //   ref.remove();
+        //   console.log("hej");
+        //   console.log(a,b,c);
+        // };
+
+
 
         $scope.plusWeek = function () {
             CalenderService.plusWeek();
@@ -27,8 +37,10 @@
         };
 
     $scope.members = MemberService.getMembers();
-    $scope.sendMemberId = function(id){
+
+    $scope.sendMemberId = function(id, username){
     $scope.activeMemberId = id;
+    $scope.activeMemberfullName = username;
     };
     }
 })();
