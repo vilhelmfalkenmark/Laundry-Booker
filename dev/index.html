@@ -23,16 +23,19 @@
         <div class="my-bookings-container">
           <div ng-repeat="member in members">
             <button type="button" name="button" ng-click="sendMemberId(member.id,member.username);showBookingById(member.id)">{{member.firstname}}</button>
+            
           </div>
-          <p ng-show="myBookings.length"><i class="fa fa-fw fa-info-circle"></i>&nbsp;Din nästa bokade tid är:<br> <b> <span ng-repeat="(key, nextBooking) in myBookings | orderBy:'date' | limitTo: 1">{{nextBooking.date | date}} kl. {{nextBooking.time}}</span></b></p>
-         <p ng-show="!myBookings.length">Du har för närvarande inga bokningar.</p>
+          <p ng-show="myBookings.length">&nbsp;&nbsp;&nbsp;<i class="fa fa-fw fa-info-circle"></i>&nbsp;Din nästa bokade tid är: <b> <span ng-repeat="(key, nextBooking) in myBookings | orderBy:'date' | limitTo: 1">{{nextBooking.date | date}} kl. {{nextBooking.time}}</span></b></p>
+         <p ng-show="!myBookings.length">&nbsp;&nbsp;&nbsp;<i class="fa fa-fw fa-info-circle"></i>&nbsp;Du har för närvarande inga bokningar.</p>
+        
+          
         </div>
-        <p>Du är inloggad som {{activeMemberfullName}} med id: {{activeMemberId}}</p>
+
       </section>
     </div>
     <div class="span-l4-m4-s4">
       <button class="right" id="submit" name="submit" type="submit" ng-click="notification.status = 'show'; notification.message = ' Allt gick bra!'; notification.type = 'error';"><i class="fa fa-fw fa-sign-out"></i> Logga ut</button>
-      <button class="right button-bookings"><i class="fa fa-fw fa-list"></i> Mina bokningar <b>({{myBookings.length}})</b></button>
+      <button class="right button-bookings"><i class="fa fa-fw fa-list"></i> Mina bokningar <b>({{myBookings.length || 0}})</b></button>
     </div>
 
   </header>
@@ -82,7 +85,6 @@
             <div class="weekday-left-col span-l1-m2-s3">
               <div class="weekday-nr">{{date.dayName | date:'dd'}}</div>
               <div class="weekday-day">{{date.dayName | date:'EEE'}}</div>
-              <div class="weekday-raw">{{date.dayName}}</div>
 
             </div>
             <div class="weekday-right-col span-ll10-m8-s9">

@@ -30,11 +30,11 @@
 
         $scope.plusWeek = function () {
             CalenderService.plusWeek();
-            $scope.returnArray = CalenderService.createCalender();
+            $scope.returnArray = CalenderService.getBookings($scope);;
         };
         $scope.minusWeek = function () {
             CalenderService.minusWeek();
-            $scope.returnArray = CalenderService.createCalender();
+            $scope.returnArray = CalenderService.getBookings($scope);;
         };
     
 
