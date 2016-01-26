@@ -79,12 +79,10 @@ angular.module('checklist-model', [])
       if (newValue === oldValue) {
         return;
       }
-
       if (checklistBeforeChange && (checklistBeforeChange(scope) === false)) {
         scope[attrs.ngModel] = contains(getter(scope.$parent), value, comparator);
         return;
       }
-
       setValueInChecklistModel(value, newValue);
 
       if (checklistChange) {

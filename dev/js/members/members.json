@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "firstname": "Vilhelm",
     "lastname": "Falkenmark",
     "username": "vilhelmfalkenmark",
@@ -8,6 +9,7 @@
     "password": "1234"
   },
   {
+    "id": 2,
     "firstname": "Simon",
     "lastname": "Lager",
     "username": "simonlager",
@@ -16,6 +18,7 @@
     "password": "1234"
   },
   {
+    "id": 3,
     "firstname": "Fredrik",
     "lastname": "Löfgren",
     "username": "fredriklofgren",

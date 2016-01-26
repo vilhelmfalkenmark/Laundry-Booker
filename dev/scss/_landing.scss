@@ -73,7 +73,6 @@ KALENDER - VÄNSTER DEL (veckodag och månadsnummer)
   margin: 10px;
   border: 1px solid $calenderBorder;
   transition: all 0.1s ease;
-  cursor: pointer;
   border-radius: 5px;
   &:nth-of-type(odd)
   {
@@ -123,11 +122,13 @@ KALENDER - HÖGER DEL (bokningsdelen preview)
 }
 
 .weekday-expand {
+
   text-align: center;
   font-size: 36px;
   line-height: 110px;
     border-left: 1px solid $calenderSpace;
     i {
+      cursor: pointer;
     transition: all 0.3s;
         &:hover {
             color: $highlightColor;
@@ -175,7 +176,7 @@ KALENDER - HÖGER DEL (bokningsdelen preview)
 
 .booking-container {
     padding: 20px;
-    //display: none;
+    display: none;
 }
 .my-bookings-container {
     color: $white;
@@ -184,7 +185,7 @@ KALENDER - HÖGER DEL (bokningsdelen preview)
     }
 }
 .my-bookings {
-  //  display: none;
+    display: none;
     //height: 200px;
     background: $darkHighlightColor;
     color: white;

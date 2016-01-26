@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  angular.module('booker', []);
+  angular.module('booker', ['firebase']);
 
 })();
 
@@ -152,39 +152,54 @@
 
 })();
 
-(function() {
-  'use strict';
+(function () {
+    'use strict';
 
-  angular.module('booker')
-    .controller('CalenderController', ['$scope', 'CalenderService', CalenderController]);
+    angular.module('booker')
+        .controller('CalenderController', ['$scope', 'CalenderService', 'MemberService', 'MyBookingsService', CalenderController]);
 
-  function CalenderController($scope, CalenderService) {
+    function CalenderController($scope, CalenderService, MemberService, MyBookingsService) {
 
-    $scope.bookTime = CalenderService.bookTime; // Pappafunktionen
-    $scope.bookedTime = CalenderService.bookedTime;
+        $scope.bookTime = CalenderService.bookTime; // Pappafunktionen
+        $scope.bookedTime = CalenderService.bookedTime;
+        $scope.markAsBooked = CalenderService.markAsBooked;
 
-    $scope.numberOfBookings = 0;
+        $scope.toggleSelection = CalenderService.toggleSelection;
+        $scope.checkedItems = CalenderService.checkedItems;
 
-    $scope.myBookings = function(a,b){
-      $scope.bookedTime = a;
-      $scope.bookedDay = b;
-      $scope.numberOfBookings++;
+        
+        CalenderService.getBookings($scope);
+        $scope.bookings = CalenderService.bookings;
+
+
+        $scope.cancelBooking = CalenderService.cancelBooking;
+
+        // $scope.cancelBooking = function(a,b,c)
+        // {
+        //   ref.remove();
+        //   console.log("hej");
+        //   console.log(a,b,c);
+        // };
+
+
+        $scope.plusWeek = function () {
+            CalenderService.plusWeek();
+            $scope.returnArray = CalenderService.getBookings($scope);;
+        };
+        $scope.minusWeek = function () {
+            CalenderService.minusWeek();
+            $scope.returnArray = CalenderService.getBookings($scope);;
+        };
+    
+
+
+    $scope.members = MemberService.getMembers();
+
+    $scope.sendMemberId = function(id, username){
+    $scope.activeMemberId = id;
+    $scope.activeMemberfullName = username;
     };
-
-    $scope.toggleSelection = CalenderService.toggleSelection;
-    $scope.checkedItems = CalenderService.checkedItems;
-
-    $scope.returnArray = CalenderService.createCalender();
-
-    $scope.plusWeek = function(){
-      CalenderService.plusWeek();
-      $scope.returnArray = CalenderService.createCalender();
-    };
-    $scope.minusWeek = function(){
-      CalenderService.minusWeek();
-      $scope.returnArray = CalenderService.createCalender();
-    };
-  }
+    }
 })();
 
 (function() {
@@ -194,41 +209,39 @@
 
     function MyBookingsController($scope, MyBookingsService) {
 
-      var myBookings = [
-        {
-          date: 21964196421978,
-          time: "6-10",
-          apparatus: ["tvättmaskin","mangel"],
-          bookerID: 1234
-        },
-        {
-          date: 21964196421978,
-          time: "6-10",
-          apparatus: ["tvättmaskin","mangel"],
-          bookerID: 1234
-        }
-      ];
-      function bookingPrototype(date, time, apparatus, bookerID) {
-        this.date = date;
-        this.time = time;
-        this.apparatus = apparatus;
-        this.bookerID = bookerID;
-      }
-      var l = 0;
-      function newBooking(date, time, apparatus) {
-      console.log("NEWBOOKING ÄR KLICKAD!");
-      myBookings[l] = new bookingPrototype(date, time, apparatus);
-      l++;
+    $scope.showBookingById = function(id) {
+    //$scope.myBookings = MyBookingsService.myBookings(id);    
 
-      console.log(myBookings)
-
-  }
-
-
+     MyBookingsService.myBookings(id,$scope);
+    }
     }
 
 })();
 
+angular.module('booker')
+.directive('notification', ['$timeout', function ($timeout) {
+  return {
+    restrict: 'A',
+    controller: ['$scope', function ($scope) {
+      $scope.notification = {
+        status: 'hide',
+        type: 'success',
+        message: 'Welcome! It\'s yet another angular alert ;)'
+      };
+    }],
+    link: function(scope, elem, attrs) {
+      attrs.$observe('notification', function (value) {
+        if (value === 'show') {
+          $(elem).show();
+          $timeout(function () {
+            $(elem).hide();
+            scope.notification.status = 'hide';
+          }, 3000);
+        }
+      });
+    }
+  };
+}]);
 $(document).ready(function () {
     $('.weekdays-container').on('click', '.weekday-expand', function() {
         $('.booking-container').slideUp(500);
@@ -259,30 +272,115 @@ You can use services to organize and share code across your app.
 (function() {
   'use strict';
   angular.module('booker')
-    .service('CalenderService', [CalenderService]);
-  function CalenderService($scope) {
+    .service('CalenderService', ['$firebaseArray', 'MyBookingsService', CalenderService]);
+  function CalenderService($firebaseArray, MyBookingsService) {
+    var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
+    var b = $firebaseArray(ref);
     var milliSeconds = 24 * 60 * 60 * 1000;
     var daySwitch = 0;
-
+    var array;
+    
+      
+    function getBookings($scope) { 
+    var list = [];
+    ref.on("value", function(snapshot) {
+    list = [];
+    snapshot.forEach(function(object) {
+    list.push(object.val());
+    array = createCalender(list);
+    });
+    $scope.returnArray = array;
+        
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
+});
+    return array;
+    }      
+      /*
+    function getBookings($scope) {      
+    b.$loaded().then(function(b) {
+    array = createCalender(b);
+    $scope.returnArray = array;    
+    });
+    return array;
+    }    
+      */
+  //  bookTime(1453805499917,"6-10",false, false, true,false, 1);
     return {
       createCalender: createCalender,
       plusWeek: plusWeek,
       minusWeek: minusWeek,
-      bookTime: bookTime
+      markAsBooked: markAsBooked,
+      bookTime: bookTime,
+      bookings: b,
+      cancelBooking: cancelBooking,
+      getBookings: getBookings
+
     };
-    function bookTime()
+      
+
+
+    function cancelBooking(apparatus,date,timespan,memberID)
     {
-        for (var item in this.booked)
-        {
-          if(this.booked[item].marked === true && this.booked[item].bookedBy === null)
-          {
-            this.booked[item].bookedBy = 1234; // ID på person som bokat
-            this.booked.available--;
-          }
-        }
+      console.log(apparatus);
+      console.log(date);
+      console.log(memberID);
+      // var database = ref.child("bookings");
+      //var database = $firebaseObject(ref);
+      var database = $firebaseArray(ref);
+      //console.log(database);
+      database.$loaded()
+      {
+        console.log(database);
+      }
+      //console.log(bookings);
+    //  bookings.remove();
+      console.log("Tjena från CalenderService");
     }
-    function createCalender() {
+
+
+    function markAsBooked() {
+      for (var item in this.booked) {
+        if (this.booked[item].marked === true && this.booked[item].bookedBy === null) {
+          this.booked[item].bookedBy = true; //
+          this.booked.available--;
+        }
+      }
+    }
+    //console.log(daySwitch);
+    function bookTime(date, time, app1, app2, app3, app4, id) {
+
+      if(app1 == false && app2 == false && app3 == false && app4 == false )
+      {
+        console.log("Jodå!")
+        return false;
+      }
+      var newBooking = {};
+      newBooking.date = date;
+      newBooking.time = time;
+      newBooking.bookedApparatus = [];
+
+      if (app1 === true) {
+        newBooking.bookedApparatus.push("Tvättmaskin");
+      }
+      if (app2 === true) {
+        newBooking.bookedApparatus.push("Torktumlare");
+      }
+      if (app3 === true) {
+        newBooking.bookedApparatus.push("Mangel");
+      }
+      if (app4 === true) {
+        newBooking.bookedApparatus.push("Torkskåp");
+      }
+      newBooking.bookedBy = id;
+      b.$add(newBooking);
+
+    }
+
+    function createCalender(bookings) {
+        
       var date = new Date(new Date().getTime() + daySwitch * milliSeconds);
+      // var date = new Date(getTime() + daySwitch * milliSeconds);
       var dates = [];
       var d;
       var leftArrow = (daySwitch > 0) ? true : false;
@@ -290,161 +388,264 @@ You can use services to organize and share code across your app.
       for (var i = 0; i < 7; i++) {
         var day = {};
         d = date;
-        day.times = [ ///// !!!!!!!!! TRUE BETYDER ATT DET ÄR LEDIGT !!!!!!!!!!! //////////////
-           {
-              timespan: "6-10",
-              available: 0,
-              apparatus1:
-                {
-                name: "tvättmaskin",
-                marked: false,
-                bookedBy: null
-                },
-                apparatus2:
-                {
-                name: "Torktumlare",
-                marked: false,
-                bookedBy: null
-                },
-                apparatus3:
-                {
-                name: "Mangel",
-                marked: false,
-                bookedBy: null
-                },
-                apparatus4:
-                {
-                name: "Torkskåp",
-                marked: false,
-                bookedBy: null
-                }
-            },
-             {
-              timespan: "10-14",
-              available: 0,
-              apparatus1: {
-              name: "tvättmaskin",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus2: {
-              name: "Torktumlare",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus3: {
-              name: "Mangel",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus4: {
-              name: "Torkskåp",
-              marked: false,
-              bookedBy: null
-              }
-            },
-            {
-              timespan: "14-18",
-              available: 0,
-              apparatus1: {
-              name: "tvättmaskin",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus2: {
-              name: "Torktumlare",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus3: {
-              name: "Mangel",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus4: {
-              name: "Torkskåp",
-              marked: false,
-              bookedBy: null
-              }
-            },
-            {
-              timespan: "18-22",
-              available: 0,
-              apparatus1: {
-              name: "tvättmaskin",
-              marked: false,
-              bookedBy: null
-            },
-              apparatus2: {
-              name: "Torktumlare",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus3: {
-              name: "Mangel",
-              marked: false,
-              bookedBy: null
-              },
-              apparatus4: {
-              name: "Torkskåp",
-              marked: false,
-              bookedBy: null
-            }
+        day.times = [{
+          timespan: "6-10",
+          available: 0,
+          apparatus1: {
+            name: "Tvättmaskin",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus2: {
+            name: "Torktumlare",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus3: {
+            name: "Mangel",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus4: {
+            name: "Torkskåp",
+            marked: false,
+            bookedBy: null
           }
-        ];
-        var dayIterator; // Så att man ser även ser dagens datum
+        }, {
+          timespan: "10-14",
+          available: 0,
+          apparatus1: {
+            name: "Tvättmaskin",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus2: {
+            name: "Torktumlare",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus3: {
+            name: "Mangel",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus4: {
+            name: "Torkskåp",
+            marked: false,
+            bookedBy: null
+          }
+        }, {
+          timespan: "14-18",
+          available: 0,
+          apparatus1: {
+            name: "Tvättmaskin",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus2: {
+            name: "Torktumlare",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus3: {
+            name: "Mangel",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus4: {
+            name: "Torkskåp",
+            marked: false,
+            bookedBy: null
+          }
+        }, {
+          timespan: "18-22",
+          available: 0,
+          apparatus1: {
+            name: "Tvättmaskin",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus2: {
+            name: "Torktumlare",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus3: {
+            name: "Mangel",
+            marked: false,
+            bookedBy: null
+          },
+          apparatus4: {
+            name: "Torkskåp",
+            marked: false,
+            bookedBy: null
+          }
+        }];
 
+        var dayIterator; // Så att man ser även ser dagens datum
         if (i === 0) {
           dayIterator = 0;
         } else {
           dayIterator = 1;
         }
         d = (d.setDate((d.getDate() + dayIterator)));
+        //console.log(d);
         day.dayName = d;
-        dates.push(day);
-      }
-        for (var key in dates) {
-          for (var time in dates[key].times) {
-              for(var item in dates[key].times[time])
-              {
-                //console.log(dates[key].times[time][item]);
-                //console.log(dates[key].times[time].available);
-                if(dates[key].times[time][item].bookedBy === null)
-                {
-                  dates[key].times[time].available++;
+
+        var dateDay = new Date(d);
+        var month = dateDay;
+        var year = dateDay;
+        dateDay = dateDay.getDate();
+        month = month.getMonth();
+        year = year.getFullYear();
+        var fullDate = (year + "" + month + "" + dateDay);
+
+        //console.log(fullDate);
+        //console.log((day.dayName).getDate());
+        for (var j = 0; j < bookings.length; j++)
+        {    
+        //  console.log(bookings);
+          // BLUEPRINT FÖR HUR VI SKRIVER VÅRA STRÄNGVÄRDEN FÖR DATUMEN FRÅN DATABASEN.
+          //console.log(new Date(bookings[j].date).getFullYear()+""+new Date(bookings[j].date).getMonth()+""+new Date(bookings[j].date).getDate())
+          if (fullDate == (new Date(bookings[j].date).getFullYear() + "" + new Date(bookings[j].date).getMonth() + "" + new Date(bookings[j].date).getDate())) {
+            //console.log(fullDate + " Är datumet där bokningen finns!");
+            for (var k = 0; k < bookings[j].bookedApparatus.length; k++) {
+              //console.log(bookings[j].time + " är tiden där det finns "+k+" bokningar");
+              for (var item in day) {
+                for (var timeblock in day[item]) {
+                  //console.log(day[item][timeblock].timespan);
+                  if (bookings[j].time == day[item][timeblock].timespan) {
+                    for (var apparatus in day[item][timeblock]) {
+                      if (day[item][timeblock][apparatus].name == bookings[j].bookedApparatus[k]) {
+                        day[item][timeblock][apparatus].bookedBy = 1234;
+                      }
+                    }
+                  }
                 }
-                //console.log(dates[key].times[time].available);
-                //console.log(dates[key].times[time][item]);
               }
+            }
           }
         }
+      dates.push(day);
+      }
+      for (var key in dates) {
+        for (var time in dates[key].times) {
+          for (var item in dates[key].times[time])
+          {
+            if (dates[key].times[time][item].bookedBy === null) {
+              dates[key].times[time].available++;
+            }
+          }
+        }
+      }
       var returnArray = [dates, [leftArrow, rightArrow]];
+
       return returnArray;
     }
     function plusWeek() {
       if (daySwitch < 14) {
         daySwitch += 7;
-        createCalender();
+        getBookings();
       }
     }
     function minusWeek() {
       if (daySwitch > 0) {
         daySwitch -= 7;
-        createCalender();
+        getBookings();
       }
     }
-
   }
 })();
 
 (function() {
   'use strict';
   angular.module('booker')
-    .service('MyBookingsService', [MyBookingsService]);
+    .service('MemberService', ['$http', MemberService]);
+    function MemberService($http){
+      var members = [
+        {
+          "id": 1,
+          "firstname": "Vilhelm",
+          "lastname": "Falkenmark",
+          "username": "vilhelmfalkenmark",
+          "floor": "3",
+          "apartment": "1408",
+          "password": "1234"
+        },
+        {
+          "id": 2,
+          "firstname": "Simon",
+          "lastname": "Lager",
+          "username": "simonlager",
+          "floor": "4",
+          "apartment": "4322",
+          "password": "1234"
+        },
+        {
+          "id": 3,
+          "firstname": "Fredrik",
+          "lastname": "Löfgren",
+          "username": "fredriklofgren",
+          "floor": "4",
+          "apartment": "8109",
+          "password": "1234"
+        }
+      ];
+      return {
+        getMembers: getMembers
+      };
+      function getMembers(){
+        return members;
+      }
 
-    function MyBookingsService($scope)
-    {
-      
+      // **** Gets members fom members.json  ****
+      // **** Problem is delay until data is ****
+      // **** fetched needs bugg controll    ****
+      //
+      // function getMembers(){
+      //   return $http.get('./js/members/members.json')
+      //   .then(function(res) {
+      //     // console.log(res.data);
+      //     return res;
+      //   }, function(err) {
+      //     console.log(err);
+      //   });
+      // }
     }
+})();
+
+(function() {
+  'use strict';
+  angular.module('booker')
+    .service('MyBookingsService', ['$firebaseArray', MyBookingsService]);
+
+    function MyBookingsService($firebaseArray)
+    {
+    var ref = new Firebase("https://laundrybookerjs.firebaseio.com/bookings");
+    var b = $firebaseArray(ref);
+      return {
+        myBookings: myBookings
+      };
+
+function myBookings(id, $scope) {
+var myBookingsList = [];
+
+    ref.on("value", function(snapshot) {
+    myBookingsList = [];
+    snapshot.forEach(function(object) {
+    if (object.val().bookedBy == id) {
+    myBookingsList.push(object.val());
+    }
+    });
+    $scope.myBookings = myBookingsList;
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
+});
+    return myBookingsList;
+}
+
+
+    }
+
 
 })();
