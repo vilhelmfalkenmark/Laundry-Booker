@@ -335,7 +335,7 @@ You can use services to organize and share code across your app.
 =======
     var b = $firebaseArray(ref);
     var milliSeconds = 24 * 60 * 60 * 1000;
-    var daySwitch = 0;
+    var daySwitch = 0; 
     var bookings = [];
     bookTime(1453732728151, "6-10", true, true, true, true, 1234);
     bookTime(1453825376239, "14-18", false, false, true, false, 1234);
@@ -399,7 +399,8 @@ You can use services to organize and share code across your app.
       bookings: b,
     };
 
-    function markAsBooked() {
+    function markAsBooked()
+    {
       for (var item in this.booked) {
         if (this.booked[item].marked === true && this.booked[item].bookedBy === null) {
           this.booked[item].bookedBy = true; // ID på person som bokat
@@ -408,7 +409,6 @@ You can use services to organize and share code across your app.
         }
       }
     }
-
     function bookTime(date, time, app1, app2, app3, app4, id) {
       var newBooking = {};
       newBooking.date = date;
@@ -428,18 +428,19 @@ You can use services to organize and share code across your app.
       }
       newBooking.bookedBy = id;
 <<<<<<< HEAD
+<<<<<<< HEAD
         
       bookings.$add(newBooking);
 =======
 
+=======
+>>>>>>> f066232... Rewritten loop to go through the objects fetched by the JSON file
       bookings.push(newBooking);
 
       b.$add(newBooking);
 >>>>>>> 84f6b5f... Fixat databaskoppling mot Firebase samt funktion myBookings
     }
-    console.log(bookings);
-
-
+  //  console.log(bookings);
     function createCalender() {
       var date = new Date(new Date().getTime() + daySwitch * milliSeconds);
       // var date = new Date(getTime() + daySwitch * milliSeconds);
@@ -447,7 +448,7 @@ You can use services to organize and share code across your app.
       var d;
       var leftArrow = (daySwitch > 0) ? true : false;
       var rightArrow = (daySwitch < 14) ? true : false;
-      for (var i = 0; i < 7; i++) {
+      for (var i = 0; i < 2; i++) {
         var day = {};
 <<<<<<< HEAD
         d = date;
@@ -553,11 +554,6 @@ You can use services to organize and share code across your app.
             }
 =======
           d = date;
-        //  var dayNumber = d.getDate();
-          //console.log(dayNumber);
-        // var yolo = new Date(bookings[0].date);
-        // console.log(yolo.getDate());
-        //  console.log(bookings.length);
 
         day.times = [{
           timespan: "6-10",
@@ -672,45 +668,38 @@ You can use services to organize and share code across your app.
         year = year.getFullYear();
         var fullDate = (year+""+month+""+dateDay);
 
-        console.log(fullDate); 
+        console.log(fullDate);
 
        //console.log((day.dayName).getDate());
         for (var j = 0; j < bookings.length; j++)
-         {
-           // BLUEPRINT FÖR HUR VI SKRIVER VÅRA STRÄNGVÄRDEN FÖR DATUMEN FRÅN DATABASEN.
+        {
+          // BLUEPRINT FÖR HUR VI SKRIVER VÅRA STRÄNGVÄRDEN FÖR DATUMEN FRÅN DATABASEN.
           //console.log(new Date(bookings[j].date).getFullYear()+""+new Date(bookings[j].date).getMonth()+""+new Date(bookings[j].date).getDate())
           if (fullDate == (new Date(bookings[j].date).getFullYear()+""+new Date(bookings[j].date).getMonth()+""+new Date(bookings[j].date).getDate()))
           {
-            // MANIPULERA VÅRT FÄRDIGA OBJEKT.
-            //console.log(day.times) // Alla tider i det nyskapade Objektet.
-              for(var k=0;k<day.times.length; k++)
+          //console.log(fullDate + " Är datumet där bokningen finns!");
+            for(var k = 0;k<bookings[j].bookedApparatus.length;k++)
+            {
+              //console.log(bookings[j].time + " är tiden där det finns "+k+" bokningar");
+              for(var item in day)
               {
-                if(day.times[k].timespan == bookings[j].time)
-                {
-                  for(var timeblock in day.times[k])
+                  for(var timeblock in day[item])
                   {
-                  //  console.log(timeblock);
-                    for(var apparatus in day.times[k][timeblock])
-                    {
-                    //  console.log(day.times[k][timeblock][apparatus] + " är apparatus");
-                      for(var n = 0; n<bookings[i].bookedApparatus.length;n++)
+                    //console.log(day[item][timeblock].timespan);
+                    if(bookings[j].time == day[item][timeblock].timespan)
                       {
-                      // console.log(bookings[i].bookedApparatus[n] +" är bookings[i].bookedApparatus[n] ");
-                      //  console.log(day.times[k][timeblock][apparatus] +" är day.times[k][timeblock][apparatus]");
-                        if(bookings[i].bookedApparatus[n] == day.times[k][timeblock][apparatus])
+                        for(var apparatus in day[item][timeblock])
                         {
-                          day.times[k][timeblock].bookedBy = bookings[j].bookedBy; // ID PÅ MEDLEMMEN
+                          if(day[item][timeblock][apparatus].name == bookings[j].bookedApparatus[k])
+                          {
+                            day[item][timeblock][apparatus].bookedBy = 1234;
+                          }
                         }
-                      //  console.log(bookings[i].bookedApparatus[n]);
                       }
-                    }
+                    //console.log(bookings[j].time);
                   }
-                }
-                //console.log(day.times[k].timespan);
               }
-          // console.log("Hejsan!");
-          //  console.log(bookings[j].date + " Är datumet");
-          //  console.log(bookings[j].bookedApparatus + " Är de bokade apparaterna");
+            }
           }
         }
         dates.push(day);
