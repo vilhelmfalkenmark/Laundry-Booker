@@ -6,8 +6,11 @@
     function MyBookingsController($scope, MyBookingsService) {
 
     $scope.showBookingById = function(id) {
-    $scope.myBookings = MyBookingsService.myBookings(id);
+    //$scope.myBookings = MyBookingsService.myBookings(id);    
+     MyBookingsService.myBookings(id,$scope);
     };
+
+
 
     }
 

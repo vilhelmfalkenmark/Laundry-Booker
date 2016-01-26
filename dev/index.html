@@ -15,16 +15,17 @@
 <body ng-controller="CalenderController">
 <div ng-controller="MyBookingsController">
   <header class="row">
-    <div class="span-l2-m2-s2">
+    <div class="span-l1-m1-s1">
       <img src="images/lb-logo.svg" alt="Logotyp" class="lb-logo">
     </div>
-    <div class="span-l6-m6-s6">
+    <div class="span-l7-m7-s7">
       <section>
         <div class="my-bookings-container">
           <div ng-repeat="member in members">
             <button type="button" name="button" ng-click="sendMemberId(member.id,member.username);showBookingById(member.id)">{{member.firstname}}</button>
           </div>
-          <p><i class="fa fa-fw fa-info-circle"></i>&nbsp;Din nästa bokade tid är: <b> {{myBookings[0].date | date}} kl. {{myBookings[0].time}}</b></p>
+          <p ng-show="myBookings.length"><i class="fa fa-fw fa-info-circle"></i>&nbsp;Din nästa bokade tid är:<br> <b> <span ng-repeat="(key, nextBooking) in myBookings | orderBy:'date' | limitTo: 1">{{nextBooking.date | date}} kl. {{nextBooking.time}}</span></b></p>
+         <p ng-show="!myBookings.length">Du har för närvarande inga bokningar.</p>
         </div>
         <p>Du är inloggad som {{activeMemberfullName}} med id: {{activeMemberId}}</p>
       </section>
@@ -42,9 +43,9 @@
     <div class="span-l6-m6-s12">
     <h2>Mina bokningar:</h2>
      <div ng-show="!myBookings.length">Du har för närvarande inga bokningar.</div>
-    <div class="row" ng-repeat="bookedBlock in myBookings">
-        <!-- <div>index är {{$index}}</div> -->
-        <!-- <div>My bookings är {{myBookings}}</div> -->
+        
+    <div class="row" ng-repeat="(key, bookedBlock) in myBookings | orderBy:'date'">
+        <span>
         <h4>Bokad dag: {{bookedBlock.date | date:'EEEE'}} {{bookedBlock.date | date:'dd'}} {{bookedBlock.date | date:'MMMM'}} Kl: {{bookedBlock.time}}</h4>
         <div ng-repeat="apparatus in bookedBlock.bookedApparatus">
             <div class="span-l6-m6-s6">
@@ -54,8 +55,8 @@
                 <button class="small-btn highlight" ng-click="cancelBooking(apparatus, bookedBlock.date,bookedBlock.time, activeMemberId)">Avboka {{apparatus}}</button>
             </div>
         </div>
-
-</div>
+        </span>
+    </div>
 
     <p class="close-bookings"><i class="fa fa-times"></i> Stäng</p>
     </div>
