@@ -1,11 +1,10 @@
-## Laundry Booker
+# Laundry Booker
 
-
-# Install dependencies
+## Install dependencies
 ```bash
 $ npm install
 ```
-# Run gulp
+## Start gulp to run app localy
 ```bash
 $ gulp
 ```
